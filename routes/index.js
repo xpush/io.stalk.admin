@@ -31,8 +31,8 @@ module.exports = function(app, passport, Database){
 	});
 	
 	
-	app.get('/signup', function(req, res){
-		res.render('template/signup',{ message: req.flash('message') });
+	app.get('/register', function(req, res){
+		res.render('register',{ message: req.flash('message') });
 	});
 
 	/* Handle Registration POST */
