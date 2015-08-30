@@ -1,0 +1,15 @@
+{
+  "drive": {
+    "root_url": "https://googledrive.com/host",
+    "service_email": "794244227502-ojg6v3j7974fv0pqjtedrssavp70r3mb@developer.gserviceaccount.com",
+    "service_key": "key/key.pem",
+    "scope": [
+      "https://www.googleapis.com/auth/drive",
+      "https://www.googleapis.com/auth/drive.appdata",
+      "https://www.googleapis.com/auth/drive.apps.readonly",
+      "https://www.googleapis.com/auth/drive.file",
+      "https://www.googleapis.com/auth/drive.metadata.readonly",
+      "https://www.googleapis.com/auth/drive.readonly"
+    ]
+  }
+}
