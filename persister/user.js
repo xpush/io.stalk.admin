@@ -7,7 +7,7 @@ var mongoose = require('mongoose');
 var userModel = function () {
 
   var userSchema = mongoose.Schema({
-    group:String,
+    company: String,
     username: String,
     password: String,
     email: String,

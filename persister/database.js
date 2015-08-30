@@ -12,15 +12,9 @@ var db = function() {
     config: function(addr, dbname, opts, callback) {
       if( !initFlag ){
 
-        var connectUrl = "";
-        if(process.env.OPENSHIFT_MONGODB_DB_URL){
-          connectUrl = process.env.OPENSHIFT_MONGODB_DB_URL+'gscheckin';
-        }else{
-          connectUrl = 'mongodb://' + (addr ? addr : '127.0.0.1:27017') + '/' + (dbname ? dbname : 'sbadmin');
-        }
-        //var connectUrl = process.env.OPENSHIFT_MONGODB_DB_URL+'gscheckin'
-        //var connectUrl = 'mongodb://' + (addr ? addr : '127.0.0.1:27017') + '/' + (dbname ? dbname : 'sbadmin');
-          console.log(connectUrl+" connecting...");
+        var connectUrl =  'mongodb://' + (addr ? addr : '127.0.0.1:27017') + '/' + (dbname ? dbname : 'link');
+
+        console.log(connectUrl+" connecting...");
         mongoose.connect(connectUrl, (opts ? opts : {}));
         //mongoose.createConnection(connectUrl, (opts ? opts : {}));
 
@@ -55,7 +49,6 @@ var db = function() {
       }else{
 
         var fnc = function(){
-          console.log(initFlag);
           if(initFlag){
             clearInterval(interval);
             return gfs;
