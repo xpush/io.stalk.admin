@@ -2714,7 +2714,7 @@ table.text-center th {
   padding: 5px 10px;
   background: #d2d6de;
   border: 1px solid #d2d6de;
-  margin: 5px 0 0 50px;
+  margin: 5px 0 0 5px;
   color: #444444;
   width: 40%;
 }
@@ -2762,7 +2762,7 @@ table.text-center th {
   display: block;
   margin-bottom: 2px;
   font-size: 12px;
-  width: 45%;
+  width: 40%;
 }
 
     
