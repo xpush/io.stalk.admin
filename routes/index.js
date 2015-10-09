@@ -8,15 +8,47 @@ module.exports = function(app, passport, Database){
 	
 	 /* GET home page. */
 	app.get('/', function(req, res) {
-    res.render('index', {});
+    res.redirect('/dashboard');
 	});
+
+  app.get('/dashboard', function(req, res) {
+    res.render('dashboard', {});
+  });
+
+  app.get('/site', function(req, res) {
+
+
+    var sites = [{site_name:"Tistory",site_url:"www.tistory.com",site_code:"1q2w3e",date:"2014.04.14"},
+                 {site_name:"Tistory",site_url:"www.tistory.com",site_code:"1q2w3e",date:"2014.04.15"},
+                 {site_name:"Tistory",site_url:"www.tistory.com",site_code:"1q2w3e",date:"2014.04.16"}];
+
+    res.render('site', {sites:sites});
+  })
+
+  app.get('/sitelist',function(req,res){
+    var sites = [{site_name:"Tistory",site_url:"www.tistory.com",site_code:"1q2w3e",date:"2014.04.14"},
+      {site_name:"Tistory",site_url:"www.tistory.com",site_code:"1q2w3e",date:"2014.04.15"},
+      {site_name:"Tistory",site_url:"www.tistory.com",site_code:"1q2w3e",date:"2014.04.16"}];
+    res.send(sites);
+  });
+  app.post('/site', function(req, res) {
+
+    var site_name = req.body['site_name'];
+    var site_url = req.body['site_url'];
+    console.log(site_name);
+    console.log(site_url);
+
+    res.send({result:true});
+  })
+
+
 
   app.get('/link', function(req, res) {
     res.render('link', {});
   });
 
 	app.post('/login', passport.authenticate('login', {
-		successRedirect: '/checkin',
+		successRedirect: '/link',
 		failureRedirect: '/login',
 		failureFlash : true 
 	}));
@@ -32,14 +64,45 @@ module.exports = function(app, passport, Database){
 	
 	
 	app.get('/register', function(req, res){
-		res.render('register',{ message: req.flash('message') });
+
+    var usertoken = req.query["usertoken"];
+    console.log(usertoken);
+
+    //@TODO FIND TEMPORARY USER INFO by usertoken
+
+    var username = "John Ko";
+    var useremail = "eunsan.ko@gmail.com";
+
+    if(username!="" && username!=null){
+      res.render('register',{ username: username, useremail:useremail , message: req.flash('message')});
+    }else{
+      res.render('registerEmail',{message: req.flash('message')});
+    }
 	});
+
+	app.get('/registerEmail', function(req, res){
+		res.render('registerEmail',{ message: req.flash('message') });
+	});
+
+  app.post('/register', function(req,res){
+    var username = req.body['username'];
+    var useremail = req.body['useremail'];
+
+    console.log(username);
+    console.log(useremail);
+
+    //@TODO SEND EMAIL
+
+    res.render('sendemail', { username: username, useremail:useremail});
+  });
+
+
 
 	/* Handle Registration POST */
 	app.post('/signup', passport.authenticate('signup', {
 		successRedirect: '/login',
-		failureRedirect: '/signup',
-		failureFlash : true 
+		failureRedirect: '/register',
+		failureFlash : true
 	}));
 
 

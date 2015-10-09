@@ -38,57 +38,60 @@ module.exports = function(passport){
 	    );
 	}));
 
-	passport.use('signup', new LocalStrategy({
-            usernameField: 'email',
-	        passReqToCallback : true
-	  },
-	  function(req, email, password, done) {
+
+  passport.use('signup', new LocalStrategy({
+    usernameField: 'email',
+    passReqToCallback : true
+  },
+  function(req, email, password, done) {
+    console.log(email);
+    console.log(password);
+
+    findOrCreateUser = function(){
+      // find a user in Mongo with provided username
 
 
-          findOrCreateUser = function(){
-	      // find a user in Mongo with provided username
+      User.findOne({'group':req.param('group'),'email':email},function(err, user) {
+        // In case of any error return
+        if (err){
+          console.log('Error in SignUp: '+err);
+          return done(err);
+        }
+        // already exists
+        if (user) {
+          console.log('User already exists');
+          return done(null, false,
+          req.flash('message','User Already Exists'));
+        } else {
+          // if there is no user with that email
+          // create the user
+          var newUser = new User();
+          // set the user's local credentials
+          newUser.group = req.param("group");
+          newUser.username = req.param('username');
+          newUser.password = createHash(password);
+          newUser.email = email;
+          newUser.admin = false;
 
 
-	      User.findOne({'group':req.param('group'),'email':email},function(err, user) {
-	        // In case of any error return
-	        if (err){
-	          console.log('Error in SignUp: '+err);
-	          return done(err);
-	        }
-	        // already exists
-	        if (user) {
-	          console.log('User already exists');
-	          return done(null, false, 
-	             req.flash('message','User Already Exists'));
-	        } else {
-	          // if there is no user with that email
-	          // create the user
-	          var newUser = new User();
-	          // set the user's local credentials
-              newUser.group = req.param("group");
-	          newUser.username = req.param('username');
-	          newUser.password = createHash(password);
-	          newUser.email = email;
-	          newUser.admin = false;
+          // save the user
+          newUser.save(function(err) {
+            if (err){
+              console.log('Error in Saving user: '+err);
+              throw err;
+            }
+            console.log('User Registration succesful');
+            return done(null, newUser);
+          });
+        }
+      });
+    };
 
-	 
-	          // save the user
-	          newUser.save(function(err) {
-	            if (err){
-	              console.log('Error in Saving user: '+err);  
-	              throw err;  
-	            }
-	            console.log('User Registration succesful');    
-	            return done(null, newUser);
-	          });
-	        }
-	      });
-	    };
-	     
-	    // Delay the execution of findOrCreateUser and execute 
-	    // the method in the next tick of the event loop
-	    process.nextTick(findOrCreateUser);
-	  }));
+    // Delay the execution of findOrCreateUser and execute
+    // the method in the next tick of the event loop
+    process.nextTick(findOrCreateUser);
+  }));
+
 	
 	passport.serializeUser(function(user, done) {
 	  done(null, user._id);

@@ -1,0 +1,90 @@
+<%layout('layout_with_left')%>
+<div class="content-wrapper">
+		<!-- Content Header (Page header) -->
+		<section class="content-header">
+				<h1>
+						Your Sites
+						<small>that connected with customer</small>
+				</h1>
+				<ol class="breadcrumb">
+						<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+						<li><a href="#">Tables</a></li>
+						<li class="active">Simple</li>
+				</ol>
+		</section>
+
+		<!-- Main content -->
+		<section class="content">
+				<div class="row">
+						<div class="col-xs-12">
+								<div class="box box-primary">
+										<div class="box-header with-border">
+												<h3 class="box-title">Quick Example</h3>
+										</div><!-- /.box-header -->
+										<!-- form start -->
+												<div class="box-body table-responsive no-padding">
+														<table class="table table-hover">
+																<tr>
+																		<th>NAME</th>
+																		<th>URL</th>
+																		<th>App Code</th>
+																		<th>Registered Date</th>
+																</tr>
+																<tbody id="siteTableBody">
+																<% for(var i=0; i<sites.length; i++) {%>
+																<tr>
+																		<td><%=sites[0].site_name%></td>
+																		<td><%=sites[0].site_url%></td>
+																		<td><%=sites[0].site_code%></td>
+																		<td><span class="label label-warning"><%=sites[0].date%></span></td>
+																</tr>
+
+																<% } %>
+																</tbody>
+														</table>
+												</div><!-- /.box-body -->
+
+												<div class="box-footer">
+														<button type="submit" id="newsite" class="btn btn-primary">New Site</button>
+												</div>
+								</div><!-- /.box -->
+						</div>
+				</div>
+		</section><!-- /.content -->
+		<div id="myModal" class="modal fade" role="dialog">
+
+						<div class="modal-info">
+								<div class="modal-dialog">
+										<div class="modal-content">
+												<div class="modal-header">
+														<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+														<h4 class="modal-title">Add your new site</h4>
+												</div>
+												<div class="modal-body">
+														<form role="form">
+																<div class="box-body">
+																		<div class="form-group">
+																				<label for="exampleInputEmail1">Site Name</label>
+																				<input type="text" class="form-control" id="site_name" placeholder="Enter Site Name">
+																		</div>
+																		<div class="form-group">
+																				<label for="exampleInputPassword1">Site Url</label>
+																				<input type="text" class="form-control" id="site_url" placeholder="Enter Site Url">
+																		</div>
+																</div><!-- /.box-body -->
+
+														</form>
+
+												</div>
+												<div class="modal-footer">
+														<button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+														<button type="button" id="addNewSite" class="btn btn-outline">Save changes</button>
+												</div>
+										</div><!-- /.modal-content -->
+								</div><!-- /.modal-dialog -->
+						</div><!-- /.modal -->
+
+				</div>
+		</div>
+</div><!-- /.content-wrapper -->
+
