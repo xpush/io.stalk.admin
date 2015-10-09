@@ -2717,6 +2717,7 @@ table.text-center th {
   margin: 5px 0 0 5px;
   color: #444444;
   width: 40%;
+  word-break: break-all;
 }
 .direct-chat-text:after,
 .direct-chat-text:before {

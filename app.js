@@ -54,7 +54,7 @@ require('./passport/pass')(passport);
 
 
 Database.config(
-  config && config.mongodb && config.mongodb.address ? config.mongodb.address : '', 'sbadmin',
+  config && config.mongodb && config.mongodb.address ? config.mongodb.address : '', 'withtalk',
   
   config.mongodb && config.mongodb.options ? config.mongodb.options : undefined,
   function(err, message) {
