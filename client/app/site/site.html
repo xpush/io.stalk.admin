@@ -1,0 +1,148 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+<div class="content-wrapper">
+	<!-- Content Header (Page header) -->
+	<section class="content-header">
+		<h1>
+			Your Sites
+			<small>that connected with customer</small>
+		</h1>
+		<ol class="breadcrumb">
+			<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+			<li><a href="#">Tables</a></li>
+			<li class="active">Simple</li>
+		</ol>
+	</section>
+
+	<!-- Main content -->
+	<section class="content">
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="box box-primary">
+					<div class="box-header with-border">
+						<h3 class="box-title">Regist your site</h3>
+					</div><!-- /.box-header -->
+					<!-- form start -->
+					<div class="box-body table-responsive no-padding">
+						<table class="table table-hover">
+							<tr>
+								<th>NAME</th>
+								<th>URL</th>
+								<th>App Code</th>
+								<th>Registered Date</th>
+							</tr>
+							<tbody id="siteTableBody">
+								<tr data-ng-repeat="site in sites">
+									<td>{{site.site_name}}</td>
+									<td>{{site.site_url}}</td>
+									<td>{{site.site_code}}</td>
+									<td><span class="label label-warning">{{site.date}}</span></td>
+								</tr>
+
+							</tbody>
+						</table>
+					</div><!-- /.box-body -->
+
+					<div class="box-footer">
+						<button type="submit" id="newsite" class="btn btn-primary">New Site</button>
+					</div>
+				</div><!-- /.box -->
+			</div>
+		</div>
+	</section><!-- /.content -->
+	<div id="myModal" class="modal fade" role="dialog">
+
+		<div class="modal-info">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title">Add your new site</h4>
+					</div>
+					<div class="modal-body">
+						<form role="form">
+							<div class="box-body">
+								<div class="form-group">
+									<label for="exampleInputEmail1">Site Name</label>
+									<input type="text" class="form-control" id="site_name" ng-model="newSite.site_name" placeholder="Enter Site Name">
+								</div>
+								<div class="form-group">
+									<label for="exampleInputPassword1">Site Url</label>
+									<input type="text" class="form-control" id="site_url" ng-model="newSite.site_url" placeholder="Enter Site Url">
+								</div>
+							</div><!-- /.box-body -->
+
+						</form>
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+						<button type="button" id="addNewSite" ng-click="addNewSite()" class="btn btn-outline">Save changes</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+
+	</div>
+</div>
+</div><!-- /.content-wrapper -->
+
+<script type="text/javascript">
+	$(function () {
+		"use strict";
+		$('#newsite').click(function () {
+
+			$('#myModal').modal('show');
+		});
+
+//		$('#addNewSite').click(function () {
+//			$.ajax({
+//				url: "/site",
+//				type: "POST",
+//				data: {'site_name': $('#site_name').val(), 'site_url': $('#site_url').val()},
+//				success: function (data, textStatus, jqXHR) {
+//					console.log(data);
+//
+//					if (data.result) {
+//						toastr.success("Save Success");
+//						getSiteList();
+//					} else {
+//						toastr.error("Save Failure");
+//					}
+//
+//
+//					//data - response from server
+//				},
+//				error: function (jqXHR, textStatus, errorThrown) {
+//
+//				}
+//			});
+//		});
+
+
+		function getSiteList() {
+			$.ajax({
+				url: "/sitelist",
+				type: "GET",
+				data: {},
+				success: function (data, textStatus, jqXHR) {
+					console.log(data);
+					var markup = "<tr><td>${site_name}</td><td>${site_url}</td><td>${site_code}</td><td>${date}</td></tr>";
+
+					/* Compile the markup as a named template */
+					$.template("siteTemplate", markup);
+
+					/* Render the template with the movies data and insert
+					 the rendered HTML under the "movieList" element */
+					$.tmpl("siteTemplate", data)
+							.html("#siteTableBody");
+
+				},
+				error: function (jqXHR, textStatus, errorThrown) {
+
+				}
+			});
+		}
+	});
+
+
+</script>
