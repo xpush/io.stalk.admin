@@ -1,0 +1,79 @@
+<header class="main-header">
+    <!-- Logo -->
+    <a href="/" class="logo">
+        <!-- mini logo for sidebar mini 50x50 pixels -->
+        <span class="logo-mini"><b>PU</b>PPY</span>
+        <!-- logo for regular state and mobile devices -->
+        <span class="logo-lg"><img src="assets/img/logo/link_logo_typo_white.png" height="40px"/></span>
+
+    </a>
+    <!-- Header Navbar: style can be found in header.less -->
+    <nav class="navbar navbar-static-top" role="navigation">
+        <!-- Sidebar toggle button-->
+        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <span class="sr-only">Toggle navigation</span>
+        </a>
+
+        <div class="navbar-custom-menu" style="margin-top: 7px;margin-right: 7px;">
+            <a href="/chat" class="btn btn-social-icon btn-foursquare" style="background-color:#376682"><i class="fa fa-commenting-o"></i></a>
+        </div>
+    </nav>
+</header>
+
+<aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+        <!-- Sidebar user panel -->
+        <!-- sidebar menu: : style can be found in sidebar.less -->
+        <ul class="sidebar-menu">
+            <li class="header">MAIN NAVIGATION</li>
+            <li class="treeview">
+                <a href="/dashboard">
+                    <i class="fa fa-dashboard"></i> <span>Dashboard</span> <i class="fa fa-angle-left pull-right"></i>
+                </a>
+            </li>
+            <li class="treeview">
+                <a href="/site">
+                    <i class="fa fa-laptop"></i> <span>SITE</span> <i class="fa fa-angle-left pull-right"></i>
+                </a>
+            </li>
+	        <li>
+
+	        </li>
+
+        </ul>
+    </section>
+    <!-- /.sidebar -->
+</aside>
+
+<script src="assets/js/app.js"></script>
+
+<!--div class="navbar navbar-default navbar-static-top" ng-controller="NavbarCtrl">
+  <div class="container">
+    <div class="navbar-header">
+      <button class="navbar-toggle" type="button" ng-click="isCollapsed = !isCollapsed">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a href="/" class="navbar-brand">withtalk</a>
+    </div>
+    <div collapse="isCollapsed" class="navbar-collapse collapse" id="navbar-main">
+      <ul class="nav navbar-nav">
+        <li ng-repeat="item in menu" ng-class="{active: isActive(item.link)}">
+            <a ng-href="{{item.link}}">{{item.title}}</a>
+        </li>
+        <li ng-show="isAdmin()" ng-class="{active: isActive('/admin')}"><a href="/admin">Admin</a></li>
+      </ul>
+
+      <ul class="nav navbar-nav navbar-right">
+        <li ng-hide="isLoggedIn()" ng-class="{active: isActive('/signup')}"><a href="/signup">Sign up</a></li>
+        <li ng-hide="isLoggedIn()" ng-class="{active: isActive('/login')}"><a href="/login">Login</a></li>
+        <li ng-show="isLoggedIn()"><p class="navbar-text">Hello {{ getCurrentUser().name }}</p> </li>
+        <li ng-show="isLoggedIn()" ng-class="{active: isActive('/settings')}"><a href="/settings"><span class="glyphicon glyphicon-cog"></span></a></li>
+        <li ng-show="isLoggedIn()" ng-class="{active: isActive('/logout')}"><a href="" ng-click="logout()">Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</div-->
