@@ -1,4 +1,3 @@
-# Created by https://www.gitignore.io/api/intellij,osx,windows,eclipse,node
 
 ### Intellij ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio
@@ -170,12 +169,24 @@ build/Release
 # https://docs.npmjs.com/misc/faq#should-i-check-my-node-modules-folder-into-git
 node_modules
 
+### Bower ###
+bower_components
+.bower-cache
+.bower-registry
+.bower-tmp
+
+
+### grunt ###
+# Grunt usually compiles files inside this directory
+dist/
+
+# Grunt usually preprocesses files such as coffeescript, compass... inside the .tmp directory
+.tmp/
+
+
 
 ### xpush-link ###
 public
-.tmp
-client/bower_components
-dist
 server/config/environment
 /server/config/local.env.js
 npm-debug.log
