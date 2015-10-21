@@ -11,13 +11,20 @@ angular.module('withtalkApp')
     $scope.isLoggedIn = Auth.isLoggedIn;
     $scope.isAdmin = Auth.isAdmin;
     $scope.getCurrentUser = Auth.getCurrentUser;
-    console.log($scope.getCurrentUser);
+    $scope.stat = "online";
+
+
     $scope.logout = function() {
       Auth.logout();
       $location.path('/login');
     };
 
-    $scope.isActive = function(route) {
-      return route === $location.path();
+    $scope.isActive = function(stat) {
+      console.log(stat);
+      return $scope.stat === stat;
     };
+
+    $scope.setStatus = function(stat){
+      $scope.stat = stat;
+    }
   });

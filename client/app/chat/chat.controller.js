@@ -1,7 +1,9 @@
 'use strict';
 
 angular.module('withtalkApp')
-  .controller('ChatCtrl', function ($scope) {
+  .controller('ChatCtrl', function ($rootScope, $scope) {
+
+    $rootScope.isLogin=false;
     $scope.messages = [{userid:"eskozz", time:"Feb 29 2:30 PM", message:"hi hello how are you", side:"left", opposite:"right"},
                       {userid:"", time:"Feb 29 2:31 PM", message:"im fine thank you and you?", side:"right", opposite:"left"}];
 

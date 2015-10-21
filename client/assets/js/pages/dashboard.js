@@ -221,15 +221,15 @@ $(function () {
   });
 
   /* The todo list plugin */
-  $(".todo-list").todolist({
-    onCheck: function (ele) {
-      window.console.log("The element has been checked");
-      return ele;
-    },
-    onUncheck: function (ele) {
-      window.console.log("The element has been unchecked");
-      return ele;
-    }
-  });
+  //$(".todo-list").todolist({
+  //  onCheck: function (ele) {
+  //    window.console.log("The element has been checked");
+  //    return ele;
+  //  },
+  //  onUncheck: function (ele) {
+  //    window.console.log("The element has been unchecked");
+  //    return ele;
+  //  }
+  //});
 
 });

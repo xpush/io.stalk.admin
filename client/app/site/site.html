@@ -28,14 +28,12 @@
 								<th>NAME</th>
 								<th>URL</th>
 								<th>App Code</th>
-								<th>Registered Date</th>
 							</tr>
 							<tbody id="siteTableBody">
 								<tr data-ng-repeat="site in sites">
-									<td>{{site.site_name}}</td>
-									<td>{{site.site_url}}</td>
-									<td>{{site.site_code}}</td>
-									<td><span class="label label-warning">{{site.date}}</span></td>
+									<td>{{site.name}}</td>
+									<td>{{site.url}}</td>
+									<td>{{site.key}}</td>
 								</tr>
 
 							</tbody>
@@ -43,7 +41,7 @@
 					</div><!-- /.box-body -->
 
 					<div class="box-footer">
-						<button type="submit" id="newsite" class="btn btn-primary">New Site</button>
+						<button type="submit" id="newsite1" ng-click="openModal('hello')" class="btn btn-primary">New Site</button>
 					</div>
 				</div><!-- /.box -->
 			</div>
@@ -86,11 +84,30 @@
 </div>
 </div><!-- /.content-wrapper -->
 
+<script id="searchbook-modal.html" type="text/ng-template">
+	<div class="modal">
+		<div class="list">
+			<label class="item item-input">
+				<span class="input-label">책</span>
+				<input type="text"  ng-model="search.book" placeholder="책 이름을 입력하세요"  >
+			</label>
+			<div class="row">
+				<div class="col">
+					<button class="button button-block button-positive" ng-click="searchBooks();"><i class="ion-search"></i> Search</button>
+				</div>
+
+				<div class="col">
+					<button class="button button-block button-assertive" ng-click="closeSearchBookModal();"><i class="ion-close"></i> Cancel</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</script>
+
 <script type="text/javascript">
 	$(function () {
 		"use strict";
 		$('#newsite').click(function () {
-
 			$('#myModal').modal('show');
 		});
 
