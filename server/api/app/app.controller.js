@@ -32,11 +32,11 @@ exports.chooseApplication = function(req,res){
 
 // Get list of apps
 exports.index = function(req, res) {
-  var userId = req.session.email;
+  var userId = req.user.email;
 
   App.find({"users.ID": userId },function (err, apps) {
     if(err) { return handleError(res, err); }
-    return res.json(200, apps);
+    return res.send(apps);
   });
 };
 
@@ -53,16 +53,18 @@ exports.show = function(req, res) {
 exports.create = function(req, res) {
   var body = req.body;
 
+  var user = req.user;
+
   body.users = [{
-    ID: req.session.email,
-    NM: req.session.name,
-    P : req.session.picture,
+    ID: user.email,
+    NM: user.name,
+    P : "",
     R : 'admin'
   }];
 
   App.create(body, function(err, app) {
     if(err) { return handleError(res, err); }
-    return res.json(201, app);
+    return res.send(app);
   });
 };
 
