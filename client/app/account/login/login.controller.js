@@ -6,30 +6,30 @@ angular.module('withtalkApp')
     $scope.errors = {};
     $rootScope.isLogin = true;
 
-    $scope.login = function(form) {
+    $scope.login = function (form) {
       $scope.submitted = true;
 
-      if(form.$valid) {
+      if (form.$valid) {
         Auth.login({
           email: $scope.user.email,
           password: $scope.user.password
         })
-        .then( function(data) {
-          // Logged in, redirect to home
-          console.log(data);
-          if(data.token){
-            $location.path('/');
-          }else{
-            $scope.result = data.message;
-          }
+          .then(function (data) {
+            // Logged in, redirect to home
+            console.log(data);
+            if (data.token) {
+              $location.path('/');
+            } else {
+              $scope.result = data.message;
+            }
 
-          //$location.path('/');
-        })
-        .catch( function(err) {
-          console.log(err);
-          $scope.errors.other = err.message;
-          $scope.result = err.message;
-        });
+            //$location.path('/');
+          })
+          .catch(function (err) {
+            console.log(err);
+            $scope.errors.other = err.message;
+            $scope.result = err.message;
+          });
       }
     };
   });

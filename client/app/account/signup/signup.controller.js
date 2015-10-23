@@ -17,46 +17,46 @@ angular.module('withtalkApp')
     $scope.user.name = name;
 
 
-    $scope.register = function(form) {
+    $scope.register = function (form) {
       $scope.submitted = true;
 
-      if(form.$valid) {
+      if (form.$valid) {
 
         Auth.activate({
           uid: $scope.user.uid,
           email: $scope.user.email,
           password: $scope.user.password
         })
-        .then( function(data) {
-          // Account created, redirect to home
-          console.log(data);
+          .then(function (data) {
+            // Account created, redirect to home
+            console.log(data);
 
-          var status = data.status;
-          var message = data.message;
+            var status = data.status;
+            var message = data.message;
 
-          if(status=='ERR-ACTIVE'){
-            $scope.result = data.message;
-          }else{
-            //$location.path('/login');
-          }
+            if (status == 'ERR-ACTIVE') {
+              $scope.result = data.message;
+            } else {
+              //$location.path('/login');
+            }
 
 
-        })
-        .catch( function(err) {
-          err = err.data;
-          $scope.errors = {};
+          })
+          .catch(function (err) {
+            err = err.data;
+            $scope.errors = {};
 
-          // Update validity of form fields that match the mongoose errors
-          angular.forEach(err.errors, function(error, field) {
-            form[field].$setValidity('mongoose', false);
-            $scope.errors[field] = error.message;
+            // Update validity of form fields that match the mongoose errors
+            angular.forEach(err.errors, function (error, field) {
+              form[field].$setValidity('mongoose', false);
+              $scope.errors[field] = error.message;
+            });
           });
-        });
       }
 
     };
 
-    $scope.loginOauth = function(provider) {
+    $scope.loginOauth = function (provider) {
       $window.location.href = '/auth/' + provider;
     };
   });
