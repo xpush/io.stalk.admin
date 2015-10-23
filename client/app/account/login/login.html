@@ -17,7 +17,7 @@
 		      <div class="form-group has-feedback" ng-class="{ 'has-success': form.email.$valid && submitted,
                                             'has-error': form.email.$invalid && submitted }">
 			      <input type="email" name="email" ng-model="user.email" class="form-control"  placeholder="Email" required mongoose-error>
-			      <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+			      <span class="glyphicon glyphicon-envelope form-control-feedback" style="top: 0"></span>
 			      <p class="help-block" ng-show="form.email.$error.email && submitted">
 				      Doesn't look like a valid email.
 			      </p>
@@ -42,7 +42,7 @@
 			      <p class="help-block" ng-show="form.password.$error.mongoose">
 				      {{ errors.password }}
 			      </p>
-			      <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+			      <span class="glyphicon glyphicon-lock form-control-feedback" style="top: 0"></span>
 		      </div>
 		      <p class="help-block" ng-show="result">
 			      {{ result }}
