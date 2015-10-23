@@ -25,3 +25,7 @@
 html, body, div.wrapper{
     background: #d2d6de;
 }
+
+.form-control-feedback {
+  top: 0px;
+}
