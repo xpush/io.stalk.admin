@@ -21,7 +21,7 @@ exports.setup = function (Auth, config) {
           return done(null, false, { message: DICT.EMAIL_WRONG });
         }
         if(auth.active == false){
-          res.send({ status: 'AUTH-DEACTIVE', message: DICT.EMAIL_DEACTIVE });
+          return done({ status: 'AUTH-DEACTIVE', message: DICT.EMAIL_DEACTIVE });
         }
         if(!auth.pass == UT.encrypto(password) ){
           return done(null, false, { message: DICT.PASSWORD_WRONG });

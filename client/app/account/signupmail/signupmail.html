@@ -8,7 +8,7 @@
 
 	<div class="register-box-body">
 		<p class="login-box-msg">Register a new membership</p>
-		<form  name="form" ng-submit="register(form)" novalidate>
+		<form  name="form" ng-submit="register(form)" class="form-horizontal" novalidate>
 			<div class="form-group has-feedback" ng-class="{ 'has-success': form.name.$valid && submitted,
                                             'has-error': form.name.$invalid && submitted }">
 				<input type="text" name="name" ng-model="user.name" class="form-control" placeholder="Full name" required>
