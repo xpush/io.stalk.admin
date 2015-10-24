@@ -18,7 +18,7 @@ angular.module('withtalkApp')
         templateUrl: 'app/account/sendmail/sendmail.html',
         controller: 'SendMailCtrl'
       })
-      .state('signup', {
+      .state('signup', { // TODO 이미 active 되었다면, 404 로 response 해야 함. !!
         url: '/signup/:name/:email/:uid',
         templateUrl: 'app/account/signup/signup.html',
         controller: 'SignupCtrl'

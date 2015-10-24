@@ -147,7 +147,7 @@ exports.reconfirm = function (req, res) {
       res.send({status: 'ERR-ACTIVE', message: DICT.ACTIVATE_WRONG});
     }
   });
-}
+};
 
 exports.activate = function (req, res) {
   var email = req.body.email;
@@ -175,7 +175,7 @@ exports.activate = function (req, res) {
       });
     }
   });
-}
+};
 
 // Updates an existing auth in the DB.
 exports.update = function (req, res) {
