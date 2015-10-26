@@ -2,7 +2,7 @@ var nodemailer = require('nodemailer');
 var config = require('./../config/environment');
 var _ = require('lodash');
 
-var smtpTransport = nodemailer.createTransport("SMTP", config.email.smtc);
+var smtpTransport = nodemailer.createTransport("SMTP", config.auth.email.smtc);
 
 var sendVerifyMail = function (name, emailAddress, authId) {
 
@@ -10,10 +10,8 @@ var sendVerifyMail = function (name, emailAddress, authId) {
 
   mailContents['to'] = emailAddress;
   mailContents['text'] = mailContents['text'] + '\n' +
-    config.email.verify.callbackUrl + name + "/" + emailAddress + "/" + authId;
-
-
-  console.log(config.email.smtc, mailContents);
+    config.auth.email.verify.callbackUrl + name + "/" + emailAddress + "/" + authId;
+  console.log(config.auth.email.smtc, mailContents);
 
   smtpTransport.sendMail(mailContents, function (error, response) {
 

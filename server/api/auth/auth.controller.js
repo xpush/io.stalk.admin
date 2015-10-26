@@ -3,9 +3,13 @@
 var _ = require('lodash');
 var uuid = require('node-uuid');
 var Auth = require('./auth.model');
-var EMAIL = require('./../../components/email');
 var DICT = require('./../../config/dict');
 var UT = require('./../../components/utils');
+var config = require('./../../config/environment');
+
+var EMAIL;
+if(config.auth && config.auth.email) EMAIL = require('./../../components/email');
+
 // Get list of auths
 exports.index = function (req, res) {
   Auth.find(function (err, auths) {
@@ -100,11 +104,15 @@ exports.create = function (req, res) {
     if (!auth) {
       saveData.uid = uid;
       saveData.name = name;
+      if(!config.auth){
+        saveData.active = true;
+      }
+
       Auth.create(saveData, function (err, auth) {
         if (err) {
           return handleError(res, err);
         }
-        EMAIL.sendVerifyMail(auth.name, auth.email, auth.uid);
+        if(config.auth && config.auth.email) EMAIL.sendVerifyMail(auth.name, auth.email, auth.uid);
         return res.status(201).json(auth);
       });
     } else if (!auth.active) {
@@ -140,7 +148,7 @@ exports.reconfirm = function (req, res) {
         if (err) {
           return handleError(res, err);
         }
-        EMAIL.sendVerifyMail(auth.name, auth.email, auth.uid);
+        if(config.auth && config.auth.email) EMAIL.sendVerifyMail(auth.name, auth.email, auth.uid);
         return res.status(200).json(auth);
       });
     } else {
