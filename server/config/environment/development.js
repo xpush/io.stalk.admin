@@ -4,7 +4,7 @@ module.exports = {
 
   // MongoDB connection options
   mongo: {
-    uri: 'mongodb://127.0.0.1/withtalk-dev'
+    uri: 'mongodb://10.0.5.171/withtalk-dev'
   },
 
   auth : undefined, /*{
