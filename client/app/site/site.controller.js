@@ -20,6 +20,7 @@ angular.module('withtalkApp')
       })
       .then( function(data) {
         // Account created, redirect to home
+        $('#myModal').modal('hide') 
         console.log(data);
 
         var status = data.status;

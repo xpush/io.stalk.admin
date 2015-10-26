@@ -7,8 +7,8 @@ module.exports = {
     uri: 'mongodb://127.0.0.1/withtalk-dev'
   },
 
+  auth : undefined, /*{
   email: {
-
     smtc: {
       host: "[SMTC Hostname]", // hostname
       secureConnection: true, // use SSL
@@ -28,7 +28,7 @@ module.exports = {
       callbackUrl: 'http://localhost:9000/signup/'
     }
 
-  },
+  } },*/
 
   seedDB: true
 };
