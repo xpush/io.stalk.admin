@@ -6,6 +6,7 @@ var Auth = require('./auth.model');
 var DICT = require('./../../config/dict');
 var UT = require('./../../components/utils');
 var config = require('./../../config/environment');
+var request = require('request');
 
 var EMAIL;
 if(config.auth && config.auth.email) EMAIL = require('./../../components/email');
@@ -113,7 +114,27 @@ exports.create = function (req, res) {
           return handleError(res, err);
         }
         if(config.auth && config.auth.email) EMAIL.sendVerifyMail(auth.name, auth.email, auth.uid);
-        return res.status(201).json(auth);
+
+        // register in XPUSH
+        request.post(
+          'http://54.178.160.166:8000/user/register',
+          { form: { A:'withtalk', U:saveData.email, PW:saveData.uid, D:'web', DT:{NM:saveData.name,I:''} } },
+          function (error, response, result) {
+            if (!error && response.statusCode == 200) {
+              // user-register success
+              var resData = JSON.parse(result);
+              if( "ok" == resData.status ) {
+                return res.status(201).json(auth);
+              } else if("ERR-INTERNAL" == resData.status && "ERR-USER_EXIST" == resData.message) {
+                return handleError(res, result);
+              } else {
+                return handleError(res, result);
+              }
+            } else {
+              return handleError(res, error);
+            }
+          }
+        );
       });
     } else if (!auth.active) {
       res.send({status: 'AUTH-DEACTIVE', message: DICT.EMAIL_DEACTIVE});
