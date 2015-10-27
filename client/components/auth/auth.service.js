@@ -72,7 +72,6 @@ angular.module('withtalkApp')
           $cookieStore.put('token', data.token);
 
           currentUser = User.get();
-          console.log(currentUser);
           deferred.resolve(data);
           return cb();
         }).
