@@ -5,7 +5,8 @@ angular.module('withtalkApp', [
   'ngResource',
   'ngSanitize',
   'ui.router',
-  'ui.bootstrap'
+  'ui.bootstrap',
+  'toaster'
 ])
   .run(function($rootScope){
         // xpush 를 생성한다.
