@@ -2,12 +2,13 @@
 
 angular.module('withtalkApp')
   .controller('ChatCtrl', function ($rootScope, $scope) {
-
+    console.log( $rootScope.xpush );
     $rootScope.isLogin=false;
     $scope.messages = [{userid:"eskozz", time:"Feb 29 2:30 PM", message:"hi hello how are you", side:"left", opposite:"right"},
                       {userid:"", time:"Feb 29 2:31 PM", message:"im fine thank you and you?", side:"right", opposite:"left"}];
 
     $scope.sendMessage = function () {
+      console.log( "===== send =====" );
       console.log($scope.messageText);
       var newMessage = {userid:"", time:currentTime(), message:$scope.messageText, side:"right", opposite:"left"};
       var newReturnMessage = {userid:"eskozz", time:currentTime(), message:$scope.messageText+$scope.messageText, side:"left", opposite:"right"};
