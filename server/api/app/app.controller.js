@@ -11,18 +11,15 @@ exports.chooseApplication = function(req,res){
     if(err){
       return res.json(401,err);
     }
-
     if(!app){
       return res.json(404, 'does not exist');
     }
-
     app.users.forEach(function(user){
       if(user.ID == req.user.login){
         req.session.appKey = key;
         return res.json(200,app);
       }
     });
-    
     if(!app){
       return res.json(404, 'does not exist');
     }
