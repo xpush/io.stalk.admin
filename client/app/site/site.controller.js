@@ -1,19 +1,14 @@
 'use strict';
 
 angular.module('withtalkApp')
-  .controller('SiteCtrl', function ($scope, $stateParams, Site, Modal) {
+  .controller('SiteCtrl', function ($scope, $stateParams, Site, $modal) {
     $scope.message = 'Hello';
     $scope.newSite = {};
 
     $scope.sites = [];
 
-    $scope.openModal = Modal.show.addSite(function(user) {
-      console.log(user);
-    });
-
     $scope.addNewSite = function(){
       //@TODO Save Site and retireve again
-
       Site.create({
         name: $scope.newSite.site_name,
         url: $scope.newSite.site_url
@@ -21,7 +16,6 @@ angular.module('withtalkApp')
       .then( function(data) {
         // Account created, redirect to home
         $('#myModal').modal('hide') 
-        console.log(data);
 
         var status = data.status;
         var message = data.message;
@@ -50,7 +44,6 @@ angular.module('withtalkApp')
       })
       .then( function(data) {
         // Account created, redirect to home
-        console.log(data);
         $scope.sites = data;
         var status = data.status;
         var message = data.message;
@@ -71,6 +64,45 @@ angular.module('withtalkApp')
       });
     }
 
+    $scope._site={};
+    $scope.getCode = function(site){
+      angular.copy(site, $scope._site);
+
+      $scope.script='<script src="http://stalk.io/stalk.js"></script>\n<script>STALK.init({app:'+site.name+',url:'+site.url+',id:'+site.key+'});</script>;';
+    };
+
+    $scope.updateSite = function(){
+      Site.update($scope._site)
+      .then( function(data) {
+        // Account created, redirect to home
+        $scope._site={};
+
+        var status = data.status;
+        var message = data.message;
+
+        $scope.getSites();
+        if(status=='ERR-ACTIVE'){
+          $scope.result = data.message;
+        }else{
+          //$location.path('/login');
+        }
+
+
+      })
+      .catch( function(err) {
+        err = err.data;
+
+        // Update validity of form fields that match the mongoose errors
+
+      });
+
+    }
+
+
     $scope.getSites();
+
+
+
+
 
   });

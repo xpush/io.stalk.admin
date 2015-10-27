@@ -16,7 +16,7 @@
 	<!-- Main content -->
 	<section class="content">
 		<div class="row">
-			<div class="col-xs-12">
+			<div class="col-md-12">
 				<div class="box box-primary">
 					<div class="box-header with-border">
 						<h3 class="box-title">Regist your site</h3>
@@ -30,7 +30,7 @@
 								<th>App Code</th>
 							</tr>
 							<tbody id="siteTableBody">
-								<tr data-ng-repeat="site in sites">
+								<tr data-ng-repeat="site in sites" ng-click="getCode(site)">
 									<td>{{site.name}}</td>
 									<td>{{site.url}}</td>
 									<td>{{site.key}}</td>
@@ -44,6 +44,44 @@
 						<button type="submit" id="newsite" class="btn btn-primary">New Site</button>
 					</div>
 				</div><!-- /.box -->
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<!-- Horizontal Form -->
+				<div class="box box-info">
+					<div class="box-header with-border">
+						<h3 class="box-title">Get your script</h3>
+					</div><!-- /.box-header -->
+					<!-- form start -->
+					<form class="form-horizontal">
+						<div class="box-body">
+							<div class="form-group">
+								<label for="inputEmail3" class="col-sm-2 control-label">Site Name</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" id="inputEmail3" data-ng-model="_site.name" placeholder="Name">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="inputPassword3" class="col-sm-2 control-label">Site Url</label>
+								<div class="col-sm-10">
+									<input type="url" class="form-control" id="inputPassword3" data-ng-model="_site.url" placeholder="Url">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="inputPassword3" class="col-sm-2 control-label">Copy this code.<br/> And paste it in your site.</label>
+								<div class="col-sm-10">
+									 <pre style="font-weight: 600;">{{script}}</pre>
+								</div>
+							</div>
+						</div><!-- /.box-body -->
+						<div class="box-footer">
+							<button type="submit" ng-click="updateSite();" class="btn btn-info pull-right">Update</button>
+						</div><!-- /.box-footer -->
+					</form>
+				</div><!-- /.box -->
+				<!-- general form elements disabled -->
+
 			</div>
 		</div>
 	</section><!-- /.content -->
@@ -82,27 +120,6 @@
 
 	</div>
 </div>
-</div><!-- /.content-wrapper -->
-
-<script id="searchbook-modal.html" type="text/ng-template">
-	<div class="modal">
-		<div class="list">
-			<label class="item item-input">
-				<span class="input-label">책</span>
-				<input type="text"  ng-model="search.book" placeholder="책 이름을 입력하세요"  >
-			</label>
-			<div class="row">
-				<div class="col">
-					<button class="button button-block button-positive" ng-click="searchBooks();"><i class="ion-search"></i> Search</button>
-				</div>
-
-				<div class="col">
-					<button class="button button-block button-assertive" ng-click="closeSearchBookModal();"><i class="ion-close"></i> Cancel</button>
-				</div>
-			</div>
-		</div>
-	</div>
-</script>
 
 <script type="text/javascript">
 	$(function () {
