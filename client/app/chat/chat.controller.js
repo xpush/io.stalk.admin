@@ -1,8 +1,19 @@
 'use strict';
 
 angular.module('withtalkApp')
-  .controller('ChatCtrl', function ($rootScope, $scope) {
-    console.log( $rootScope.xpush );
+  .controller('ChatCtrl', function ($rootScope, $scope, Auth) {
+    Auth.getCurrentUser().$promise.then(function(user) {
+      $rootScope.xpush.enableDebug();
+      $rootScope.xpush.login( user.uid, user.uid, 'web', function(err,dat    a){
+        console.log('login success : ', data);
+        $rootScope.xpush.on( 'message', function(channel, name, data){
+          console.log( channel, name, data );
+        });
+      });
+    }).catch(function() {
+      console.log( '==== err =====' );
+    });
+
     $rootScope.isLogin=false;
     $scope.messages = [{userid:"eskozz", time:"Feb 29 2:30 PM", message:"hi hello how are you", side:"left", opposite:"right"},
                       {userid:"", time:"Feb 29 2:31 PM", message:"im fine thank you and you?", side:"right", opposite:"left"}];
@@ -29,6 +40,7 @@ function currentTime(){
   var dd = d.getDate();
   var m = monthNames[d.getMonth()];
   var time = d.toLocaleTimeString().replace(/:\d+ /, ' ');
+
 
   return dd+" "+m+" "+time;
 
