@@ -57,6 +57,22 @@ angular.module('withtalkApp')
       }.bind(this));
 
       return deferred.promise;
+    },
+    remove: function (_site, callback) {
+      var cb = callback || angular.noop;
+      var deferred = $q.defer();
+
+      $http.delete('/api/apps/'+_site._id, _site).
+      success(function (data) {
+        deferred.resolve(data);
+        return cb();
+      }).
+      error(function (err) {
+        deferred.reject(err);
+        return cb(err);
+      }.bind(this));
+
+      return deferred.promise;
     }
   }
 
