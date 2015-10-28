@@ -16,7 +16,6 @@ angular.module('withtalkApp')
         })
           .then(function (data) {
             // Logged in, redirect to home
-            console.log(data);
             if (data.token) {
               $location.path('/');
             } else {

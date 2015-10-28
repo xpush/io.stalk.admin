@@ -4,7 +4,7 @@ module.exports = {
 
   // MongoDB connection options
   mongo: {
-    uri: 'mongodb://www.notdol.com/withtalk-dev'
+    uri: 'mongodb://localhost:27017/withtalk-dev'
   },
 
   auth : undefined, /*{

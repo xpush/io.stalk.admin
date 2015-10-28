@@ -38,6 +38,7 @@
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="assets/css/AdminLTE.css">
+    <link rel="stylesheet" href="assets/css/toaster.css">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="assets/css/skins/_all-skins.min.css">
@@ -53,11 +54,11 @@
     <link rel="stylesheet" href="assets/plugins/daterangepicker/daterangepicker-bs3.css">
     <!-- bootstrap wysihtml5 - text editor -->
     <link rel="stylesheet" href="assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
-    <link href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css" rel="stylesheet">
 
 
   </head>
   <body   ng-class="isLogin ? 'login-page' : 'skin-blue sidebar-mini'" class="hold-transition" ng-app="withtalkApp">
+  <toaster-container toaster-options="{'time-out': 3000}"></toaster-container>
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -124,17 +125,19 @@
     <!-- AdminLTE App -->
 
     <script src="assets/js/withtalk.js"></script>
+    <script src="assets/js/toaster.js"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 
     <!-- AdminLTE for demo purposes -->
-    <script src="assets/js/demo.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.js"></script>
+    <!--<script src="assets/js/demo.js"></script>-->
+	  <script src="https://cdn.ckeditor.com/4.4.3/standard/ckeditor.js"></script>
     <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
 
         
-        <!-- build:js(.tmp) app/app.js -->
+          <!-- build:js(.tmp) app/app.js -->
         
-        <script src="app/app.js"></script>
+          <script src="xpush.js"></script>
+          <script src="app/app.js"></script>
           <!-- injector:js -->
           <script src="app/account/account.js"></script>
           <script src="app/account/login/login.controller.js"></script>
