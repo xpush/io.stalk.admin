@@ -26,7 +26,7 @@
 						<span class="info-box-icon bg-aqua"><i class="ion ion-ios-people-outline"></i></span>
 						<div class="info-box-content">
 							<span class="info-box-text">Current Visitor</span>
-							<span class="info-box-number">90</span>
+							<span class="info-box-number" ng-bind-html="current_visitor"></span>
 						</div><!-- /.info-box-content -->
 					</div><!-- /.info-box -->
 				</div><!-- /.col -->
@@ -36,7 +36,7 @@
 						<span class="info-box-icon bg-yellow"><i class="fa fa-keyboard-o"></i></span>
 						<div class="info-box-content">
 							<span class="info-box-text">Operators</span>
-							<span class="info-box-number">2</span>
+							<span class="info-box-number">{{current_operators}}</span>
 						</div><!-- /.info-box-content -->
 					</div><!-- /.info-box -->
 				</div><!-- /.col -->
@@ -46,7 +46,7 @@
 						<span class="info-box-icon bg-red"><i class="fa fa-comment-o"></i></span>
 						<div class="info-box-content">
 							<span class="info-box-text">Chatting</span>
-							<span class="info-box-number">10</span>
+							<span class="info-box-number">{{current_chatting}}</span>
 						</div><!-- /.info-box-content -->
 					</div><!-- /.info-box -->
 				</div><!-- /.col -->
@@ -59,7 +59,7 @@
 						<span class="info-box-icon bg-green"><i class="fa fa-clock-o"></i></span>
 						<div class="info-box-content">
 							<span class="info-box-text">Waiting</span>
-							<span class="info-box-number">2</span>
+							<span class="info-box-number">{{current_waiting}}</span>
 						</div><!-- /.info-box-content -->
 					</div><!-- /.info-box -->
 				</div><!-- /.col -->
