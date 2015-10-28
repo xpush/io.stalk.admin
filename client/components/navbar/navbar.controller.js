@@ -35,5 +35,9 @@ angular.module('withtalkApp')
 
     $scope.setStatus = function(stat){
       $scope.stat = stat;
+    };
+    $scope.profile = function(){
+      $('#profileModal').modal('show');
     }
+
   });
