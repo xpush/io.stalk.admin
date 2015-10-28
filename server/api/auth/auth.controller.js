@@ -118,7 +118,7 @@ exports.create = function (req, res) {
         // register in XPUSH
         request.post(
           'http://54.178.160.166:8000/user/register',
-          { form: { A:'withtalk', U:saveData.email, PW:saveData.uid, D:'web', DT:{NM:saveData.name,I:''} } },
+          { form: { A:'withtalk', U:saveData.uid, PW:saveData.uid, D:'web', DT:{NM:saveData.name,I:''} } },
           function (error, response, result) {
             if (!error && response.statusCode == 200) {
               // user-register success
