@@ -4,7 +4,7 @@ angular.module('withtalkApp')
   .controller('ChatCtrl', function ($rootScope, $scope, Auth) {
     Auth.getCurrentUser().$promise.then(function(user) {
       $rootScope.xpush.enableDebug();
-      $rootScope.xpush.login( user.uid, user.uid, 'web', function(err,dat    a){
+      $rootScope.xpush.login( user.uid, user.uid, 'web', function(err,data){
         console.log('login success : ', data);
         $rootScope.xpush.on( 'message', function(channel, name, data){
           console.log( channel, name, data );
