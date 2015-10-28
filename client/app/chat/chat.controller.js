@@ -2,32 +2,60 @@
 
 angular.module('withtalkApp')
   .controller('ChatCtrl', function ($rootScope, $scope, Auth) {
+
+    $scope.currentChannel = "123123123";
+
+    $scope.waitingChannelArray = [];
+    $scope.messages = [];
+    $scope.currentUser;
+    $rootScope.isLogin=false;
+
     Auth.getCurrentUser().$promise.then(function(user) {
-      $rootScope.xpush.enableDebug();
-      $rootScope.xpush.login( user.uid, user.uid, 'web', function(err,dat    a){
-        console.log('login success : ', data);
-        $rootScope.xpush.on( 'message', function(channel, name, data){
-          console.log( channel, name, data );
-        });
+      $scope.currentUser = user;
+
+      //init xpush
+      $rootScope.xpush.on( 'message', function(channel, name, data){
+        console.log( channel, name, data );
+
+        // currentChannel
+        if( currnetChannel == channel ){
+          console.log( data );
+
+          data.MG  = decodeURIComponent( data.MG );
+
+          var side = "left";
+          var opposite = "right";
+          if( data.UO.U == $scope.currentUser ){
+            side = "right";
+            opposite = "left";
+          }
+
+          var newMessage = {userid: data.UO.U, time:data.TS, message:data.MG, side:side, opposite:opposite};
+
+          $scope.messages.push(newMessage);
+          $scope.$broadcast("items_changed")
+          $scope.messageText = "";
+        } else {
+          $scope.newChannelArray.push( { "C" : data.C, "NM" : data.C, "CT" : 0 } );
+        }
       });
+
     }).catch(function() {
       console.log( '==== err =====' );
-    });
-
-    $rootScope.isLogin=false;
-    $scope.messages = [{userid:"eskozz", time:"Feb 29 2:30 PM", message:"hi hello how are you", side:"left", opposite:"right"},
-                      {userid:"", time:"Feb 29 2:31 PM", message:"im fine thank you and you?", side:"right", opposite:"left"}];
+    });   
 
     $scope.sendMessage = function () {
       console.log( "===== send =====" );
       console.log($scope.messageText);
-      var newMessage = {userid:"", time:currentTime(), message:$scope.messageText, side:"right", opposite:"left"};
-      var newReturnMessage = {userid:"eskozz", time:currentTime(), message:$scope.messageText+$scope.messageText, side:"left", opposite:"right"};
+      var msg = $scope.messageText;
 
-      $scope.messages.push(newMessage);
-      $scope.messages.push(newReturnMessage);
-      $scope.$broadcast("items_changed")
-      $scope.messageText = "";
+      var DT = { UO : { U : $scope.currentUser.uid, NM : $scope.currentUser.name}, MG : encodeURIComponent(msg) };
+      DT.F = useSnap;      
+      if( type !== undefined ){
+        DT.T = type;
+      }
+
+      $rootScope.xpush.send($scope.currentChannel, 'message', DT );
     };
   });
 

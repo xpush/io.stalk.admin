@@ -7,6 +7,15 @@ angular.module('withtalkApp')
       'link': '/'
     }];
 
+    Auth.getCurrentUser().$promise.then(function(user) {
+      $rootScope.xpush.enableDebug();
+      $rootScope.xpush.login( user.uid, user.uid, 'web', function(err,data){
+        console.log('login success : ', data);
+      });
+    }).catch(function() {
+      console.log( '==== err =====' );
+    });    
+
     $scope.isCollapsed = true;
     $scope.isLoggedIn = Auth.isLoggedIn;
     $scope.isAdmin = Auth.isAdmin;
