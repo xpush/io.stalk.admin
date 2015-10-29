@@ -187,6 +187,6 @@ dist/
 
 ### xpush-link ###
 public
-#server/config/environment
+server/config/environment
 #/server/config/local.env.js
 npm-debug.log
