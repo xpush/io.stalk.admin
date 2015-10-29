@@ -21,7 +21,7 @@ angular.module('withtalkApp', [
         }
       }
     }, false ); 
-    $rootScope.xpush.enableDebug();
+    //$rootScope.xpush.enableDebug();
   })
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider
