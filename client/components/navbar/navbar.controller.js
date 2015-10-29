@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('withtalkApp')
-  .controller('NavbarCtrl', function ($scope, $location, Auth) {
+  .controller('NavbarCtrl', function ($scope, $location, $rootScope, Auth) {
     $scope.menu = [{
       'title': 'Home',
       'link': '/'
     }];
 
     Auth.getCurrentUser().$promise.then(function(user) {
-      $rootScope.xpush.enableDebug();
+      //$rootScope.xpush.enableDebug();
       $rootScope.xpush.login( user.uid, user.uid, 'web', function(err,data){
         console.log('login success : ', data);
       });
