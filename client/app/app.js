@@ -20,7 +20,7 @@ angular.module('withtalkApp', [
           });
         }
       }
-    }, true ); 
+    }, false ); 
     $rootScope.xpush.enableDebug();
   })
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {

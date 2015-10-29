@@ -1140,8 +1140,8 @@
             if(data && data.length > 0 ){
               for(var i = data.length-1 ; i >= 0; i--){
 
-                data[i].MG.DT = JSON.parse(data[i].MG.DT);
-                self.receiveMessageStack.unshift([data[i].NM,  data[i].MG.DT.C, data[i].NM,  data[i].MG.DT]);
+                data[i].DT = JSON.parse(data[i].DT);
+                self.receiveMessageStack.unshift([data[i].NM,  data[i].DT.C, data[i].NM,  data[i].DT]);
               }
               self.isExistUnread = false;
               while(self.receiveMessageStack.length > 0 ){
@@ -1423,7 +1423,6 @@
         if( event in self._events === false  )  return;
         for(var i = 0; i < self._events[event].length; i++){
           debug("xpush : test ",arguments);
-          console.log( self._events );
           self._events[event][i].apply(this, Array.prototype.slice.call(arguments, 1));
         }
       }
