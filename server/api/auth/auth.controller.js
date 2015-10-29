@@ -6,6 +6,7 @@ var Auth = require('./auth.model');
 var DICT = require('./../../config/dict');
 var UT = require('./../../components/utils');
 var config = require('./../../config/environment');
+var XPUSH = require("./../../xpush-node-client")(config.xpush);
 var request = require('request');
 
 var EMAIL;
@@ -116,6 +117,9 @@ exports.create = function (req, res) {
         if(config.auth && config.auth.email) EMAIL.sendVerifyMail(auth.name, auth.email, auth.uid);
 
         // register in XPUSH
+
+        //request.signup(saveData.uid, saveData.uid, utils.encrypto(saveData.PW), "WEB",)
+
         request.post(
           'http://54.178.160.166:8000/user/register',
           { form: { A:'withtalk', U:saveData.uid, PW:saveData.uid, D:'web', DT:{NM:saveData.name,I:''} } },

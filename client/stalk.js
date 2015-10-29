@@ -6,9 +6,9 @@
 * Copyright (c) 2014 John Kim; Licensed MIT */
 
 var LSTALK_CONFIGURATION = {
-  APP: 'zeroapp',
-  STALK_URL: 'http://www.notdol.com:8000', // http://link.stalk.io:8080
-  APP_URL: 'http://www.notdol.com:8000',
+  APP: 'withtalk',
+  STALK_URL: 'http://54.178.160.166:8000', // http://link.stalk.io:8080
+  APP_URL: 'http://54.178.160.166:8000',
   CSS_URL: 'http://www.notdol.com:9000/stalk.css',
   MESSAGE: {
     title: 'Leave us a Message',
@@ -963,7 +963,8 @@ var STALK = (function(CONF, UTILS, WIN) {
       }
 
       CONF._socket = io.connect(data.result.server.url+'/channel?'+query, {
-        'force new connection': true
+        'force new connection': true,
+        transports: ['polling']
       });
 
 
@@ -973,7 +974,7 @@ var STALK = (function(CONF, UTILS, WIN) {
       CONF._socket.on('connect', function () {
           console.log( 'connected' );
           if(isJoin == false)
-          CONF._socket.emit("channel.join",{C:CONF._channel, U:"notdol"},function(){
+          CONF._socket.emit("channel.join",{C:CONF._channel, U:"3a8c654d-6241-48e9-8c40-da6d0e440a10"},function(){
             isJoin = true;
             console.log("===== channel.join");
             console.log(arguments);

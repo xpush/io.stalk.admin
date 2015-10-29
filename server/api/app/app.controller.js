@@ -3,7 +3,8 @@
 var _ = require('lodash');
 var App = require('./app.model');
 var uuid  = require('node-uuid');
-
+var config = require('./../../config/environment');
+var XPUSH = require("./../../xpush-node-client")(config.xpush);
 
 exports.chooseApplication = function(req,res){
   var key = req.body.key ? req.body.key : req.params.key ? req.params.key : undefined;
