@@ -3,6 +3,7 @@
 var _ = require('lodash');
 var App = require('./app.model');
 var uuid  = require('node-uuid');
+var request = require('request');
 
 exports.chooseApplication = function(req,res){
   var key = req.body.key ? req.body.key : req.params.key ? req.params.key : undefined;
@@ -52,6 +53,7 @@ exports.create = function(req, res) {
   var user = req.user;
 
   body.users = [{
+    UID: user.uid,
     ID: user.email,
     NM: user.name,
     P : "",
@@ -89,6 +91,42 @@ exports.destroy = function(req, res) {
     });
   });
 };
+
+exports.operators = function (req, res) {
+  var key = req.params.key;
+  App.findOne({key:key}, function (err, app) {
+    if (err) { return handleError(res, err); }
+    if(!app) { return res.send(404); }
+
+    // no operator
+    if( !app.users || app.users.length < 1 ){
+      return res.send(200).json({});
+    }
+    var oid = app.users[0].UID;
+
+    request.post(
+      'http://54.178.160.166:8000/user/active',
+      { form: { A:'withtalk', U:oid} },
+      function (error, response, result) {
+        if (!error && response.statusCode == 200) {
+          // user-register success
+          var resData = JSON.parse(result);
+          if( "ok" == resData.status ) {
+            if( !resData.result || !resData.result[oid] ) return res.status(200).json({});
+            return res.status(200).json(app.users[0]);
+          } else if("ERR-INTERNAL" == resData.status && "ERR-USER_EXIST" == resData.message) {
+            return handleError(res, result);
+          } else {
+            return handleError(res, result);
+          }
+        } else {
+          return handleError(res, error);
+        }
+      }
+    );    
+  });
+};
+
 
 function handleError(res, err) {
   return res.send(500, err);
