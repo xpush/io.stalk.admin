@@ -38,13 +38,12 @@
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="assets/css/AdminLTE.css">
+    <link rel="stylesheet" href="assets/css/toaster.css">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="assets/css/skins/_all-skins.min.css">
     <!-- iCheck -->
     <link rel="stylesheet" href="assets/plugins/iCheck/flat/blue.css">
-    <!-- Morris chart -->
-    <link rel="stylesheet" href="assets/plugins/morris/morris.css">
     <!-- jvectormap -->
     <link rel="stylesheet" href="assets/plugins/jvectormap/jquery-jvectormap-1.2.2.css">
     <!-- Date Picker -->
@@ -53,11 +52,11 @@
     <link rel="stylesheet" href="assets/plugins/daterangepicker/daterangepicker-bs3.css">
     <!-- bootstrap wysihtml5 - text editor -->
     <link rel="stylesheet" href="assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
-    <link href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css" rel="stylesheet">
 
 
   </head>
   <body   ng-class="isLogin ? 'login-page' : 'skin-blue sidebar-mini'" class="hold-transition" ng-app="withtalkApp">
+  <toaster-container toaster-options="{'time-out': 3000}"></toaster-container>
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -101,8 +100,9 @@
     <!-- Bootstrap 3.3.5 -->
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <!-- Morris.js charts -->
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-    <script src="assets/plugins/morris/morris.js"></script>
+    <script src="assets/plugins/chartjs/Chart.min.js"></script>
     <!-- Sparkline -->
     <script src="assets/plugins/sparkline/jquery.sparkline.min.js"></script>
     <!-- jvectormap -->
@@ -124,43 +124,67 @@
     <!-- AdminLTE App -->
 
     <script src="assets/js/withtalk.js"></script>
+    <script src="assets/js/toaster.js"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 
     <!-- AdminLTE for demo purposes -->
-    <script src="assets/js/demo.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.js"></script>
-    <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
+    <!--<script src="assets/js/demo.js"></script>-->
+	  <script src="https://cdn.ckeditor.com/4.4.3/standard/ckeditor.js"></script>
+
 
         
-        <!-- build:js(.tmp) app/app.js -->
-        
-        <script src="app/app.js"></script>
-          <!-- injector:js -->
-          <script src="app/account/account.js"></script>
-          <script src="app/account/login/login.controller.js"></script>
-          <script src="app/account/sendmail/sendmail.controller.js"></script>
-          <script src="app/account/settings/settings.controller.js"></script>
-          <script src="app/account/signup/signup.controller.js"></script>
-          <script src="app/account/signupmail/signupmail.controller.js"></script>
-          <script src="app/admin/admin.controller.js"></script>
-          <script src="app/admin/admin.js"></script>
-          <script src="app/chat/chat.controller.js"></script>
-          <script src="app/chat/chat.js"></script>
-          <script src="app/dashboard/dashboard.controller.js"></script>
-          <script src="app/dashboard/dashboard.js"></script>
-          <script src="app/main/main.controller.js"></script>
-          <script src="app/main/main.js"></script>
-          <script src="app/site/site.controller.js"></script>
-          <script src="app/site/site.js"></script>
-          <script src="components/auth/auth.service.js"></script>
-          <script src="components/auth/user.service.js"></script>
-          <script src="components/chat/chat.directive.js"></script>
-          <script src="components/modal/modal.service.js"></script>
-          <script src="components/mongoose-error/mongoose-error.directive.js"></script>
-          <script src="components/navbar/navbar.controller.js"></script>
-          <script src="components/pwCheck/pwCheck.directive.js"></script>
-          <script src="components/site/site.service.js"></script>
-          <!-- endinjector -->
-        <!-- endbuild -->
+    <!-- build:js(.tmp) app/app.js -->
+
+    <script src="xpush.js"></script>
+    <script src="socket.io.js"></script>
+    <script src="app/app.js"></script>
+    <!-- injector:js -->
+    <script src="app/account/account.js"></script>
+    <script src="app/account/login/login.controller.js"></script>
+    <script src="app/account/sendmail/sendmail.controller.js"></script>
+    <script src="app/account/settings/settings.controller.js"></script>
+    <script src="app/account/signup/signup.controller.js"></script>
+    <script src="app/account/signupmail/signupmail.controller.js"></script>
+    <script src="app/admin/admin.controller.js"></script>
+    <script src="app/admin/admin.js"></script>
+    <script src="app/chat/chat.controller.js"></script>
+    <script src="app/chat/chat.js"></script>
+    <script src="app/dashboard/dashboard.controller.js"></script>
+    <script src="app/dashboard/dashboard.js"></script>
+    <script src="app/main/main.controller.js"></script>
+    <script src="app/main/main.js"></script>
+    <script src="app/site/site.controller.js"></script>
+    <script src="app/site/site.js"></script>
+    <script src="components/auth/auth.service.js"></script>
+    <script src="components/auth/user.service.js"></script>
+    <script src="components/chat/chat.directive.js"></script>
+    <script src="components/modal/modal.service.js"></script>
+    <script src="components/mongoose-error/mongoose-error.directive.js"></script>
+    <script src="components/navbar/navbar.controller.js"></script>
+    <script src="components/pwCheck/pwCheck.directive.js"></script>
+    <script src="components/site/site.service.js"></script>
+    <!-- endinjector -->
+  <!-- endbuild -->
+  <div id="profileModal" class="modal fade" role="dialog">
+
+	  <div class="modal-success">
+		  <div class="modal-dialog">
+			  <div class="modal-content">
+				  <div class="modal-header">
+					  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					  <h4 class="modal-title">Profile</h4>
+				  </div>
+				  <div class="modal-body">
+					  Copy this script and paste it in your site page.
+					  <pre style="font-weight: 300;font-size:10px">{{successScript}}</pre>
+				  </div>
+				  <div class="modal-footer">
+					  <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+				  </div>
+			  </div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+	  </div><!-- /.modal -->
+
+  </div>
 </body>
 </html>

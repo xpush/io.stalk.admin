@@ -1,21 +1,126 @@
 'use strict';
 
 angular.module('withtalkApp')
-  .controller('ChatCtrl', function ($rootScope, $scope) {
+  .controller('ChatCtrl', function ($rootScope, $scope, Auth) {
+    $scope.tabs = [];
+    $scope.currentChannel = "";
+    $scope.messageText = "";
 
+    $scope.channelIdArray = {}; 
+    $scope.waitingChannelArray = [];
+    $scope.messages = {};
+    $scope.currentUser;
     $rootScope.isLogin=false;
-    $scope.messages = [{userid:"eskozz", time:"Feb 29 2:30 PM", message:"hi hello how are you", side:"left", opposite:"right"},
-                      {userid:"", time:"Feb 29 2:31 PM", message:"im fine thank you and you?", side:"right", opposite:"left"}];
+
+    Auth.getCurrentUser().$promise.then(function(user) {
+      $scope.currentUser = user;
+
+      $rootScope.xpush.on( 'info', function(channel, name, data){
+        var searchInx = -1;
+        for( var inx = 0 ; searchInx < 0 && inx < $scope.waitingChannelArray.length ; inx++){
+          if( $scope.waitingChannelArray[inx].C == channel ){
+            searchInx = inx;
+          }
+        }
+        if( searchInx == -1 ){
+          $scope.channelIdArray[channel] = data;
+          $scope.waitingChannelArray.push( data );
+          $scope.tabs.push( {'C':channel, 'messages':[]} );
+          $scope.$apply();
+        }
+      });
+
+      //init xpush
+      $rootScope.xpush.on( 'message', function(channel, name, data){
+
+        // currentChannel
+        if( $scope.currentChannel == channel ){
+          var searchInx = -1;
+          for( var inx = 0 ; searchInx < 0 && inx < $scope.waitingChannelArray.length ; inx++){
+            if( $scope.waitingChannelArray[inx].C == channel ){
+              searchInx = inx;
+            }
+          }  
+
+          data.MG  = decodeURIComponent( data.MG );
+
+          var side = "left";
+          var opposite = "right";
+          if( data.UO.U == $scope.currentUser.uid ){
+            side = "right";
+            opposite = "left";
+          }
+
+          var time = $scope.timeToString( data.TS )[0];
+          var newMessage = {userid: data.UO.NM, time:time, message:data.MG, side:side, opposite:opposite};
+         
+          if( searchInx > -1 ){
+            $scope.tabs[searchInx].messages.push(newMessage);
+            $scope.$broadcast("items_changed");
+            $scope.$apply();
+          }
+        } else {
+	  if( !$scope.channelIdArray[channel] ){
+            //$scope.channelIdArray[channel] = true;
+            //$scope.waitingChannelArray.push( {'C': channel } );
+            //$scope.$apply();
+          }
+        }
+      });
+
+    }).catch(function() {
+      console.log( '==== err =====' );
+    });   
 
     $scope.sendMessage = function () {
-      console.log($scope.messageText);
-      var newMessage = {userid:"", time:currentTime(), message:$scope.messageText, side:"right", opposite:"left"};
-      var newReturnMessage = {userid:"eskozz", time:currentTime(), message:$scope.messageText+$scope.messageText, side:"left", opposite:"right"};
+      var msg = document.getElementById( "inputMessage" ).value;
+      msg = encodeURIComponent(msg);
 
-      $scope.messages.push(newMessage);
-      $scope.messages.push(newReturnMessage);
-      $scope.$broadcast("items_changed")
-      $scope.messageText = "";
+      var DT = { UO : { U : $scope.currentUser.uid, NM : $scope.currentUser.name}, MG : msg };
+
+      $rootScope.xpush.send($scope.currentChannel, 'message', DT );
+      document.getElementById( "inputMessage" ).value = "";
+    };
+
+    $scope.gotoChat = function( channelId ){
+      $scope.currentChannel = channelId.C;
+      var tab = document.getElementById( "tab_" + channelId.C );
+      angular.element( tab ).parent().addClass("active");
+    };
+
+    $scope.timeToString = function( timestamp ){
+
+      var cDate = new Date();
+
+      var cYyyymmdd = cDate.getFullYear()+""+(cDate.getMonth()+1)+""+cDate.getDate();
+      var date = new Date( timestamp );
+
+      var yyyy = date.getFullYear();
+      var mm = date.getMonth()+1;
+      var dd = date.getDate();
+
+      var hour = date.getHours();
+      hour = hour >= 10 ? hour : "0"+hour;
+
+      var minute = date.getMinutes();
+      minute = minute >= 10 ? ""+minute : "0"+minute;
+
+      var second = date.getSeconds();
+      second = second >= 10 ? ""+second : "0"+second;
+
+      var yyyymmdd = yyyy + "" + mm + ""+ dd;
+
+      var result = [];
+      if ( cYyyymmdd != yyyymmdd  ) {
+        result.push( yyyy + "-" + mm + "-"+ dd );
+      } else {
+        result.push( hour + ":" + minute + ":" +second );
+      }
+
+      result.push( yyyy + "." + mm + "."+ dd );
+      result.push( date.toLocaleTimeString() );
+
+      return result;
     };
   });
 
@@ -28,6 +133,7 @@ function currentTime(){
   var dd = d.getDate();
   var m = monthNames[d.getMonth()];
   var time = d.toLocaleTimeString().replace(/:\d+ /, ' ');
+
 
   return dd+" "+m+" "+time;
 

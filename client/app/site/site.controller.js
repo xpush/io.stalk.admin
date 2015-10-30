@@ -1,48 +1,49 @@
 'use strict';
 
 angular.module('withtalkApp')
-  .controller('SiteCtrl', function ($scope, $stateParams, Site, Modal) {
+  .controller('SiteCtrl', function ($scope, $stateParams, Site,toaster, Modal) {
     $scope.message = 'Hello';
     $scope.newSite = {};
-
+    $scope.isDisable = true;
     $scope.sites = [];
 
-    $scope.openModal = Modal.show.addSite(function(user) {
-      console.log(user);
-    });
-
-    $scope.addNewSite = function(){
+    $scope.addNewSite = function(form){
       //@TODO Save Site and retireve again
+      $scope.submitted = true;
+      if (form.$valid) {
+        Site.create({
+          name: $scope.newSite.site_name,
+          url: $scope.newSite.site_url
+        })
+        .then( function(data) {
+          // Account created, redirect to home
+          toaster.pop('success', "Info", "Saved Successfully");
 
-      Site.create({
-        name: $scope.newSite.site_name,
-        url: $scope.newSite.site_url
-      })
-      .then( function(data) {
-        // Account created, redirect to home
-        $('#myModal').modal('hide') 
-        console.log(data);
+          $('#myModal').modal('hide');
+          $scope.successScript=generateScript(data);
+          $('#successModal').modal('show');
 
-        var status = data.status;
-        var message = data.message;
+          var status = data.status;
+          var message = data.message;
 
-        $scope.getSites();
-        if(status=='ERR-ACTIVE'){
-          $scope.result = data.message;
-        }else{
-          //$location.path('/login');
-        }
+          $scope.getSites();
+          if(status=='ERR-ACTIVE'){
+            $scope.result = data.message;
+          }else{
+            //$location.path('/login');
+          }
 
 
-      })
-      .catch( function(err) {
-        err = err.data;
+        })
+        .catch( function(err) {
+          err = err.data;
 
-        // Update validity of form fields that match the mongoose errors
+          // Update validity of form fields that match the mongoose errors
 
-      });
+        });
+      }
 
-      //$scope.sites.push({site_name:"Tistory1",site_url:"www.tistory.com",site_code:"1q2w3e",date:"2014.04.15"})
+
     }
 
     $scope.getSites = function(){
@@ -50,7 +51,6 @@ angular.module('withtalkApp')
       })
       .then( function(data) {
         // Account created, redirect to home
-        console.log(data);
         $scope.sites = data;
         var status = data.status;
         var message = data.message;
@@ -70,7 +70,89 @@ angular.module('withtalkApp')
 
       });
     }
+    var generateScript = function(site){
+      return '<script src="http://stalk.io/stalk.js"></script>\n<script>STALK.init({app:'+site.name+',url:'+site.url+',id:'+site.key+'});</script>';
+    }
+    $scope._site={};
+
+    $scope.getCode = function(site){
+      angular.copy(site, $scope._site);
+
+      if($scope._site!=null){
+        $scope.isDisable = false;
+      }
+      $scope.script=generateScript(site);
+    };
+
+    $scope.updateSite = function(){
+      Site.update($scope._site)
+      .then( function(data) {
+        // Account created, redirect to home
+        $scope._site={};
+        $scope.script = "";
+        $scope.isDisable = true;
+
+        var status = data.status;
+        var message = data.message;
+        console.log(data);
+        toaster.pop('success', "Info", "Saved Successfully");
+        $scope.getSites();
+        if(status=='ERR-ACTIVE'){
+          $scope.result = data.message;
+        }else{
+          //$location.path('/login');
+        }
+
+
+      })
+      .catch( function(err) {
+        err = err.data;
+        console.log(err);
+        // Update validity of form fields that match the mongoose errors
+
+      });
+
+    };
+    $scope.removeSite = Modal.confirm.delete(function(site) {
+      Site.remove($scope._site)
+      .then( function(data) {
+        // Account created, redirect to home
+        $scope._site={};
+        $scope.script = "";
+        $scope.isDisable = true;
+        toaster.pop('success', "Info", "Deleted Successfully");
+        var status = data.status;
+        var message = data.message;
+
+
+
+        $scope.getSites();
+        if(status=='ERR-ACTIVE'){
+          $scope.result = data.message;
+        }else{
+          //$location.path('/login');
+        }
+
+
+      })
+      .catch( function(err) {
+        err = err.data;
+
+        // Update validity of form fields that match the mongoose errors
+
+      });
+    })
 
     $scope.getSites();
+
+    $scope.pop = function(){
+      toaster.pop('success', "title", "text");
+      toaster.pop('error', "title", "text");
+      toaster.pop('warning', "title", "text");
+      toaster.pop('note', "title", "text");
+    };
+
+
+
 
   });

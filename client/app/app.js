@@ -5,14 +5,31 @@ angular.module('withtalkApp', [
   'ngResource',
   'ngSanitize',
   'ui.router',
-  'ui.bootstrap'
+  'ui.bootstrap',
+  'toaster'
 ])
+  .run(function($rootScope){
+        // xpush 를 생성한다.
+    $rootScope.xpush = new XPush('http://54.178.160.166:8000', 'withtalk', function (type, data){
+
+      // LOGOUT event 를 설정한다.
+      if(type === 'LOGOUT'){
+        if( !$sessionStorage.reloading ){
+          $rootScope.logout( function(){
+            $state.go( "error" );
+          });
+        }
+      }
+    }, false ); 
+    //$rootScope.xpush.enableDebug();
+  })
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider
       .otherwise('/signupmail');
 
     $locationProvider.html5Mode(true);
     $httpProvider.interceptors.push('authInterceptor');
+
   })
 
   .factory('authInterceptor', function ($rootScope, $q, $cookieStore, $location) {
