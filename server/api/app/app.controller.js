@@ -4,7 +4,6 @@ var _ = require('lodash');
 var App = require('./app.model');
 var uuid  = require('node-uuid');
 
-
 exports.chooseApplication = function(req,res){
   var key = req.body.key ? req.body.key : req.params.key ? req.params.key : undefined;
   App.findOne({key: key}, function(err, app){
