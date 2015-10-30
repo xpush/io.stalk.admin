@@ -25,7 +25,7 @@ angular.module('withtalkApp')
         if( searchInx == -1 ){
           $scope.channelIdArray[channel] = data;
           $scope.waitingChannelArray.push( data );
-          $scope.tabs.push( {'C':channel, 'messages':[]} );
+          $scope.tabs.push( {'C':channel, 'messages':[], 'NM': data.NM} );
           $scope.$apply();
         }
       });
@@ -82,9 +82,9 @@ angular.module('withtalkApp')
       document.getElementById( "inputMessage" ).value = "";
     };
 
-    $scope.gotoChat = function( channelId ){
-      $scope.currentChannel = channelId.C;
-      var tab = document.getElementById( "tab_" + channelId.C );
+    $scope.gotoChat = function( data ){
+      $scope.currentChannel = data.C;
+      var tab = document.getElementById( "tab_" + data.C );
       angular.element( tab ).parent().addClass("active");
     };
 

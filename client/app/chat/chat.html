@@ -37,8 +37,7 @@
         <!-- Conversations are loaded here -->
         <div class="nav-tabs-custom">
           <ul class="nav nav-tabs">
-            <li class="active"><a href="#tab_1" data-toggle="tab">suzie</a></li>
-            <li><a href="#tab_2" data-toggle="tab">hiro</a></li>
+            <li ng-repeat="tab in tabs"><a href="#" data-toggle="tab" ng-click="gotoChat(tab)">{{tab.NM}}</a></li>
             <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>
           </ul>
           <div class="tab-content">

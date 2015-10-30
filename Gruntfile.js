@@ -586,15 +586,8 @@ module.exports = function (grunt) {
 
   grunt.registerTask('serve:forever', function () {
     grunt.task.run([
-      'clean:server',
-      'env:all',
-      'concurrent:server',
-      'injector',
-      'wiredep',
-      'autoprefixer',
       'forever:server:start',
-      'wait',
-      'open',
+      'env:all',
       'watch'
     ]);
   });
