@@ -526,6 +526,13 @@ module.exports = function (grunt) {
         }
       }
     },
+    forever: {
+      server: {
+        options: {
+          index: 'server/app.js'
+        }
+      }
+    }
   });
 
   // Used for delaying livereload until after server has restarted
@@ -539,6 +546,8 @@ module.exports = function (grunt) {
       done();
     }, 1500);
   });
+
+  grunt.loadNpmTasks('grunt-forever');
 
   grunt.registerTask('express-keepalive', 'Keep grunt running', function() {
     this.async();
@@ -569,6 +578,21 @@ module.exports = function (grunt) {
       'wiredep',
       'autoprefixer',
       'express:dev',
+      'wait',
+      'open',
+      'watch'
+    ]);
+  });
+
+  grunt.registerTask('serve:forever', function () {
+    grunt.task.run([
+      'clean:server',
+      'env:all',
+      'concurrent:server',
+      'injector',
+      'wiredep',
+      'autoprefixer',
+      'forever:server:start',
       'wait',
       'open',
       'watch'
