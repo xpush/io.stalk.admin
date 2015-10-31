@@ -133,15 +133,21 @@ exports.operators = function (req, res) {
     var oid = app.users[0].UID;
 
     request.post(
-      'http://54.178.160.166:8000/user/active',
-      {form: {A: 'stalk', U: oid}},
+      config.xpush.url + '/user/active',
+      {form: {A: config.xpush.A, U: oid}},
       function (error, response, result) {
         if (!error && response.statusCode == 200) {
           // user-register success
           var resData = JSON.parse(result);
           if ("ok" == resData.status) {
             if (!resData.result || !resData.result[oid]) return res.status(200).json({});
-            return res.status(200).json(app.users[0]);
+
+            var returnJson = {};
+            returnJson['operator'] = app.users[0];
+            returnJson['server'] = config.xpush.url;
+
+            return res.status(200).json(returnJson);
+
           } else if ("ERR-INTERNAL" == resData.status && "ERR-USER_EXIST" == resData.message) {
             return handleError(res, result);
           } else {
