@@ -114,12 +114,20 @@ exports.create = function (req, res) {
         if (err) {
           return handleError(res, err);
         }
-        if (config.auth && config.auth.email) EMAIL.sendVerifyMail(auth.name, auth.email, auth.uid);
 
         // register in XPUSH
 
         //request.signup(saveData.uid, saveData.uid, utils.encrypto(saveData.PW), "WEB",)
 
+        XPUSH.signup(saveData.uid, "", "WEB", function(){
+          console.log("**** xpush : signup complet");
+          console.log(arguments);
+          if (config.auth && config.auth.email) EMAIL.sendVerifyMail(auth.name, auth.email, auth.uid);
+          return res.status(201).json(auth);
+        })
+
+
+        /*
         request.post(
           'http://54.178.160.166:8000/user/register',
           {form: {A: 'stalk', U: saveData.uid, PW: saveData.uid, D: 'web', DT: {NM: saveData.name, I: ''}}},
@@ -139,6 +147,7 @@ exports.create = function (req, res) {
             }
           }
         );
+        */
       });
     } else if (!auth.active) {
       res.send({status: 'AUTH-DEACTIVE', message: DICT.EMAIL_DEACTIVE});
@@ -167,7 +176,7 @@ exports.reconfirm = function (req, res) {
 
     var diff = current - before;
     console.log(diff);
-    if (diff > 60 * 60 * 1000) {
+    if (diff > 60 * /*60 **/ 1000) {
       var updated = _.merge(auth, {uid: uid, ts: new Date()});
       updated.save(function (err) {
         if (err) {
@@ -188,7 +197,7 @@ exports.activate = function (req, res) {
   var pass = req.body.password;
 
   var saveData = {
-    email: email,
+    //email: email,
     uid: uid
   };
   Auth.findOne(saveData, function (err, auth) {

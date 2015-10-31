@@ -12,7 +12,7 @@ module.exports = {
     url: "http://localhost:8000",
     A: "stalk"
   },
-  auth: undefined, /*{
+  auth: {
    email: {
    smtc: {
    host: "[SMTC Hostname]", // hostname
@@ -33,7 +33,7 @@ module.exports = {
    callbackUrl: 'http://localhost:9000/signup/'
    }
 
-   } },*/
+   } },
 
   seedDB: true
 };
