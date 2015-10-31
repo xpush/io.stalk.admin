@@ -3,7 +3,7 @@
 describe('Controller: DashboardCtrl', function () {
 
   // load the controller's module
-  beforeEach(module('withtalkApp'));
+  beforeEach(module('stalkApp'));
 
   var DashboardCtrl, scope;
 

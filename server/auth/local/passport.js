@@ -9,22 +9,21 @@ exports.setup = function (Auth, config) {
       usernameField: 'email',
       passwordField: 'password' // this is the virtual field on the model
     },
-    function(email, password, done) {
+    function (email, password, done) {
       Auth.findOne({
         email: email.toLowerCase()
-      }, function(err, auth) {
+      }, function (err, auth) {
         if (err) return done(err);
 
 
-
         if (!auth) {
-          return done(null, false, { message: DICT.EMAIL_WRONG });
+          return done(null, false, {message: DICT.EMAIL_WRONG});
         }
-        if(auth.active == false){
-          return done({ status: 'AUTH-DEACTIVE', message: DICT.EMAIL_DEACTIVE });
+        if (auth.active == false) {
+          return done({status: 'AUTH-DEACTIVE', message: DICT.EMAIL_DEACTIVE});
         }
-        if(!auth.pass == UT.encrypto(password) ){
-          return done(null, false, { message: DICT.PASSWORD_WRONG });
+        if (!auth.pass == UT.encrypto(password)) {
+          return done(null, false, {message: DICT.PASSWORD_WRONG});
         }
 
 

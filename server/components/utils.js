@@ -3,8 +3,8 @@ var crypto = require('crypto');
 var restify = require('restify');
 var fs = require('fs');
 
-exports.createUniqueId = function(){
-	return uuid.v4();
+exports.createUniqueId = function () {
+  return uuid.v4();
 }
 
 exports.encrypto = function (s, t) {

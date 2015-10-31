@@ -1,85 +1,92 @@
 <style>
-	.online{
-		background-color: #00C0EF;
-		color:white;
-	}
-	.busy{
-		background-color: #00A65A;
-		color:white;
-	}
-	.away{
-		background-color: #EC911C;
-		color:white;
-	}
-	.unselect{
-		background-color: #5a5a5a;
-		color: #bebebe;
-	}
+    .online {
+        background-color: #00C0EF;
+        color: white;
+    }
 
-	a.unselect:hover{
-		color:white;
-	}
+    .busy {
+        background-color: #00A65A;
+        color: white;
+    }
+
+    .away {
+        background-color: #EC911C;
+        color: white;
+    }
+
+    .unselect {
+        background-color: #5a5a5a;
+        color: #bebebe;
+    }
+
+    a.unselect:hover {
+        color: white;
+    }
 </style>
-<header class="main-header"  ng-controller="NavbarCtrl">
-	<!-- Logo -->
-	<a href="/" class="logo">
-		<!-- mini logo for sidebar mini 50x50 pixels -->
-		<span class="logo-mini"><b>PU</b>PPY</span>
-		<!-- logo for regular state and mobile devices -->
-		<span class="logo-lg"><img src="assets/images/logo/stalk_white.png" height="40px"/></span>
+<header class="main-header" ng-controller="NavbarCtrl">
+    <!-- Logo -->
+    <a href="/" class="logo">
+        <!-- mini logo for sidebar mini 50x50 pixels -->
+        <span class="logo-mini"><b>PU</b>PPY</span>
+        <!-- logo for regular state and mobile devices -->
+        <span class="logo-lg"><img src="assets/images/logo/stalk_white.png" height="40px"/></span>
 
-	</a>
-	<!-- Header Navbar: style can be found in header.less -->
-	<nav class="navbar navbar-static-top" role="navigation">
-		<!-- Sidebar toggle button-->
-		<a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-			<span class="sr-only">Toggle navigation</span>
-		</a>
+    </a>
+    <!-- Header Navbar: style can be found in header.less -->
+    <nav class="navbar navbar-static-top" role="navigation">
+        <!-- Sidebar toggle button-->
+        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <span class="sr-only">Toggle navigation</span>
+        </a>
 
-		<div class="navbar-custom-menu" style="margin-top: 7px;margin-right: 7px;">
-			<a ng-click="setStatus('online')" ng-class="{online: isActive('online'), unselect: !isActive('online')}" class="btn btn-social-icon" ><i class="fa fa-link"></i> </a>
-			<a ng-click="setStatus('busy')" ng-class="{busy: isActive('busy'), unselect: !isActive('busy')}" class="btn btn-social-icon "><i class="fa fa-ambulance"></i> </a>
-			<a ng-click="setStatus('unlink')" ng-class="{away: isActive('unlink'), unselect: !isActive('unlink')}" class="btn btn-social-icon "><i class="fa fa-unlink"></i> </a>
-			<a href="#" ng-click="logout();" class="btn btn-social-icon btn-foursquare"><i class="fa fa-power-off"></i></a>
+        <div class="navbar-custom-menu" style="margin-top: 7px;margin-right: 7px;">
+            <a ng-click="setStatus('online')" ng-class="{online: isActive('online'), unselect: !isActive('online')}"
+               class="btn btn-social-icon"><i class="fa fa-link"></i> </a>
+            <a ng-click="setStatus('busy')" ng-class="{busy: isActive('busy'), unselect: !isActive('busy')}"
+               class="btn btn-social-icon "><i class="fa fa-ambulance"></i> </a>
+            <a ng-click="setStatus('unlink')" ng-class="{away: isActive('unlink'), unselect: !isActive('unlink')}"
+               class="btn btn-social-icon "><i class="fa fa-unlink"></i> </a>
+            <a href="#" ng-click="logout();" class="btn btn-social-icon btn-foursquare"><i class="fa fa-power-off"></i></a>
 
-		</div>
-		<div class="navbar-custom-menu">
-			<ul class="nav navbar-nav">
-				<!-- User Account: style can be found in dropdown.less -->
-				<li class="dropdown user user-menu">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-						<img src="assets/images/user2-160x160.jpg" class="user-image" alt="User Image">
-						<span class="hidden-xs">{{ getCurrentUser().name }}</span>
-					</a>
-					<ul class="dropdown-menu">
-						<!-- User image -->
-						<li class="user-header">
-							<img src="assets/images/user2-160x160.jpg" class="img-circle" alt="User Image">
-							<p>
-								{{ getCurrentUser().name }}
-								<small>{{ getCurrentUser().email }}</small>
-							</p>
-						</li>
-						<!-- Menu Body -->
-						<!-- Menu Footer-->
-						<li class="user-footer">
-							<div class="pull-left">
-								<a href="#" class="btn btn-default btn-flat">Profile</a>
-							</div>
-							<div class="pull-right">
-								<a href="#" ng-click="logout();" class="btn btn-default btn-flat">Log out</a>
-							</div>
-						</li>
-					</ul>
-				</li>
-				<!-- Control Sidebar Toggle Button -->
-				<li>
-					<a href="/"><i class="fa fa-dashboard"></i> Dashboard</a>
-					<!--<a href="/chat" class="btn btn-social-icon btn-foursquare" style="background-color:#376682"><i class="fa fa-commenting-o"></i></a>-->
-				</li>
-			</ul>
-		</div>
-	</nav>
+        </div>
+        <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+                <!-- User Account: style can be found in dropdown.less -->
+                <li class="dropdown user user-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        <img src="assets/images/user2-160x160.jpg" class="user-image" alt="User Image">
+                        <span class="hidden-xs">{{ getCurrentUser().name }}</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <!-- User image -->
+                        <li class="user-header">
+                            <img src="assets/images/user2-160x160.jpg" class="img-circle" alt="User Image">
+
+                            <p>
+                                {{ getCurrentUser().name }}
+                                <small>{{ getCurrentUser().email }}</small>
+                            </p>
+                        </li>
+                        <!-- Menu Body -->
+                        <!-- Menu Footer-->
+                        <li class="user-footer">
+                            <div class="pull-left">
+                                <a href="#" class="btn btn-default btn-flat">Profile</a>
+                            </div>
+                            <div class="pull-right">
+                                <a href="#" ng-click="logout();" class="btn btn-default btn-flat">Log out</a>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                <!-- Control Sidebar Toggle Button -->
+                <li>
+                    <a href="/"><i class="fa fa-dashboard"></i> Dashboard</a>
+                    <!--<a href="/chat" class="btn btn-social-icon btn-foursquare" style="background-color:#376682"><i class="fa fa-commenting-o"></i></a>-->
+                </li>
+            </ul>
+        </div>
+    </nav>
 </header>
 
 <script src="assets/js/app.js"></script>

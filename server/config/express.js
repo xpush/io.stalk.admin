@@ -19,14 +19,14 @@ var session = require('express-session');
 var mongoStore = require('connect-mongo')(session);
 var mongoose = require('mongoose');
 
-module.exports = function(app) {
+module.exports = function (app) {
   var env = app.get('env');
 
   app.set('views', config.root + '/server/views');
   app.engine('html', require('ejs').renderFile);
   app.set('view engine', 'html');
   app.use(compression());
-  app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(bodyParser.urlencoded({extended: false}));
   app.use(bodyParser.json());
   app.use(methodOverride());
   app.use(cookieParser());
@@ -40,10 +40,10 @@ module.exports = function(app) {
     saveUninitialized: true,
     store: new mongoStore({
       mongooseConnection: mongoose.connection,
-      db: 'withtalk'
+      db: 'stalk'
     })
   }));
-  
+
   if ('production' === env) {
     app.use(favicon(path.join(config.root, 'public', 'favicon.ico')));
     app.use(express.static(path.join(config.root, 'public')));

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('withtalkApp')
+angular.module('stalkApp')
   .controller('SendMailCtrl', function ($rootScope, $scope, $stateParams, Auth, $location, $window) {
 
     console.log($stateParams.name);
@@ -11,7 +11,6 @@ angular.module('withtalkApp')
 
 
     $rootScope.isLogin = true;
-
 
 
   });

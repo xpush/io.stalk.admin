@@ -4,36 +4,36 @@ module.exports = {
 
   // MongoDB connection options
   mongo: {
-    //uri: 'mongodb://10.0.5.171/withtalk-dev'
-    uri: 'mongodb://localhost:27017/withtalk-dev'
+    //uri: 'mongodb://10.0.5.171/stalk-dev'
+    uri: 'mongodb://localhost:27017/stalk-dev'
   },
 
-  xpush : {
-    url : "http://localhost:8000",
-    A : "withtalk"
+  xpush: {
+    url: "http://localhost:8000",
+    A: "stalk"
   },
-  auth : undefined, /*{
-  email: {
-    smtc: {
-      host: "[SMTC Hostname]", // hostname
-      secureConnection: true, // use SSL
-      port: 465, // port for secure SMTP
-      auth: {
-        user: "[USER]",
-        pass: "[PASSWORD]"
-      }
-    },
+  auth: undefined, /*{
+   email: {
+   smtc: {
+   host: "[SMTC Hostname]", // hostname
+   secureConnection: true, // use SSL
+   port: 465, // port for secure SMTP
+   auth: {
+   user: "[USER]",
+   pass: "[PASSWORD]"
+   }
+   },
 
-    verify: {
-      options: {
-        from: "contact@yourcampany.com",
-        subject: "Verify Your Email on LINK Service",
-        text: "To complete your sign up, please verify your email using the following link : \n"
-      },
-      callbackUrl: 'http://localhost:9000/signup/'
-    }
+   verify: {
+   options: {
+   from: "contact@yourcampany.com",
+   subject: "Verify Your Email on LINK Service",
+   text: "To complete your sign up, please verify your email using the following link : \n"
+   },
+   callbackUrl: 'http://localhost:9000/signup/'
+   }
 
-  } },*/
+   } },*/
 
   seedDB: true
 };

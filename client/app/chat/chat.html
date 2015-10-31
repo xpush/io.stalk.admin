@@ -2,127 +2,161 @@
 
 <!-- Left side column. contains the logo and sidebar -->
 <aside class="main-sidebar">
-  <!-- sidebar: style can be found in sidebar.less -->
-  <section class="sidebar">
-    <!-- sidebar menu: : style can be found in sidebar.less -->
-    <ul class="sidebar-menu">
-      <li class="header" style="color:#BDD5E0"><b>Live stalk</b></li>
-      <li><a href="documentation/index.html"><i class="fa fa-circle-o text-red"></i> <span>eskozz</span></a></li>
-      <li><a href="documentation/index.html"><i class="fa fa-circle-o text-yellow"></i> <span>notdol</span></a></li>
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+        <!-- sidebar menu: : style can be found in sidebar.less -->
+        <ul class="sidebar-menu">
+            <li class="header" style="color:#BDD5E0"><b>Live stalk</b></li>
+            <li><a href="documentation/index.html"><i class="fa fa-circle-o text-red"></i> <span>eskozz</span></a></li>
+            <li><a href="documentation/index.html"><i class="fa fa-circle-o text-yellow"></i> <span>notdol</span></a>
+            </li>
 
-      <li class="header" style="color:#BDD5E0"><b>Waiting List</b></li>       
-      <li ng-repeat="channel in waitingChannelArray"><a href="#" ng-click="gotoChat(channel)"><i class="fa fa-circle-o text-red"></i> <span>{{channel.NM}}</span></a></li>
-    </ul>
-  </section>
-  <!-- /.sidebar -->
+            <li class="header" style="color:#BDD5E0"><b>Waiting List</b></li>
+            <li ng-repeat="channel in waitingChannelArray"><a href="#" ng-click="gotoChat(channel)"><i
+                    class="fa fa-circle-o text-red"></i> <span>{{channel.NM}}</span></a></li>
+        </ul>
+    </section>
+    <!-- /.sidebar -->
 </aside>
 
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
-  <!-- Content Header (Page header) -->
-  <section class="content-header">
-    <h1>
-      Stalk
-      <small> with customers</small>
-    </h1>
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Stalk
+            <small> with customers</small>
+        </h1>
 
-  </section>
+    </section>
 
-  <!-- Main content -->
-  <section class="content">
-    <!-- Small boxes (Stat box) -->
-    <div class="row">
-      <div class="col-md-8">
+    <!-- Main content -->
+    <section class="content">
+        <!-- Small boxes (Stat box) -->
+        <div class="row">
+            <div class="col-md-8">
 
-        <!-- Conversations are loaded here -->
-        <div class="nav-tabs-custom">
-          <ul class="nav nav-tabs">
-            <li ng-repeat="tab in tabs"><a href="#" data-toggle="tab" ng-click="gotoChat(tab)">{{tab.NM}}</a></li>
-            <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>
-          </ul>
-          <div class="tab-content">
-            <div class="tab-pane" ng-repeat="tab in tabs">
-              <!-- DIRECT CHAT PRIMARY -->
-              <div class="box box-primary direct-chat direct-chat-primary" id="tab_{{tab.C}}">
-                <div class="box-header with-border">
-                  <h3 class="box-title">Direct Chat</h3>
-                  <div class="box-tools pull-right">
-                    <span data-toggle="tooltip" title="3 New Messages" class="badge bg-light-blue">3</span>
-                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                    <button class="btn btn-box-tool" data-toggle="tooltip" title="Contacts" data-widget="chat-pane-toggle"><i class="fa fa-comments"></i></button>
-                    <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-                  </div>
-                </div><!-- /.box-header -->
-                <div class="box-body" >
-                  <div class="direct-chat-messages" id="chatArea"  scroll-to-top-when="items_changed">
-                    <!-- Message. Default to the left -->
-                    <div class="direct-chat-msg {{m.side}}" data-ng-repeat="m in tab.messages">
-                      <div class="direct-chat-info pull-{{m.side}} clearfix">
-                        <span class="direct-chat-name pull-{{m.side}}">{{m.userid}}</span>
-                        <span class="direct-chat-timestamp pull-{{m.opposite}}">{{m.time}}</span>
-                      </div><!-- /.direct-chat-info -->
-                      <br/>
-                      <!--<img class="direct-chat-img" src="./dist/img/user1-128x128.jpg" alt="message user image">&lt;!&ndash; /.direct-chat-img &ndash;&gt;-->
-                      <div class="direct-chat-text">
-                        {{m.message}}
-                      </div><!-- /.direct-chat-text -->
-                    </div><!-- /.direct-chat-msg -->
+                <!-- Conversations are loaded here -->
+                <div class="nav-tabs-custom">
+                    <ul class="nav nav-tabs">
+                        <li ng-repeat="tab in tabs"><a href="#" data-toggle="tab"
+                                                       ng-click="gotoChat(tab)">{{tab.NM}}</a></li>
+                        <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane" ng-repeat="tab in tabs">
+                            <!-- DIRECT CHAT PRIMARY -->
+                            <div class="box box-primary direct-chat direct-chat-primary" id="tab_{{tab.C}}">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Direct Chat</h3>
 
-                  </div><!-- /#chatArea -->
-                </div><!-- /.box-body -->
-                <div class="box-footer">
-                  <div class="input-group">
-                  <input type="text" id="inputMessage" name="inputMessage" ng-model="messageText" placeholder="Type Message ..." class="form-control" ng-enter="sendMessage()">
+                                    <div class="box-tools pull-right">
+                                        <span data-toggle="tooltip" title="3 New Messages"
+                                              class="badge bg-light-blue">3</span>
+                                        <button class="btn btn-box-tool" data-widget="collapse"><i
+                                                class="fa fa-minus"></i></button>
+                                        <button class="btn btn-box-tool" data-toggle="tooltip" title="Contacts"
+                                                data-widget="chat-pane-toggle"><i class="fa fa-comments"></i></button>
+                                        <button class="btn btn-box-tool" data-widget="remove"><i
+                                                class="fa fa-times"></i></button>
+                                    </div>
+                                </div>
+                                <!-- /.box-header -->
+                                <div class="box-body">
+                                    <div class="direct-chat-messages" id="chatArea" scroll-to-top-when="items_changed">
+                                        <!-- Message. Default to the left -->
+                                        <div class="direct-chat-msg {{m.side}}" data-ng-repeat="m in tab.messages">
+                                            <div class="direct-chat-info pull-{{m.side}} clearfix">
+                                                <span class="direct-chat-name pull-{{m.side}}">{{m.userid}}</span>
+                                                <span class="direct-chat-timestamp pull-{{m.opposite}}">{{m.time}}</span>
+                                            </div>
+                                            <!-- /.direct-chat-info -->
+                                            <br/>
+                                            <!--<img class="direct-chat-img" src="./dist/img/user1-128x128.jpg" alt="message user image">&lt;!&ndash; /.direct-chat-img &ndash;&gt;-->
+                                            <div class="direct-chat-text">
+                                                {{m.message}}
+                                            </div>
+                                            <!-- /.direct-chat-text -->
+                                        </div>
+                                        <!-- /.direct-chat-msg -->
+
+                                    </div>
+                                    <!-- /#chatArea -->
+                                </div>
+                                <!-- /.box-body -->
+                                <div class="box-footer">
+                                    <div class="input-group">
+                                        <input type="text" id="inputMessage" name="inputMessage" ng-model="messageText"
+                                               placeholder="Type Message ..." class="form-control"
+                                               ng-enter="sendMessage()">
                     <span class="input-group-btn">
-                      <button type="button" id="send" class="btn btn-primary btn-flat" ng-click="sendMessage()">Send</button>
+                      <button type="button" id="send" class="btn btn-primary btn-flat" ng-click="sendMessage()">Send
+                      </button>
                     </span>
-                  </div>
-                </div><!-- /.box-footer-->
-              </div><!--/.direct-chat -->
+                                    </div>
+                                </div>
+                                <!-- /.box-footer-->
+                            </div>
+                            <!--/.direct-chat -->
 
-            </div><!-- /.tab-pane -->
-          </div><!-- /.tab-pane -->
-        </div><!-- /.tab-content -->
-      </div><!-- nav-tabs-custom -->
-      <div class="col-md-4">
-        <div class="box box-solid">
-          <div class="box-header with-border">
-            <h3 class="box-title">Customer Info</h3>
-            <div class="box-tools">
-              <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        </div>
+                        <!-- /.tab-pane -->
+                    </div>
+                    <!-- /.tab-pane -->
+                </div>
+                <!-- /.tab-content -->
             </div>
-          </div>
-          <div class="box-body no-padding">
-            <ul class="nav nav-pills nav-stacked">
-              <li><a href="#"><i class="fa fa-inbox"></i> Started : 1, June 10:50 AM. </a></li>
-              <li><a href="#"><i class="fa fa-envelope-o"></i> DNS : 127.0.0.1</a></li>
-              <li><a href="#"><i class="fa fa-file-text-o"></i> Path : http://stalk.io</a></li>
-              <li><a href="#"><i class="fa fa-file-text-o"></i> OS : Chrome, Window 7</a></li>
-              <li><a href="#"><i class="fa fa-file-text-o"></i> Location : Seoul, Korea</a></li>
-            </ul>
-          </div><!-- /.box-body -->
-        </div><!-- /. box -->
-        <!-- Map box -->
-        <div class="box box-solid bg-light-blue-gradient">
-          <div class="box-header">
-            <!-- tools box -->
-            <div class="pull-right box-tools">
-              <button class="btn btn-primary btn-sm daterange pull-right" data-toggle="tooltip" title="Date range"><i class="fa fa-calendar"></i></button>
-              <button class="btn btn-primary btn-sm pull-right" data-widget="collapse" data-toggle="tooltip" title="Collapse" style="margin-right: 5px;"><i class="fa fa-minus"></i></button>
-            </div><!-- /. tools -->
+            <!-- nav-tabs-custom -->
+            <div class="col-md-4">
+                <div class="box box-solid">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Customer Info</h3>
 
-            <i class="fa fa-map-marker"></i>
-            <h3 class="box-title">
-              Customer Location
-            </h3>
-          </div>
-          <div class="box-body">
-            <div id="world-map" style="height: 250px; width: 100%;"></div>
-          </div><!-- /.box-body-->
-          <!-- /.box -->
+                        <div class="box-tools">
+                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body no-padding">
+                        <ul class="nav nav-pills nav-stacked">
+                            <li><a href="#"><i class="fa fa-inbox"></i> Started : 1, June 10:50 AM. </a></li>
+                            <li><a href="#"><i class="fa fa-envelope-o"></i> DNS : 127.0.0.1</a></li>
+                            <li><a href="#"><i class="fa fa-file-text-o"></i> Path : http://stalk.io</a></li>
+                            <li><a href="#"><i class="fa fa-file-text-o"></i> OS : Chrome, Window 7</a></li>
+                            <li><a href="#"><i class="fa fa-file-text-o"></i> Location : Seoul, Korea</a></li>
+                        </ul>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /. box -->
+                <!-- Map box -->
+                <div class="box box-solid bg-light-blue-gradient">
+                    <div class="box-header">
+                        <!-- tools box -->
+                        <div class="pull-right box-tools">
+                            <button class="btn btn-primary btn-sm daterange pull-right" data-toggle="tooltip"
+                                    title="Date range"><i class="fa fa-calendar"></i></button>
+                            <button class="btn btn-primary btn-sm pull-right" data-widget="collapse"
+                                    data-toggle="tooltip" title="Collapse" style="margin-right: 5px;"><i
+                                    class="fa fa-minus"></i></button>
+                        </div>
+                        <!-- /. tools -->
+
+                        <i class="fa fa-map-marker"></i>
+
+                        <h3 class="box-title">
+                            Customer Location
+                        </h3>
+                    </div>
+                    <div class="box-body">
+                        <div id="world-map" style="height: 250px; width: 100%;"></div>
+                    </div>
+                    <!-- /.box-body-->
+                    <!-- /.box -->
+                </div>
+            </div>
         </div>
-      </div>
-    </div><!-- /.row (main row) -->
-  </section><!-- /.Left col -->
-  <!-- right col (We are only adding the ID to make the widgets sortable)-->
+        <!-- /.row (main row) -->
+    </section>
+    <!-- /.Left col -->
+    <!-- right col (We are only adding the ID to make the widgets sortable)-->
 </div><!-- /.content-wrapper -->

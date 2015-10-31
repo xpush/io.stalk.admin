@@ -3,11 +3,11 @@
 describe('Controller: MainCtrl', function () {
 
   // load the controller's module
-  beforeEach(module('withtalkApp'));
+  beforeEach(module('stalkApp'));
 
   var MainCtrl,
-      scope,
-      $httpBackend;
+    scope,
+    $httpBackend;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function (_$httpBackend_, $controller, $rootScope) {

@@ -3,7 +3,7 @@
 describe('Controller: SiteCtrl', function () {
 
   // load the controller's module
-  beforeEach(module('withtalkApp'));
+  beforeEach(module('stalkApp'));
 
   var SiteCtrl, scope;
 

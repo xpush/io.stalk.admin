@@ -3,24 +3,30 @@
 .modal-success .modal-header,
 .modal-warning .modal-header,
 .modal-danger .modal-header {
-  color: #fff;
-  /*border-radius: 5px 5px 0 0;*/
+    color: #fff;
+    /*border-radius: 5px 5px 0 0;*/
 }
+
 .modal-primary .modal-header {
-  background: #428bca;
+    background: #428bca;
 }
+
 .modal-info .modal-header {
-  background: #5bc0de;
+    background: #5bc0de;
 }
+
 .modal-success .modal-header {
-  background: #5cb85c;
+    background: #5cb85c;
 }
+
 .modal-warning .modal-header {
-  background: #f0ad4e;
+    background: #f0ad4e;
 }
+
 .modal-danger .modal-header {
-  background: #d9534f;
+    background: #d9534f;
 }
+
 .modal-footer {
-    margin-top:0;
+    margin-top: 0;
 }

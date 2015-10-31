@@ -6,7 +6,7 @@
 * Copyright (c) 2014 John Kim; Licensed MIT */
 
 var LSTALK_CONFIGURATION = {
-  APP: 'withtalk',
+  APP: 'stalk',
   STALK_URL: 'http://54.178.160.166:8000', // http://link.stalk.io:8080
   APP_URL: 'http://54.178.160.166:8000',
   CSS_URL: 'http://www.notdol.com:9000/stalk.css',

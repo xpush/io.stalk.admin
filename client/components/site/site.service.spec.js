@@ -3,7 +3,7 @@
 describe('Service: site', function () {
 
   // load the service's module
-  beforeEach(module('withtalkApp'));
+  beforeEach(module('stalkApp'));
 
   // instantiate service
   var site;

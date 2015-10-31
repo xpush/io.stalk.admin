@@ -1,169 +1,202 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 <div class="content-wrapper">
-	<!-- Content Header (Page header) -->
-	<section class="content-header">
-		<h1>
-			Your Sites
-			<small>that connected with customer</small>
-		</h1>
-		<ol class="breadcrumb">
-			<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-			<li><a href="#">Tables</a></li>
-			<li class="active">Simple</li>
-		</ol>
-	</section>
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Your Sites
+            <small>that connected with customer</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">Tables</a></li>
+            <li class="active">Simple</li>
+        </ol>
+    </section>
 
-	<!-- Main content -->
-	<section class="content">
-		<div class="row">
-			<div class="col-md-12">
-				<div class="box box-primary">
-					<!--<div class="box-header with-border">-->
-						<!--<h3 class="box-title">Regist your site</h3>-->
-					<!--</div>&lt;!&ndash; /.box-header &ndash;&gt;-->
-					<!-- form start -->
-					<div class="box-body table-responsive no-padding">
-						<table class="table table-hover">
-							<tr>
-								<th>NAME</th>
-								<th>URL</th>
-								<th>App Code</th>
-							</tr>
-							<tbody id="siteTableBody">
-								<tr data-ng-repeat="site in sites" ng-click="getCode(site)">
-									<td>{{site.name}}</td>
-									<td>{{site.url}}</td>
-									<td>{{site.key}}</td>
-								</tr>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <!--<div class="box-header with-border">-->
+                    <!--<h3 class="box-title">Regist your site</h3>-->
+                    <!--</div>&lt;!&ndash; /.box-header &ndash;&gt;-->
+                    <!-- form start -->
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-hover">
+                            <tr>
+                                <th>NAME</th>
+                                <th>URL</th>
+                                <th>App Code</th>
+                            </tr>
+                            <tbody id="siteTableBody">
+                            <tr data-ng-repeat="site in sites" ng-click="getCode(site)">
+                                <td>{{site.name}}</td>
+                                <td>{{site.url}}</td>
+                                <td>{{site.key}}</td>
+                            </tr>
 
-							</tbody>
-						</table>
-					</div><!-- /.box-body -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.box-body -->
 
-					<div class="box-footer">
-						<button type="submit" id="newsite" class="btn btn-primary">New Site</button>
-					</div>
-				</div><!-- /.box -->
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-12">
-				<!-- Horizontal Form -->
-				<div class="box box-info">
-					<div class="box-header with-border">
-						<h3 class="box-title">Get your script</h3>
-					</div><!-- /.box-header -->
-					<!-- form start -->
-					<form class="form-horizontal">
-						<div class="box-body">
-							<div class="form-group">
-								<label for="inputEmail3" class="col-sm-2 control-label">Site Name</label>
-								<div class="col-sm-10">
-									<input type="text" class="form-control" id="inputEmail3" data-ng-model="_site.name" placeholder="Name">
-								</div>
-							</div>
-							<div class="form-group">
-								<label for="inputPassword3" class="col-sm-2 control-label">Site Url</label>
-								<div class="col-sm-10">
-									<input type="url" class="form-control" id="inputPassword3" data-ng-model="_site.url" placeholder="Url">
-								</div>
-							</div>
-							<div class="form-group">
-								<label for="inputPassword3" class="col-sm-2 control-label">Copy this code.<br/> And paste it in your site.</label>
-								<div class="col-sm-10">
-									 <pre style="font-weight: 600;">{{script}}</pre>
-								</div>
-							</div>
-						</div><!-- /.box-body -->
-						<div class="box-footer">
-							<button type="submit" ng-click="removeSite(_site.name, _site);" class="btn btn-danger pull-left" ng-disabled="isDisable">Delete</button>
-							<button type="submit" ng-click="updateSite();" class="btn btn-info pull-right" ng-disabled="isDisable">Update</button>
-						</div><!-- /.box-footer -->
-					</form>
-				</div><!-- /.box -->
-				<!-- general form elements disabled -->
+                    <div class="box-footer">
+                        <button type="submit" id="newsite" class="btn btn-primary">New Site</button>
+                    </div>
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <!-- Horizontal Form -->
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Get your script</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <!-- form start -->
+                    <form class="form-horizontal">
+                        <div class="box-body">
+                            <div class="form-group">
+                                <label for="inputEmail3" class="col-sm-2 control-label">Site Name</label>
 
-			</div>
-		</div>
-	</section><!-- /.content -->
-	<div id="myModal" class="modal fade" role="dialog">
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="inputEmail3" data-ng-model="_site.name"
+                                           placeholder="Name">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputPassword3" class="col-sm-2 control-label">Site Url</label>
 
-		<div class="modal-default">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title">Get your script code</h4>
-					</div>
-					<div class="modal-body">
-						<form role="form" name="form"  class="form-horizontal" novalidate>
-							<div class="box-body">
-								<div class="form-group has-feedback" ng-class="{ 'has-success': form.site_name.$valid && submitted,
+                                <div class="col-sm-10">
+                                    <input type="url" class="form-control" id="inputPassword3" data-ng-model="_site.url"
+                                           placeholder="Url">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputPassword3" class="col-sm-2 control-label">Copy this code.<br/> And
+                                    paste it in your site.</label>
+
+                                <div class="col-sm-10">
+                                    <pre style="font-weight: 600;">{{script}}</pre>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer">
+                            <button type="submit" ng-click="removeSite(_site.name, _site);"
+                                    class="btn btn-danger pull-left" ng-disabled="isDisable">Delete
+                            </button>
+                            <button type="submit" ng-click="updateSite();" class="btn btn-info pull-right"
+                                    ng-disabled="isDisable">Update
+                            </button>
+                        </div>
+                        <!-- /.box-footer -->
+                    </form>
+                </div>
+                <!-- /.box -->
+                <!-- general form elements disabled -->
+
+            </div>
+        </div>
+    </section>
+    <!-- /.content -->
+    <div id="myModal" class="modal fade" role="dialog">
+
+        <div class="modal-default">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Get your script code</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form role="form" name="form" class="form-horizontal" novalidate>
+                            <div class="box-body">
+                                <div class="form-group has-feedback" ng-class="{ 'has-success': form.site_name.$valid && submitted,
                                             'has-error': form.site_name.$invalid && submitted }">
-									<label for="site_name">Site Name</label>
-									<input type="text" class="form-control" id="site_name" name="site_name" ng-model="newSite.site_name" placeholder="Enter Site Name" required>
-									<p class="help-block" ng-show="form.site_name.$error.required && submitted">
-										What's your site name?
-									</p>
-								</div>
+                                    <label for="site_name">Site Name</label>
+                                    <input type="text" class="form-control" id="site_name" name="site_name"
+                                           ng-model="newSite.site_name" placeholder="Enter Site Name" required>
+
+                                    <p class="help-block" ng-show="form.site_name.$error.required && submitted">
+                                        What's your site name?
+                                    </p>
+                                </div>
 
 
-								<div class="form-group has-feedback" ng-class="{ 'has-success': form.site_url.$valid && submitted,
+                                <div class="form-group has-feedback" ng-class="{ 'has-success': form.site_url.$valid && submitted,
                                             'has-error': form.site_url.$invalid && submitted }">
-									<label for="site_url">Site Url</label>
-									<input type="url" class="form-control" id="site_url" name="site_url" ng-model="newSite.site_url" placeholder="http://yoursite" required>
-									<p class="help-block" ng-show="form.site_name.$error.required && submitted">
-										What's your site url?
-									</p>
-									<p class="help-block" ng-show="form.site_url.$error.url && submitted">
-										Doesn't look like a valid url.
-									</p>
-								</div>
+                                    <label for="site_url">Site Url</label>
+                                    <input type="url" class="form-control" id="site_url" name="site_url"
+                                           ng-model="newSite.site_url" placeholder="http://yoursite" required>
 
-							</div><!-- /.box-body -->
+                                    <p class="help-block" ng-show="form.site_name.$error.required && submitted">
+                                        What's your site url?
+                                    </p>
 
-						</form>
+                                    <p class="help-block" ng-show="form.site_url.$error.url && submitted">
+                                        Doesn't look like a valid url.
+                                    </p>
+                                </div>
 
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-						<button type="button" id="addNewSite" ng-click="addNewSite(form)" class="btn btn-info">Create Site</button>
-					</div>
-				</div><!-- /.modal-content -->
-			</div><!-- /.modal-dialog -->
-		</div><!-- /.modal -->
+                            </div>
+                            <!-- /.box-body -->
 
-	</div>
+                        </form>
 
-	<div id="successModal" class="modal fade" role="dialog">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                        <button type="button" id="addNewSite" ng-click="addNewSite(form)" class="btn btn-info">Create
+                            Site
+                        </button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
 
-		<div class="modal-success">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title">Get your script code</h4>
-					</div>
-					<div class="modal-body">
-						Copy this script and paste it in your site page.
-						<pre style="font-weight: 300;font-size:10px">{{successScript}}</pre>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
-					</div>
-				</div><!-- /.modal-content -->
-			</div><!-- /.modal-dialog -->
-		</div><!-- /.modal -->
+    </div>
 
-	</div>
+    <div id="successModal" class="modal fade" role="dialog">
+
+        <div class="modal-success">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Get your script code</h4>
+                    </div>
+                    <div class="modal-body">
+                        Copy this script and paste it in your site page.
+                        <pre style="font-weight: 300;font-size:10px">{{successScript}}</pre>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+
+    </div>
 </div>
 
 <script type="text/javascript">
-	$(function () {
-		"use strict";
-		$('#newsite').click(function () {
-			$('#myModal').modal('show');
-		});
+    $(function () {
+        "use strict";
+        $('#newsite').click(function () {
+            $('#myModal').modal('show');
+        });
 
 //		$('#addNewSite').click(function () {
 //			$.ajax({
@@ -190,30 +223,30 @@
 //		});
 
 
-		function getSiteList() {
-			$.ajax({
-				url: "/sitelist",
-				type: "GET",
-				data: {},
-				success: function (data, textStatus, jqXHR) {
-					console.log(data);
-					var markup = "<tr><td>${site_name}</td><td>${site_url}</td><td>${site_code}</td><td>${date}</td></tr>";
+        function getSiteList() {
+            $.ajax({
+                url: "/sitelist",
+                type: "GET",
+                data: {},
+                success: function (data, textStatus, jqXHR) {
+                    console.log(data);
+                    var markup = "<tr><td>${site_name}</td><td>${site_url}</td><td>${site_code}</td><td>${date}</td></tr>";
 
-					/* Compile the markup as a named template */
-					$.template("siteTemplate", markup);
+                    /* Compile the markup as a named template */
+                    $.template("siteTemplate", markup);
 
-					/* Render the template with the movies data and insert
-					 the rendered HTML under the "movieList" element */
-					$.tmpl("siteTemplate", data)
-							.html("#siteTableBody");
+                    /* Render the template with the movies data and insert
+                     the rendered HTML under the "movieList" element */
+                    $.tmpl("siteTemplate", data)
+                            .html("#siteTableBody");
 
-				},
-				error: function (jqXHR, textStatus, errorThrown) {
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
 
-				}
-			});
-		}
-	});
+                }
+            });
+        }
+    });
 
 
 </script>

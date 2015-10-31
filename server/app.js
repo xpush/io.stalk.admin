@@ -13,13 +13,15 @@ var config = require('./config/environment');
 
 // Connect to database
 mongoose.connect(config.mongo.uri, config.mongo.options);
-mongoose.connection.on('error', function(err) {
-	console.error('MongoDB connection error: ' + err);
-	process.exit(-1);
-	}
+mongoose.connection.on('error', function (err) {
+    console.error('MongoDB connection error: ' + err);
+    process.exit(-1);
+  }
 );
 // Populate DB with sample data
-if(config.seedDB) { require('./config/seed'); }
+if (config.seedDB) {
+  require('./config/seed');
+}
 
 // Setup server
 var app = express();

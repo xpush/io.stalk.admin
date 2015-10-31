@@ -10,7 +10,7 @@ var XPUSH = require("./../../xpush-node-client")(config.xpush);
 var request = require('request');
 
 var EMAIL;
-if(config.auth && config.auth.email) EMAIL = require('./../../components/email');
+if (config.auth && config.auth.email) EMAIL = require('./../../components/email');
 
 // Get list of auths
 exports.index = function (req, res) {
@@ -106,7 +106,7 @@ exports.create = function (req, res) {
     if (!auth) {
       saveData.uid = uid;
       saveData.name = name;
-      if(!config.auth){
+      if (!config.auth) {
         saveData.active = true;
       }
 
@@ -114,7 +114,7 @@ exports.create = function (req, res) {
         if (err) {
           return handleError(res, err);
         }
-        if(config.auth && config.auth.email) EMAIL.sendVerifyMail(auth.name, auth.email, auth.uid);
+        if (config.auth && config.auth.email) EMAIL.sendVerifyMail(auth.name, auth.email, auth.uid);
 
         // register in XPUSH
 
@@ -122,14 +122,14 @@ exports.create = function (req, res) {
 
         request.post(
           'http://54.178.160.166:8000/user/register',
-          { form: { A:'withtalk', U:saveData.uid, PW:saveData.uid, D:'web', DT:{NM:saveData.name,I:''} } },
+          {form: {A: 'stalk', U: saveData.uid, PW: saveData.uid, D: 'web', DT: {NM: saveData.name, I: ''}}},
           function (error, response, result) {
             if (!error && response.statusCode == 200) {
               // user-register success
               var resData = JSON.parse(result);
-              if( "ok" == resData.status ) {
+              if ("ok" == resData.status) {
                 return res.status(201).json(auth);
-              } else if("ERR-INTERNAL" == resData.status && "ERR-USER_EXIST" == resData.message) {
+              } else if ("ERR-INTERNAL" == resData.status && "ERR-USER_EXIST" == resData.message) {
                 return handleError(res, result);
               } else {
                 return handleError(res, result);
@@ -173,7 +173,7 @@ exports.reconfirm = function (req, res) {
         if (err) {
           return handleError(res, err);
         }
-        if(config.auth && config.auth.email) EMAIL.sendVerifyMail(auth.name, auth.email, auth.uid);
+        if (config.auth && config.auth.email) EMAIL.sendVerifyMail(auth.name, auth.email, auth.uid);
         return res.status(200).json(auth);
       });
     } else {

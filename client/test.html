@@ -17,7 +17,7 @@
 		signId = 'abc' + new String( Date.now() % 100 );
 		var nick = 'def';
 
-		$.get('http://54.178.160.166:8000/node/withtalk/'+castAddressArr, function (data) {
+		$.get('http://54.178.160.166:8000/node/stalk/'+castAddressArr, function (data) {
 			console.log( data );
 			getData(data);
 		});
@@ -27,7 +27,7 @@
 
 			//var query = "/session?A=P-00001&C=" + val.result.server.channel + "&S=" + val.result.server.name + "&D=WEB&MD=CHANNEL_ONLY&U="+signId+"&DT=" + JSON.stringify(DT)+"&TS="+Date.now();
 
-			var query = "/channel?A=withtalk&D=web&U=suzie"+"&S=" + val.result.server.name+"&C="+castAddressArr;
+			var query = "/channel?A=stalk&D=web&U=suzie"+"&S=" + val.result.server.name+"&C="+castAddressArr;
 
 			//console.log( val.result.server.url+ query );
 

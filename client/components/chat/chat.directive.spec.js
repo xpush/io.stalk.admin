@@ -3,7 +3,7 @@
 describe('Directive: chat', function () {
 
   // load the directive's module
-  beforeEach(module('withtalkApp'));
+  beforeEach(module('stalkApp'));
 
   var element,
     scope;

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('withtalkApp')
+angular.module('stalkApp')
   .controller('LoginCtrl', function ($rootScope, $scope, Auth, $location, $window) {
     $scope.user = {};
     $scope.errors = {};

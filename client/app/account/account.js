@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('withtalkApp')
+angular.module('stalkApp')
   .config(function ($stateProvider) {
     $stateProvider
       .state('login', {

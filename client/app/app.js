@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('withtalkApp', [
+angular.module('stalkApp', [
   'ngCookies',
   'ngResource',
   'ngSanitize',
@@ -8,10 +8,10 @@ angular.module('withtalkApp', [
   'ui.bootstrap',
   'toaster'
 ])
-  .run(function($rootScope){
-        // xpush 를 생성한다.
-    $rootScope.xpush = new XPush('http://54.178.160.166:8000', 'withtalk', function (type, data){
-    }, false ); 
+  .run(function ($rootScope) {
+    // xpush 를 생성한다.
+    $rootScope.xpush = new XPush('http://54.178.160.166:8000', 'stalk', function (type, data) {
+    }, false);
     //$rootScope.xpush.enableDebug();
   })
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
@@ -35,8 +35,8 @@ angular.module('withtalkApp', [
       },
 
       // Intercept 401s and redirect you to login
-      responseError: function(response) {
-        if(response.status === 401) {
+      responseError: function (response) {
+        if (response.status === 401) {
           $location.path('/login');
           // remove any stale tokens
           $cookieStore.remove('token');
@@ -53,10 +53,10 @@ angular.module('withtalkApp', [
 
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$stateChangeStart', function (event, next) {
-      Auth.isLoggedInAsync(function(loggedIn) {
+      Auth.isLoggedInAsync(function (loggedIn) {
         if (next.authenticate && !loggedIn) {
           event.preventDefault();
-          $rootScope.$evalAsync(function() {
+          $rootScope.$evalAsync(function () {
             $location.path('/login');
           });
         }
