@@ -196,15 +196,14 @@
       self.deviceId = deviceId;
       var sendData = {A: self.appId, U: userId, PW: password, D: deviceId};
       if(mode) sendData.MD = mode;
-
       self.ajax( XPush.Context.LOGIN , 'POST', sendData, function(err, result){
-
         if(err){
           if(cb) cb(err, result);
           return;
         }
-
         if(result.status == 'ok'){
+            debug("xpush : login success", result);
+
           // result.result = {"token":"HS6pNwzBoK","server":"215","serverUrl":"http://www.notdol.com:9990"};
           var c = self._globalConnection = new Connection(self, GLOBAL, result.result);
           c.connect(function(){
@@ -214,6 +213,8 @@
             });
           });
         }else{
+          debug("xpush : login error", result);
+
           if(cb) cb(result.message);
           alert('xpush : login error'+ result.message);
         }
@@ -1508,11 +1509,10 @@
      * @param {string} mode - Optional. `CHANANEL_ONLY`
      */
     Connection.prototype.connect = function(cb, mode){
-
       var self = this;
         var query =
           'A='+self._xpush.appId+'&'+
-          'U='+self._xpush.userId+'&'+
+          'U='+encodeURIComponent(self._xpush.userId)+'&'+
           'D='+self._xpush.deviceId;
           //'mode=CHANNEL_ONLY';
 
@@ -1520,7 +1520,7 @@
         query =
           'A='+self._xpush.appId+'&'+
           'C='+self.chNm+'&'+
-          'U='+self._xpush.userId+'&'+
+          'U='+encodeURIComponent(self._xpush.userId)+'&'+
           'D='+self._xpush.deviceId+'&'+
           'S='+self.info.server.name;
 

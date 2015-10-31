@@ -114,17 +114,12 @@ exports.create = function (req, res) {
         if (err) {
           return handleError(res, err);
         }
+        if (config.auth && config.auth.email) EMAIL.sendVerifyMail(auth.name, auth.email, auth.uid);
 
+        return res.status(201).json(auth);
         // register in XPUSH
 
         //request.signup(saveData.uid, saveData.uid, utils.encrypto(saveData.PW), "WEB",)
-
-        XPUSH.signup(saveData.uid, "", "WEB", function(){
-          console.log("**** xpush : signup complet");
-          console.log(arguments);
-          if (config.auth && config.auth.email) EMAIL.sendVerifyMail(auth.name, auth.email, auth.uid);
-          return res.status(201).json(auth);
-        })
 
 
         /*
@@ -213,7 +208,14 @@ exports.activate = function (req, res) {
         if (err) {
           return handleError(res, err);
         }
-        return res.status(200).json(auth);
+        XPUSH.signup(updated.email, updated.email, "WEB", function(){
+          console.log("**** xpush : signup complete");
+          console.log(arguments);
+          //if (config.auth && config.auth.email) EMAIL.sendVerifyMail(auth.name, auth.email, auth.uid);
+          return res.status(201).json(auth);
+        })
+
+        //return res.status(200).json(auth);
       });
     }
   });

@@ -10,6 +10,7 @@ var User = require('../api/user/user.model');
 var Auth = require('../api/auth/auth.model');
 var validateJwt = expressJwt({secret: config.secrets.session});
 
+
 /**
  * Attaches the user object to the request if authenticated
  * Otherwise returns 403
@@ -58,7 +59,8 @@ function hasRole(roleRequired) {
  * Returns a jwt token signed by the app secret
  */
 function signToken(id) {
-  return jwt.sign({_id: id}, config.secrets.session, {expiresIn: 60 });
+  console.log("**** signToken  : "+id);
+  return jwt.sign({_id: id}, config.secrets.session, {expiresIn: 60 * 1000});
 }
 
 /**

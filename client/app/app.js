@@ -10,13 +10,13 @@ angular.module('stalkApp', [
 ])
   .run(function ($rootScope) {
     // xpush 를 생성한다.
-    $rootScope.xpush = new XPush('http://54.178.160.166:8000', 'stalk', function (type, data) {
+    $rootScope.xpush = new XPush('http://macbook.notdol.com:8000', 'stalk', function (type, data) {
     }, false);
     //$rootScope.xpush.enableDebug();
   })
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
-    $urlRouterProvider
-      .otherwise('/signupmail');
+    //$urlRouterProvider
+      //.otherwise('/signupmail');
 
     $locationProvider.html5Mode(true);
     $httpProvider.interceptors.push('authInterceptor');

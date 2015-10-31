@@ -17,7 +17,7 @@ angular.module('stalkApp')
           .then(function (data) {
             // Logged in, redirect to home
             if (data.token) {
-              $location.path('/');
+              $location.path('/dashboard');
             } else {
               $scope.result = data.message;
             }

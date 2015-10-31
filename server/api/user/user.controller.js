@@ -4,6 +4,8 @@ var User = require('./user.model');
 var passport = require('passport');
 var config = require('../../config/environment');
 var jwt = require('jsonwebtoken');
+var App = require('../app/app.model');
+
 
 var validationError = function (res, err) {
   return res.status(422).json(err);
@@ -92,6 +94,26 @@ exports.me = function (req, res, next) {
     res.json(user);
   });
 };
+
+exports.searchOperator = function(req, res, next){
+  console.log(req.headers);
+      var key = req.body.key;
+      var host = req.headers.host; //req.headers.referer.replace("http://","").replace("https://","");
+      //req.headers.referer.replace("http://", '').replace( '/', '' ).split(':')[0];
+      App.findOne({key:key}, function(err, app){
+          if(err){
+              console.log(err);
+              return res.send(cb+'('+JSON.stringify({error: err})+')');
+          }
+
+          if( app == null || app == undefined ){
+              req.session.anonymous = undefined;
+              return res.send(cb+'('+JSON.stringify({error: "not registerd url"})+')');
+          }
+          res.json(app.users);
+     });
+
+}
 
 /**
  * Authentication callback
