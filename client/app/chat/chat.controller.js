@@ -2,12 +2,13 @@
 
 angular.module('withtalkApp')
   .controller('ChatCtrl', function ($rootScope, $scope, Auth) {
-
+    $scope.tabs = [];
     $scope.currentChannel = "";
+    $scope.messageText = "";
 
     $scope.channelIdArray = {}; 
     $scope.waitingChannelArray = [];
-    $scope.messages = [];
+    $scope.messages = {};
     $scope.currentUser;
     $rootScope.isLogin=false;
 
@@ -24,6 +25,7 @@ angular.module('withtalkApp')
         if( searchInx == -1 ){
           $scope.channelIdArray[channel] = data;
           $scope.waitingChannelArray.push( data );
+          $scope.tabs.push( {'C':channel, 'messages':[], 'NM': data.NM} );
           $scope.$apply();
         }
       });
@@ -33,6 +35,12 @@ angular.module('withtalkApp')
 
         // currentChannel
         if( $scope.currentChannel == channel ){
+          var searchInx = -1;
+          for( var inx = 0 ; searchInx < 0 && inx < $scope.waitingChannelArray.length ; inx++){
+            if( $scope.waitingChannelArray[inx].C == channel ){
+              searchInx = inx;
+            }
+          }  
 
           data.MG  = decodeURIComponent( data.MG );
 
@@ -45,10 +53,12 @@ angular.module('withtalkApp')
 
           var time = $scope.timeToString( data.TS )[0];
           var newMessage = {userid: data.UO.NM, time:time, message:data.MG, side:side, opposite:opposite};
-
-          $scope.messages.push(newMessage);
-          $scope.$apply();
-          $scope.$broadcast("items_changed")
+         
+          if( searchInx > -1 ){
+            $scope.tabs[searchInx].messages.push(newMessage);
+            $scope.$broadcast("items_changed");
+            $scope.$apply();
+          }
         } else {
 	  if( !$scope.channelIdArray[channel] ){
             //$scope.channelIdArray[channel] = true;
@@ -63,18 +73,19 @@ angular.module('withtalkApp')
     });   
 
     $scope.sendMessage = function () {
-      console.log( "===== send =====" );
-      console.log($scope.messageText);
-      var msg = $scope.messageText;
+      var msg = document.getElementById( "inputMessage" ).value;
+      msg = encodeURIComponent(msg);
 
-      var DT = { UO : { U : $scope.currentUser.uid, NM : $scope.currentUser.name}, MG : encodeURIComponent(msg) };
+      var DT = { UO : { U : $scope.currentUser.uid, NM : $scope.currentUser.name}, MG : msg };
 
       $rootScope.xpush.send($scope.currentChannel, 'message', DT );
-      $scope.messageText = "";
+      document.getElementById( "inputMessage" ).value = "";
     };
 
-    $scope.gotoChat = function( channelId ){
-      $scope.currentChannel = channelId.C;
+    $scope.gotoChat = function( data ){
+      $scope.currentChannel = data.C;
+      var tab = document.getElementById( "tab_" + data.C );
+      angular.element( tab ).parent().addClass("active");
     };
 
     $scope.timeToString = function( timestamp ){

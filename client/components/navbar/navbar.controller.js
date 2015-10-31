@@ -29,7 +29,6 @@ angular.module('withtalkApp')
     };
 
     $scope.isActive = function(stat) {
-      console.log(stat);
       return $scope.stat === stat;
     };
 

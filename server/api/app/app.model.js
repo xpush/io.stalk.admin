@@ -5,6 +5,7 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
     var userSchema = new Schema({
+      UID: { type: String, required: true, trim: true },
       ID: { type: String, required: true, trim: true }, // user id
       NM: { type: String, trim: true },                 // user name
       P :   { type: String, trim: true},                 // user picture
