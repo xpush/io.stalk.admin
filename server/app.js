@@ -9,6 +9,7 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 var express = require('express');
 var mongoose = require('mongoose');
+var cors = require('cors');
 
 // apply custom config file !! (with '--config [filename'])
 var path = require('path');
@@ -33,6 +34,10 @@ if (config.seedDB) {
 
 // Setup server
 var app = express();
+
+app.use(cors());
+app.options('*', cors());
+
 var server = require('http').createServer(app);
 require('./config/express')(app);
 require('./routes')(app);
