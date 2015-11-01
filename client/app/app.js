@@ -6,11 +6,12 @@ angular.module('stalkApp', [
   'ngSanitize',
   'ui.router',
   'ui.bootstrap',
-  'toaster'
+  'toaster',
+  'stalk.constants'
 ])
-  .run(function ($rootScope) {
+  .run(function ($rootScope, XPUSH_SESSION) {
     // xpush 를 생성한다.
-    $rootScope.xpush = new XPush('http://macbook.notdol.com:8000', 'stalk', function (type, data) {
+    $rootScope.xpush = new XPush(XPUSH_SESSION, 'stalk', function (type, data) {
     }, false);
     //$rootScope.xpush.enableDebug();
   })
