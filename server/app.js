@@ -9,6 +9,14 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 var express = require('express');
 var mongoose = require('mongoose');
+
+// apply custom config file !! (with '--config [filename'])
+var path = require('path');
+var argv = require('optimist').argv;
+if (argv.config) {
+  argv.config = path.resolve(argv.config);
+}
+
 var config = require('./config/environment');
 
 // Connect to database

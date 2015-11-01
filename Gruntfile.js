@@ -19,6 +19,13 @@ module.exports = function (grunt) {
     buildcontrol: 'grunt-build-control'
   });
 
+  var argConfig = grunt.option('config');
+  var argArray = [];
+  if(argConfig) {
+    argArray.push('--config');
+    argArray.push(argConfig);
+  }
+
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
 
@@ -34,7 +41,8 @@ module.exports = function (grunt) {
     },
     express: {
       options: {
-        port: process.env.PORT || 9000
+        port: process.env.PORT || 9000,
+        args: argArray
       },
       dev: {
         options: {

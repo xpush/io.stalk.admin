@@ -2,6 +2,7 @@
 
 var path = require('path');
 var _ = require('lodash');
+var argv = require('optimist').argv;
 
 function requiredProcessEnv(name) {
   if (!process.env[name]) {
@@ -9,6 +10,7 @@ function requiredProcessEnv(name) {
   }
   return process.env[name];
 }
+
 
 // All configurations will extend these options
 // ============================================
@@ -66,6 +68,13 @@ var all = {
 
 // Export the config object based on the NODE_ENV
 // ==============================================
-module.exports = _.merge(
-  all,
-  require('./' + process.env.NODE_ENV + '.js') || {});
+
+if(argv.config){
+  module.exports = _.merge(
+    all,
+    require(argv.config) || {});
+}else{
+  module.exports = _.merge(
+    all,
+    require('./' + process.env.NODE_ENV + '.js') || {});
+}

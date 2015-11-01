@@ -20,6 +20,7 @@
     "morgan": "~1.0.0",
     "node-uuid": "^1.4.3",
     "nodemailer": "^1.8.0",
+    "optimist": "^0.6.1",
     "passport": "~0.2.0",
     "passport-facebook": "latest",
     "passport-google-oauth": "latest",
