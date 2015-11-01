@@ -123,7 +123,7 @@ exports.operators = function (req, res) {
       return handleError(res, err);
     }
     if (!app) {
-      return res.send(404);
+      return res.status(200).json({});
     }
 
     // no operator
@@ -140,11 +140,14 @@ exports.operators = function (req, res) {
           // user-register success
           var resData = JSON.parse(result);
           if ("ok" == resData.status) {
-            if (!resData.result || !resData.result[oid]) return res.status(200).json({});
 
             var returnJson = {};
-            returnJson['operator'] = app.users[0];
+            returnJson['app'] = config.xpush.A;
             returnJson['server'] = config.xpush.url;
+
+            if (!resData.result || !resData.result[oid]) return res.status(200).json(returnJson);
+
+            returnJson['operator'] = app.users[0];
 
             return res.status(200).json(returnJson);
 
