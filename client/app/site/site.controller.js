@@ -70,7 +70,12 @@ angular.module('stalkApp')
         });
     }
     var generateScript = function (site) {
-      return '<script src="http://stalk.io/stalk.js"></script>\n<script>STALK.init({app:' + site.name + ',url:' + site.url + ',id:' + site.key + '});</script>';
+      var script = "<script>window.stalkConfig = ";
+      var metaObj = {"api_server" : "http://dev.session.stalk.io:8000", "id": site.key};
+      script += JSON.stringify( metaObj ) + "</script>";
+      script += '<script src="http://static.stalk.io/widget.js"></script>';
+      return script;
+      //return '<script src="http://stalk.io/stalk.js"></script>\n<script>STALK.init({app:' + site.name + ',url:' + site.url + ',id:' + site.key + '});</script>';
     }
     $scope._site = {};
 
