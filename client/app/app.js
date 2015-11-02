@@ -9,12 +9,6 @@ angular.module('stalkApp', [
   'toaster',
   'stalk.constants'
 ])
-  .run(function ($rootScope, XPUSH_SESSION) {
-    // xpush 를 생성한다.
-    $rootScope.xpush = new XPush(XPUSH_SESSION, 'STALK', function (type, data) {
-    }, false);
-    //$rootScope.xpush.enableDebug();
-  })
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     //$urlRouterProvider
       //.otherwise('/signupmail');
@@ -50,7 +44,11 @@ angular.module('stalkApp', [
     };
   })
 
-  .run(function ($rootScope, $location, Auth) {
+  .run(function ($rootScope, $location, Auth, XPUSH_SESSION) {
+
+    // xpush 를 생성한다.
+    $rootScope.xpush = new XPush(XPUSH_SESSION, 'STALK', function (type, data) {
+    }, false);
 
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$stateChangeStart', function (event, next) {
