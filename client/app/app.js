@@ -11,7 +11,7 @@ angular.module('stalkApp', [
 ])
   .run(function ($rootScope, XPUSH_SESSION) {
     // xpush 를 생성한다.
-    $rootScope.xpush = new XPush(XPUSH_SESSION, 'stalk', function (type, data) {
+    $rootScope.xpush = new XPush(XPUSH_SESSION, 'STALK', function (type, data) {
     }, false);
     //$rootScope.xpush.enableDebug();
   })

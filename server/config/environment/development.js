@@ -4,12 +4,12 @@ module.exports = {
 
   // MongoDB connection options
   mongo: {
-    uri: 'mongodb://localhost:27017/STALK'
+    uri: 'mongodb://dev.session.stalk.io:27017/STALK'
   },
 
   // XPUSH server
   xpush: {
-    url: "http://localhost:8000",
+    url: "http://dev.session.stalk.io:8000",
     A: "STALK"
   },
 
@@ -38,4 +38,5 @@ module.exports = {
   },
 
   seedDB: true
+
 };

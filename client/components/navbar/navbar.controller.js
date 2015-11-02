@@ -8,8 +8,10 @@ angular.module('stalkApp')
     }];
 
     Auth.getCurrentUser().$promise.then(function (user) {
-      //$rootScope.xpush.enableDebug();
+
+      $rootScope.xpush.enableDebug();
       $rootScope.xpush.login(user.email, user.email, 'WEB', function (err, data) {
+
         console.log('login success : ', data);
       });
     }).catch(function () {
