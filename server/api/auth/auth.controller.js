@@ -208,7 +208,7 @@ exports.activate = function (req, res) {
         if (err) {
           return handleError(res, err);
         }
-        XPUSH.signup(updated.email, updated.email, "WEB", function(){
+        XPUSH.signup(updated.uid, UT.encrypto(updated.uid), "WEB", function(){
           console.log("**** xpush : signup complete");
           console.log(arguments);
           //if (config.auth && config.auth.email) EMAIL.sendVerifyMail(auth.name, auth.email, auth.uid);

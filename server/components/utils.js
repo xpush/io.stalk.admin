@@ -9,8 +9,8 @@ exports.createUniqueId = function () {
 
 exports.encrypto = function (s, t) {
   if (!t) t = "sha256";
-  var _c = crypto.createHash(t);
-  _c.update(s, "utf8"); //utf8 here
+  var _c = crypto.createHmac("sha256", t);
+  _c.update(s); //utf8 here
   return _c.digest("base64");
 };
 

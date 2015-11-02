@@ -130,7 +130,8 @@ exports.operators = function (req, res) {
     if (!app.users || app.users.length < 1) {
       return res.send(200).json({});
     }
-    var oid = app.users[0].ID;
+    console.log( app.users );
+    var oid = app.users[0].UID;
 
     request.post(
       config.xpush.url + '/user/active',

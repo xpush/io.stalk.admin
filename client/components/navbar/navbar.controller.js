@@ -8,9 +8,10 @@ angular.module('stalkApp')
     }];
 
     Auth.getCurrentUser().$promise.then(function (user) {
+      var hash = CryptoJS.HmacSHA256(user.uid, "sha256");
+      var pw = CryptoJS.enc.Base64.stringify(hash);
 
-      $rootScope.xpush.enableDebug();
-      $rootScope.xpush.login(user.email, user.email, 'WEB', function (err, data) {
+      $rootScope.xpush.login(user.uid, pw, 'WEB', function (err, data) {
 
         console.log('login success : ', data);
       });

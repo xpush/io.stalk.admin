@@ -180,6 +180,7 @@
      * });
      */
     XPush.prototype.login = function(userId, password, deviceId, mode, cb){
+
       var self = this;
 
       if(typeof(deviceId) == 'function' && !mode && !cb){
@@ -190,6 +191,12 @@
       if(typeof(mode) == 'function' && !cb){
         cb = mode;
         mode = undefined;
+      }
+    
+      if( self._globalConnection ){
+        console.log( "already connected" );
+        cb(null,null);
+        return;
       }
 
       self.userId = userId;

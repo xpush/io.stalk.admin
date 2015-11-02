@@ -15,12 +15,13 @@
   var appId;
   var xpushSession;
   var operator;
+  var key = "90ad8360-8152-11e5-a482-fff6e9a81367";
 
   $(document).ready(function () {
     var channelId = "ch00001";
 
     var getOperator = function(data){
-      $.get('http://54.65.235.3:9000/api/apps/operators/d518fe40-8106-11e5-805f-4d1becdebe76', function (res) {
+      $.get('http://54.65.235.3:9000/api/apps/operators/'+key, function (res) {
           console.log( res );
           if( res ){
             appId = res.app;
@@ -28,7 +29,6 @@
             operator = res.operator;
 
             $.get(res.server + '/node/'+appId+'/'+channelId, function (data) {
-              console.log( data );
               getData(data);
             });
           }
@@ -42,7 +42,6 @@
 
       //console.log( val.result.server.url+ query );
 
-      console.log( query );
 
       socket = io.connect("http://54.65.166.203:8080" + query, {
         'sync disconnect on unload': true,
@@ -76,8 +75,7 @@
       });
 
       setTimeout( function(){
-        console.log( operator );
-        var oid = operator.ID;
+        var oid = operator.UID;
         socket.emit( 'channel.join', {U: oid}, function(data){
 
           var info = {'NM' : 'info', 'DT' : {'C':channelId, 'NM':'www.gsshop.com'} };      
