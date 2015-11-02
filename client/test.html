@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,117 +9,134 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="https://cdn.socket.io/socket.io-1.3.5.js"></script>
 <script type="text/javascript">
-	
-	var socket;
-	var signId;
+  
+  var socket;
 
-	$(document).ready(function () {
-		var castAddressArr = "ch00001";
-		signId = 'abc' + new String( Date.now() % 100 );
-		var nick = 'def';
+  var appId;
+  var xpushSession;
+  var operator;
 
-		$.get('http://54.178.160.166:8000/node/stalk/'+castAddressArr, function (data) {
-			console.log( data );
-			getData(data);
-		});
+  $(document).ready(function () {
+    var channelId = "ch00001";
 
-		var getData = function (val) {
+    var getOperator = function(data){
+      $.get('http://54.65.235.3:9000/api/apps/operators/d518fe40-8106-11e5-805f-4d1becdebe76', function (res) {
+          console.log( res );
+          if( res ){
+            appId = res.app;
+            xpushSession = res.server;
+            operator = res.operator;
+
+            $.get(res.server + '/node/'+appId+'/'+channelId, function (data) {
+              console.log( data );
+              getData(data);
+            });
+          }
+      });
+    }
+
+    var getData = function (val) {
             'use strict';
 
-			//var query = "/session?A=P-00001&C=" + val.result.server.channel + "&S=" + val.result.server.name + "&D=WEB&MD=CHANNEL_ONLY&U="+signId+"&DT=" + JSON.stringify(DT)+"&TS="+Date.now();
+      var query = "/channel?A="+appId+"&D=web&U=suzie"+"&S=" + val.result.server.name+"&C="+channelId;
 
-			var query = "/channel?A=stalk&D=web&U=suzie"+"&S=" + val.result.server.name+"&C="+castAddressArr;
+      //console.log( val.result.server.url+ query );
 
-			//console.log( val.result.server.url+ query );
+      console.log( query );
 
-			console.log( query );
+      socket = io.connect("http://54.65.166.203:8080" + query, {
+        'sync disconnect on unload': true,
+            'force new connection': true
+      });
 
-			socket = io.connect("http://54.65.166.203:8080" + query, {
-				'sync disconnect on unload': true,
-      			'force new connection': true
-			});
+      socket.on('connect', function () {
+        console.log( 'connect' );
+        socket.on('message', function (data) {          
+          // template을 복사하여 새로운 DOM 객체를 생성합니다..
+          var newMessage = $( "#template" ).clone();
+          // 새로 만든 DOM 객체를 수정합니다.
+          newMessage.attr( "id", "template_"+ Date.now() );
+          var mg; 
+          if( data.UO.U == 'suzie'){
+            mg = "S : " + decodeURIComponent(data.MG)
+          } else {
+            mg = "R : " + decodeURIComponent(data.MG)
+          }
 
-			socket.on('connect', function () {
-				console.log( 'connect' );
-				socket.on('message', function (data) {					
-					// template을 복사하여 새로운 DOM 객체를 생성합니다..
-					var newMessage = $( "#template" ).clone();
-					// 새로 만든 DOM 객체를 수정합니다.
-					newMessage.attr( "id", "template_"+ Date.now() );
-					var mg; 
-					if( data.UO.U == 'suzie'){
-						mg = "S : " + decodeURIComponent(data.MG)
-					} else {
-						mg = "R : " + decodeURIComponent(data.MG)
-					}
+          newMessage.html( mg );
+          // 새로 만든 DOM 객체를 ul DOM에 추가합니다.
+          newMessage.appendTo( "#list" );
+          newMessage.show();
+          // 새로 생성한 DOM 객체에 class를 추가합니다.
+          $( ".list-group-item-success" ).each(function(){
+            $(this).removeClass( "list-group-item-success" );
+          });
+          newMessage.addClass( "list-group-item-success" );         
+        });
+      });
 
-					newMessage.html( mg );
-					// 새로 만든 DOM 객체를 ul DOM에 추가합니다.
-					newMessage.appendTo( "#list" );
-					newMessage.show();
-					// 새로 생성한 DOM 객체에 class를 추가합니다.
-					$( ".list-group-item-success" ).each(function(){
-						$(this).removeClass( "list-group-item-success" );
-					});
-					newMessage.addClass( "list-group-item-success" );					
-				});
-			});
+      setTimeout( function(){
+        console.log( operator );
+        var oid = operator.ID;
+        socket.emit( 'channel.join', {U: oid}, function(data){
 
-	    setTimeout( function(){
+          var info = {'NM' : 'info', 'DT' : {'C':channelId, 'NM':'www.gsshop.com'} };      
+          socket.emit( 'send', info );
+        });
 
-	      socket.emit( 'channel.join', {U: '3a8c654d-6241-48e9-8c40-da6d0e440a10'}, function(data){
-	      	console.log( data );
+      }, 1000);  
+    }
 
-	      	var info = {'NM' : 'info', 'DT' : {'C':castAddressArr, 'NM':'www.gsshop.com'} };	    
-	      	socket.emit( 'send', info );
-	      });
+    getOperator();
+  });
 
-	    }, 1000);			
-		}
-	});
+  var send = function( ){
+    var msg = $( "#message" ).val();
+    var dt = { 'UO' : {'U':'suzie', 'NM':'suzie'}, 'MG' : msg }
 
-	var send = function( ){
-		var msg = $( "#message" ).val();
-		var dt = { 'UO' : {'U':'suzie', 'NM':'suzie'}, 'MG' : msg }
+      var param = { 'DT' : dt, 'NM' : 'message' };
+      socket.emit( 'send', param );
 
-	    var param = { 'DT' : dt, 'NM' : 'message' };
-	    socket.emit( 'send', param );
-
-		$( "#message" ).val('');
-	};
+    $( "#message" ).val('');
+  };
 </script>
 </head>
 
 <body>
-	<div class="container">
-		
-		<div class="row" style="margin-top:20px;">
-			<div class="col-sm-12">
-				<div class="jumbotron">
-					<h1>Simple Channel Example</h1>
-					<p class="lead">Send a message with simple channel</p>
-					<p><a href="https://github.com/xpush/lib-xpush-web/blob/master/example/simple.html" class="btn btn-primary btn-lg" role="button">View source from github</a></p>
-				</div>
-				<div id="success" class="alert alert-success" role="alert" style="display:none">
-				</div>
+  <div class="container">
+    
+    <div class="row" style="margin-top:20px;">
+      <div class="col-sm-12">
+        <div class="jumbotron">
+          <h1>Simple Channel Example</h1>
+          <p class="lead">Send a message with simple channel</p>
+          <p><a href="https://github.com/xpush/lib-xpush-web/blob/master/example/simple.html" class="btn btn-primary btn-lg" role="button">View source from github</a></p>
+        </div>
+        <div id="success" class="alert alert-success" role="alert" style="display:none">
+        </div>
 
-				<div style="display:flex;">
-					<input class="form-control" placeholder="Input message" name="message" id="message" type="text" value=""/>
-					<button type="submit" id="form-button" class="btn btn-primary" style="margin-left:10px;" onclick="send();">Send</button>
-				</div>
-				<span class="help-block">Input message to send. The message will be displayed in under area</span>
-				
-				<div class="row">
-					<div class="col-sm-8">
-						<h2>Received message</h2>
-						<ul id="list" class="list-group">
-							<li id="template" class="list-group-item" style="display:none;">There is no message</li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
+        <div style="display:flex;">
+          <input class="form-control" placeholder="Input message" name="message" id="message" type="text" value=""/>
+          <button type="submit" id="form-button" class="btn btn-primary" style="margin-left:10px;" onclick="send();">Send</button>
+        </div>
+        <span class="help-block">Input message to send. The message will be displayed in under area</span>
+        
+        <div class="row">
+          <div class="col-sm-8">
+            <h2>Received message</h2>
+            <ul id="list" class="list-group">
+              <li id="template" class="list-group-item" style="display:none;">There is no message</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
 
-	</div>
+  </div>
+
+<script>//<![CDATA[
+document.write('<script src="//' + (location.hostname || 'localhost') + ':35729/livereload.js?snipver=1"><\/script>')
+//]]></script>
 </body>
 </html>
+
