@@ -66,8 +66,9 @@ angular.module('stalkApp')
               unreadMessages.push( newMessage );
             }
 
+            console.log( onMessageListener );
             if( onMessageListener ){
-              onMessageListener( newMessage, totalUnreadCount );
+              onMessageListener( channel, newMessage, totalUnreadCount );
             }
           });
 
@@ -84,8 +85,11 @@ angular.module('stalkApp')
       getMessages : function(channel){
         return channelMessages[channel];
       },
-      getSites : function(channel){
+      getSite : function(channel){
         return sites[channel];
+      },
+      getAllSites : function(){
+	return sites;
       },
       getUnreadMssages : function(channel){
         return unreadMessages[channel];

@@ -44,7 +44,7 @@
                         <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>
                     </ul>
                     <div class="tab-content">
-                        <div class="tab-pane" ng-repeat="tab in tabs">
+                        <div class="tab-pane active" ng-repeat="tab in tabs">
                             <!-- DIRECT CHAT PRIMARY -->
                             <div class="box box-primary direct-chat direct-chat-primary" id="tab_{{tab.C}}">
                                 <div class="box-header with-border">
@@ -65,7 +65,7 @@
                                 <div class="box-body">
                                     <div class="direct-chat-messages" id="chatArea" scroll-to-top-when="items_changed">
                                         <!-- Message. Default to the left -->
-                                        <div class="direct-chat-msg {{m.side}}" data-ng-repeat="m in tab.messages">
+                                        <div class="direct-chat-msg {{m.side}}" data-ng-repeat="m in messages">
                                             <div class="direct-chat-info pull-{{m.side}} clearfix">
                                                 <span class="direct-chat-name pull-{{m.side}}">{{m.userid}}</span>
                                                 <span class="direct-chat-timestamp pull-{{m.opposite}}">{{m.time}}</span>
@@ -160,3 +160,4 @@
     <!-- /.Left col -->
     <!-- right col (We are only adding the ID to make the widgets sortable)-->
 </div><!-- /.content-wrapper -->
+

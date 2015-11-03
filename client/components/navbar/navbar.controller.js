@@ -17,11 +17,12 @@ angular.module('stalkApp')
         console.log('login success : ', data);
         if( data ){
           Chat.init();
-          Chat.setOnMessageListener(function(data, totalUnreadCount ){
-            $scope.unreadCount = totalUnreadCount;
-            $scope.$apply();
-          });
         }
+
+        Chat.setOnMessageListener(function(channel, data, totalUnreadCount ){
+          $scope.unreadCount = totalUnreadCount;
+          $scope.$apply();
+        });
       });
     }).catch(function () {
       console.log('==== err =====');

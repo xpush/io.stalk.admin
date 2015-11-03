@@ -1,16 +1,28 @@
 'use strict';
 
 angular.module('stalkApp')
-  .controller('ChatCtrl', function ($rootScope, $scope, Auth, Chat) {
+  .controller('ChatCtrl', function ($rootScope, $scope, Auth,Chat) {
     $scope.tabs = [];
+    $scope.sites = [];
+
     $scope.currentChannel = "";
     $scope.messageText = "";
 
     $scope.channelIdArray = {};
     $scope.waitingChannelArray = [];
-    $scope.messages = {};
+    $scope.messages = [];
     $scope.currentUser;
     $rootScope.isLogin = false;
+
+    Auth.getCurrentUser().$promise.then(function (user) {
+      $scope.currentUser = user;
+    });
+ 
+    var sites = Chat.getAllSites();
+    console.log( sites );
+    for( var key in sites ){
+      $scope.waitingChannelArray = sites[key];
+    }
 
     $scope.sendMessage = function () {
       var msg = document.getElementById("inputMessage").value;
@@ -22,9 +34,21 @@ angular.module('stalkApp')
       document.getElementById("inputMessage").value = "";
     };
 
-    $scope.gotoChat = function (data) {
-      $scope.currentChannel = data.C;
-      var tab = document.getElementById("tab_" + data.C);
+    $scope.gotoChat = function (ch) {
+      $scope.currentChannel = ch.C;
+      $scope.tabs.length = 0;
+      $scope.tabs = [];
+      $scope.tabs.push( ch );
+  
+      Chat.setOnMessageListener(function(channel, data, totalUnreadCount ){
+
+        if( channel == $scope.currentChannel ){
+          $scope.messages.push( data );
+          $scope.$apply();
+        }
+      });
+
+      var tab = document.getElementById("tab_" + ch.C);
       angular.element(tab).parent().addClass("active");
     };
 
