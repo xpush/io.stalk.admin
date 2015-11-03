@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('stalkApp')
-  .controller('SiteCtrl', function ($scope, $stateParams, Site, toaster, Modal) {
+  .controller('SiteCtrl', function ($rootScope, $scope, $stateParams, Site, toaster, Modal) {
 
     $rootScope.isLogin = false;
     $scope.newSite = {};
