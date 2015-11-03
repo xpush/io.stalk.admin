@@ -122,7 +122,15 @@ exports.operators = function (req, res) {
     if (err) {
       return handleError(res, err);
     }
+
     if (!app) {
+      return res.status(404);
+    }
+
+    var referer = req.headers.referer;
+    var url = app.url;
+
+    if(referer.indexOf(url) < 0 ){
       return res.status(200).json({});
     }
 

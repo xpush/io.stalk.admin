@@ -7,9 +7,9 @@
 
 var LSTALK_CONFIGURATION = {
   APP: 'stalk',
-  STALK_URL: 'http://macbook.notdol.com:8000', // http://link.stalk.io:8080
-  APP_URL: 'http://macbook.notdol.com:8000',
-  CSS_URL: 'http://macbook.notdol.com:9000/stalk.css',
+  STALK_URL: 'http://dev.session.stalk.io:8000', // http://link.stalk.io:8080
+  APP_URL: 'http://dev.session.stalk.io:8000',
+  CSS_URL: 'http://dev.admin.stalk.io:9000/stalk.css',
   MESSAGE: {
     title: 'Leave us a Message',
     default_message: 'Questions? Come chat with us! We\'re here, send us a message!',
