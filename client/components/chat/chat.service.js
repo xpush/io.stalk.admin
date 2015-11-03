@@ -3,73 +3,93 @@
 angular.module('stalkApp')
   .factory('Chat', function Chat($rootScope, Auth) {
     var currentUser = {};
-    var channelIdArray = [];
-    var waitingChannelArray = [];
-    var tabs = [];
-    var currentChannel = "";
+
+    var activeChannel = "";
+    var channelMessages = {};
+    var channelInfos = {};
+    var unreadMessages = [];
+
+    var sites = {};
+    var onMessageListener;
+    var totalUnreadCount = 0;
+    var self;
 
     return {
 
       init: function () {
+        self = this;
         console.log( "event chat service" );
         Auth.getCurrentUser().$promise.then(function (user) {
           currentUser = user;
 
           $rootScope.xpush.on('info', function (channel, name, data) {
-            var searchInx = -1;
-            for (var inx = 0; searchInx < 0 && inx < waitingChannelArray.length; inx++) {
-              if (waitingChannelArray[inx].C == channel) {
-                searchInx = inx;
-              }
+            console.log( "=== info ===" );
+            console.log( data );
+            if( !channelInfos[channel] ){
+              channelInfos[channel] = data;
             }
-            if (searchInx == -1) {
-              channelIdArray[channel] = data;
-              waitingChannelArray.push(data);
-              tabs.push({'C': channel, 'messages': [], 'NM': data.NM});
+
+            var origin = data.OG;
+            if( !sites[origin] ){
+              sites[origin] = [];
+              sites[origin].push( data );
             }
           });
 
           //init xpush
           $rootScope.xpush.on('message', function (channel, name, data) {
+            console.log( "=== data ===" );
+            console.log( data );
+            if( !channelMessages[channel] ){
+              channelMessages[channel] = [];
+            }
 
-            // currentChannel
-            if (currentChannel == channel) {
-              var searchInx = -1;
-              for (var inx = 0; searchInx < 0 && inx < waitingChannelArray.length; inx++) {
-                if (waitingChannelArray[inx].C == channel) {
-                  searchInx = inx;
-                }
-              }
+            data.MG = decodeURIComponent(data.MG);
 
-              data.MG = decodeURIComponent(data.MG);
+            var side = "left";
+            var opposite = "right";
+            if (data.UO.U == currentUser.uid) {
+              side = "right";
+              opposite = "left";
+            }
 
-              var side = "left";
-              var opposite = "right";
-              if (data.UO.U == currentUser.uid) {
-                side = "right";
-                opposite = "left";
-              }
+            var time = self.timeToString(data.TS)[0];
+            var newMessage = {userid: data.UO.NM, time: time, message: data.MG, side: side, opposite: opposite, timestamp:data.TS};
 
-              var time = this.timeToString(data.TS)[0];
-              var newMessage = {userid: data.UO.NM, time: time, message: data.MG, side: side, opposite: opposite};
+            channelMessages[channel].push( newMessage );
 
-              if (searchInx > -1) {
-                tabs[searchInx].messages.push(newMessage);
-                $rootScope.$broadcast("items_changed");
-              }
+            if( activeChannel == channel ){
+
             } else {
-              if (!channelIdArray[channel]) {
-                //$scope.channelIdArray[channel] = true;
-                //$scope.waitingChannelArray.push( {'C': channel } );
-                //$scope.$apply();
-              }
+              totalUnreadCount = totalUnreadCount + 1;
+              $rootScope.totalUnreadCount = totalUnreadCount;
+              unreadMessages.push( newMessage );
+            }
+
+            if( onMessageListener ){
+              onMessageListener( newMessage, totalUnreadCount );
             }
           });
 
         }).catch(function () {
           console.log('==== err =====');
         });
+      },      
+      setActiveChannel : function(channel){        
+        activeChannel = channel;        
       },
+      setOnMessageListener : function(cb){
+        onMessageListener = cb;
+      },
+      getMessages : function(channel){
+        return channelMessages[channel];
+      },
+      getSites : function(channel){
+        return sites[channel];
+      },
+      getUnreadMssages : function(channel){
+        return unreadMessages[channel];
+      },      
       timeToString : function(timestamp){
         var cDate = new Date();
 
@@ -105,4 +125,5 @@ angular.module('stalkApp')
       }
     };
   });
+
 

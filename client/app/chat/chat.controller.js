@@ -12,66 +12,6 @@ angular.module('stalkApp')
     $scope.currentUser;
     $rootScope.isLogin = false;
 
-    Auth.getCurrentUser().$promise.then(function (user) {
-      $scope.currentUser = user;
-
-      $rootScope.xpush.on('info', function (channel, name, data) {
-        var searchInx = -1;
-        for (var inx = 0; searchInx < 0 && inx < $scope.waitingChannelArray.length; inx++) {
-          if ($scope.waitingChannelArray[inx].C == channel) {
-            searchInx = inx;
-          }
-        }
-        if (searchInx == -1) {
-          $scope.channelIdArray[channel] = data;
-          $scope.waitingChannelArray.push(data);
-          $scope.tabs.push({'C': channel, 'messages': [], 'NM': data.NM});
-          $scope.$apply();
-        }
-      });
-
-      //init xpush
-      $rootScope.xpush.on('message', function (channel, name, data) {
-
-        // currentChannel
-        if ($scope.currentChannel == channel) {
-          var searchInx = -1;
-          for (var inx = 0; searchInx < 0 && inx < $scope.waitingChannelArray.length; inx++) {
-            if ($scope.waitingChannelArray[inx].C == channel) {
-              searchInx = inx;
-            }
-          }
-
-          data.MG = decodeURIComponent(data.MG);
-
-          var side = "left";
-          var opposite = "right";
-          if (data.UO.U == $scope.currentUser.uid) {
-            side = "right";
-            opposite = "left";
-          }
-
-          var time = $scope.timeToString(data.TS)[0];
-          var newMessage = {userid: data.UO.NM, time: time, message: data.MG, side: side, opposite: opposite};
-
-          if (searchInx > -1) {
-            $scope.tabs[searchInx].messages.push(newMessage);
-            $scope.$broadcast("items_changed");
-            $scope.$apply();
-          }
-        } else {
-          if (!$scope.channelIdArray[channel]) {
-            //$scope.channelIdArray[channel] = true;
-            //$scope.waitingChannelArray.push( {'C': channel } );
-            //$scope.$apply();
-          }
-        }
-      });
-
-    }).catch(function () {
-      console.log('==== err =====');
-    });
-
     $scope.sendMessage = function () {
       var msg = document.getElementById("inputMessage").value;
       msg = encodeURIComponent(msg);

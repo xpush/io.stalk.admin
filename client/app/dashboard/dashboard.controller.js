@@ -1,12 +1,10 @@
 'use strict';
 
 angular.module('stalkApp')
-  .controller('DashboardCtrl', function ($rootScope, $scope, Auth, $interval) {
+  .controller('DashboardCtrl', function ($rootScope, $scope, $interval, Chat) {
+
     $rootScope.isLogin = false;
     $scope.message = 'Hello';
-
-    $scope.getCurrentUser = Auth.getCurrentUser;
-
 
     $scope.current_visitor = 0;
     $scope.current_operators = 0;

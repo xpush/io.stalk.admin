@@ -49,6 +49,8 @@ angular.module('stalkApp', [
     // xpush 를 생성한다.
     $rootScope.xpush = new XPush(XPUSH_SESSION, 'STALK', function (type, data) {
     }, false);
+   
+    $rootScope.totalUnreadCount = 0;
 
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$stateChangeStart', function (event, next) {

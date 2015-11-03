@@ -77,8 +77,9 @@
       setTimeout( function(){
         var oid = operator.UID;
         socket.emit( 'channel.join', {U: oid}, function(data){
-
-          var info = {'NM' : 'info', 'DT' : {'C':channelId, 'NM':'www.gsshop.com'} };      
+          var origin = document.origin;
+          console.log( origin );
+          var info = {'NM' : 'info', 'DT' : {'C':channelId, 'NM':'www.gsshop.com', 'OG':origin } };      
           socket.emit( 'send', info );
         });
 
