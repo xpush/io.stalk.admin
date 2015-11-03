@@ -8,6 +8,8 @@ angular.module('stalkApp')
     $scope.isDisable = true;
     $scope.sites = [];
 
+    $('#siteDetail').hide();
+
     $scope.addNewSite = function (form) {
       //@TODO Save Site and retireve again
       $scope.submitted = true;
@@ -77,6 +79,7 @@ angular.module('stalkApp')
       script += '<script src="http://static.stalk.io/widget.js"></script>';
       return script;
     };
+
     $scope._site = {};
 
     $scope.getCode = function (site) {
@@ -86,6 +89,9 @@ angular.module('stalkApp')
         $scope.isDisable = false;
       }
       $scope.script = generateScript(site);
+
+      $('#siteDetail').show();
+
     };
 
     $scope.updateSite = function () {
@@ -107,6 +113,7 @@ angular.module('stalkApp')
             //$location.path('/login');
           }
 
+          $('#siteDetail').show();
 
         })
         .catch(function (err) {
@@ -136,6 +143,7 @@ angular.module('stalkApp')
             //$location.path('/login');
           }
 
+          $('#siteDetail').hide();
 
         })
         .catch(function (err) {
