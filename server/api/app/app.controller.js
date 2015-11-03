@@ -145,6 +145,9 @@ exports.operators = function (req, res) {
       config.xpush.url + '/user/active',
       {form: {A: config.xpush.A, U: oid}},
       function (error, response, result) {
+
+        console.log(response.statusCode, error, result, oid);
+
         if (!error && response.statusCode == 200) {
           // user-register success
           var resData = JSON.parse(result);

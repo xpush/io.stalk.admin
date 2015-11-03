@@ -8,5 +8,11 @@ angular.module('stalkApp')
         templateUrl: 'app/dashboard/dashboard.html',
         controller: 'DashboardCtrl',
         authenticate: true
+      })
+      .state('main', {
+        url: '/',
+        templateUrl: 'app/dashboard/dashboard.html',
+        controller: 'DashboardCtrl',
+        authenticate: true
       });
   });
