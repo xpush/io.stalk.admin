@@ -19,10 +19,17 @@ angular.module('stalkApp')
     });
  
     var sites = Chat.getAllSites();
-    console.log( sites );
     for( var key in sites ){
       $scope.waitingChannelArray = sites[key];
     }
+
+    Chat.setOnInfoChangeListener( function(){
+      var sites = Chat.getAllSites();
+      for( var key in sites ){
+        $scope.waitingChannelArray = sites[key];
+        $scope.$apply();
+      }
+    });
 
     $scope.sendMessage = function () {
       var msg = document.getElementById("inputMessage").value;

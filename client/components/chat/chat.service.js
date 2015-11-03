@@ -11,6 +11,7 @@ angular.module('stalkApp')
 
     var sites = {};
     var onMessageListener;
+    var onInfoChangeListener;
     var totalUnreadCount = 0;
     var self;
 
@@ -23,8 +24,6 @@ angular.module('stalkApp')
           currentUser = user;
 
           $rootScope.xpush.on('info', function (channel, name, data) {
-            console.log( "=== info ===" );
-            console.log( data );
             if( !channelInfos[channel] ){
               channelInfos[channel] = data;
             }
@@ -34,12 +33,14 @@ angular.module('stalkApp')
               sites[origin] = [];
               sites[origin].push( data );
             }
+  
+            if( onInfoChangeListener ){
+              onInfoChangeListener();
+            }
           });
 
           //init xpush
           $rootScope.xpush.on('message', function (channel, name, data) {
-            console.log( "=== data ===" );
-            console.log( data );
             if( !channelMessages[channel] ){
               channelMessages[channel] = [];
             }
@@ -66,7 +67,6 @@ angular.module('stalkApp')
               unreadMessages.push( newMessage );
             }
 
-            console.log( onMessageListener );
             if( onMessageListener ){
               onMessageListener( channel, newMessage, totalUnreadCount );
             }
@@ -81,6 +81,9 @@ angular.module('stalkApp')
       },
       setOnMessageListener : function(cb){
         onMessageListener = cb;
+      },
+      setOnInfoChangeListener : function(cb){
+        onInfoChangeListener = cb;
       },
       getMessages : function(channel){
         return channelMessages[channel];
