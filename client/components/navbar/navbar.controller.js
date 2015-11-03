@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('stalkApp')
-  .controller('NavbarCtrl', function ($scope, $location, $rootScope, Auth) {
+  .controller('NavbarCtrl', function ($scope, $location, $rootScope, Auth, Chat) {
     $scope.menu = [{
       'title': 'Home',
       'link': '/'
@@ -12,8 +12,9 @@ angular.module('stalkApp')
       var pw = CryptoJS.enc.Base64.stringify(hash);
 
       $rootScope.xpush.login(user.uid, pw, 'WEB', function (err, data) {
-
         console.log('login success : ', data);
+        //if( data ) Chat.init();
+
       });
     }).catch(function () {
       console.log('==== err =====');

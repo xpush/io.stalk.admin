@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('stalkApp')
-  .controller('ChatCtrl', function ($rootScope, $scope, Auth) {
+  .controller('ChatCtrl', function ($rootScope, $scope, Auth, Chat) {
     $scope.tabs = [];
     $scope.currentChannel = "";
     $scope.messageText = "";
