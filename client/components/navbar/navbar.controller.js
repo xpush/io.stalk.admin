@@ -15,23 +15,29 @@ angular.module('stalkApp')
 
       $rootScope.xpush.login(user.uid, pw, 'WEB', function (err, data) {
         console.log('login success : ', data);
-        if (data) {
-          Chat.init();
 
-          Chat.setOnMessageListener(function (channel, data, totalUnreadCount) {
-            $scope.unreadCount = totalUnreadCount;
-            $scope.$apply();
-          });
-        } else {
-
-          console.log($rootScope.xpush.getServerAddress());
-          $rootScope.errorMessage = '<h3>Connection to server failed ! </h3><br>Check XPUSH session server (<b>' + $rootScope.xpush.getServerAddress() + '</b>)';
-
+        if(err){
+          if(err == 'ERR-SRV_NOT_EXISTED'){
+            $rootScope.errorMessage = '<h3>Connection to server failed ! </h3><br><b>Channel server is not existed.</b>';
+          }else if(err == 'ERR-SRV_CONNECT_FAILED'){
+            $rootScope.errorMessage = '<h3>Connection to server failed ! </h3><br>Check XPUSH session server ( <b>' + $rootScope.xpush.getServerAddress() + '</b> )';
+          }else{
+            $rootScope.errorMessage = '<h3>Server Error</h3>';
+          }
           $('#dashboardPage').hide();
           $('#navAside').hide();
           $('#navHeader').hide();
           $('#errorModal').modal('show');
 
+        }else {
+          if (data) {
+            Chat.init();
+
+            Chat.setOnMessageListener(function (channel, data, totalUnreadCount) {
+              $scope.unreadCount = totalUnreadCount;
+              $scope.$apply();
+            });
+          }
         }
 
       });
