@@ -223,7 +223,7 @@
           debug("xpush : login error", result);
 
           if(cb) cb(result.message);
-          alert('xpush : login error'+ result.message);
+
         }
       });
     };
