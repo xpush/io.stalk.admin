@@ -61,7 +61,7 @@ angular.module('stalkApp')
             }
 
             var time = self.timeToString(data.TS)[0];
-            var newMessage = {userid: data.UO.NM, time: time, message: data.MG, side: side, opposite: opposite, timestamp:data.TS};
+            var newMessage = {name: data.UO.NM, time: time, message: data.MG, side: side, opposite: opposite, timestamp:data.TS};
 
             if( data.I ){
               newMessage.image = data.I;
@@ -75,11 +75,7 @@ angular.module('stalkApp')
             } else {
               totalUnreadCount = totalUnreadCount + 1;
               $rootScope.totalUnreadCount = totalUnreadCount;
-              var chInfo = channelInfos[data.C];
-              if( chInfo ){
-                newMessage.title = chInfo.title;
-                newMessage.timeBefore = "1 min";
-              }
+              newMessage.timeBefore = "1 min";
             
               unreadMessages.push( newMessage );
             }
