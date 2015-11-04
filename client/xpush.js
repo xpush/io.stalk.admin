@@ -208,7 +208,12 @@
           if(cb) cb(err, result);
           return;
         }
+
         if(result.status == 'ok'){
+
+          if(!result.result.server){
+            if(cb) cb('ERR-SRV_NOT_EXISTED');
+          }
             debug("xpush : login success", result);
 
           // result.result = {"token":"HS6pNwzBoK","server":"215","serverUrl":"http://www.notdol.com:9990"};
@@ -222,7 +227,7 @@
         }else{
           debug("xpush : login error", result);
 
-          if(cb) cb(result.message);
+          if(cb) cb('ERR-SRV_CONNECT_FAILED');
 
         }
       });
@@ -1410,6 +1415,10 @@
       self._events = {};
       self._events['___global_event'] = globalEvent;
       self._userEventNames = [];
+    };
+
+    XPush.prototype.getServerAddress = function() {
+      return this.hostname;
     };
 
     /**

@@ -1,4 +1,4 @@
-<header class="main-header" ng-controller="NavbarCtrl">
+<header id="navHeader" class="main-header" ng-controller="NavbarCtrl">
     <!-- Logo -->
     <a href="/" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
@@ -153,7 +153,7 @@
 
 </header>
 
-<aside class="main-sidebar">
+<aside id="navAside" class="main-sidebar">
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
         <!-- Sidebar user panel -->
@@ -181,6 +181,32 @@
 </aside>
 
 <script src="assets/js/app.js"></script>
+
+
+<div id="errorModal" class="modal fade" role="dialog">
+
+    <div class="modal-danger">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"><i class="fa fa-warning text-red"></i> &nbsp; Oops! Something went wrong.</h4>
+                </div>
+                <div class="modal-body">
+                    <div ng-bind-html="errorMessage"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+</div>
 
 <!--div class="navbar navbar-default navbar-static-top" ng-controller="NavbarCtrl">
   <div class="container">

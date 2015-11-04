@@ -74,7 +74,7 @@ angular.module('stalkApp')
     };
     var generateScript = function (site) {
       var script = "<script>\n" + "window.stalkConfig = ";
-      var metaObj = {server: "http://dev.session.stalk.io:8000", id: site.key};
+      var metaObj = {"api_server": "http://dev.session.stalk.io:8000", id: site.key};
       script += JSON.stringify(metaObj, null, 4) + ";\n</script>\n";
       script += '<script src="http://static.stalk.io/widget.js"></script>';
       return script;

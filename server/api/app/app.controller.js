@@ -129,8 +129,8 @@ exports.operators = function (req, res) {
 
     var referer = req.headers.referer;
     var url = app.url;
-
-    if(referer.indexOf(url) < 0 ){
+    // to do ... referer가 없으면 조회 되지 않아야 한다.
+    if(!referer || referer.indexOf(url) < 0 ){
       return res.status(200).json({});
     }
 
