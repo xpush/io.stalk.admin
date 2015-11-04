@@ -8,6 +8,8 @@ angular.module('stalkApp')
     $scope.isDisable = true;
     $scope.sites = [];
 
+    $('#siteDetail').hide();
+
     $scope.addNewSite = function (form) {
       //@TODO Save Site and retireve again
       $scope.submitted = true;
@@ -71,13 +73,13 @@ angular.module('stalkApp')
         });
     };
     var generateScript = function (site) {
-      var script = "<script>window.stalkConfig = ";
-      var metaObj = {"api_server": "http://dev.session.stalk.io:8000", "id": site.key};
-      script += JSON.stringify(metaObj) + "</script>";
+      var script = "<script>\n" + "window.stalkConfig = ";
+      var metaObj = {server: "http://dev.session.stalk.io:8000", id: site.key};
+      script += JSON.stringify(metaObj, null, 4) + ";\n</script>\n";
       script += '<script src="http://static.stalk.io/widget.js"></script>';
       return script;
-      //return '<script src="http://stalk.io/stalk.js"></script>\n<script>STALK.init({app:' + site.name + ',url:' + site.url + ',id:' + site.key + '});</script>';
     };
+
     $scope._site = {};
 
     $scope.getCode = function (site) {
@@ -87,6 +89,9 @@ angular.module('stalkApp')
         $scope.isDisable = false;
       }
       $scope.script = generateScript(site);
+
+      $('#siteDetail').show();
+
     };
 
     $scope.updateSite = function () {
@@ -108,6 +113,7 @@ angular.module('stalkApp')
             //$location.path('/login');
           }
 
+          $('#siteDetail').show();
 
         })
         .catch(function (err) {
@@ -137,6 +143,7 @@ angular.module('stalkApp')
             //$location.path('/login');
           }
 
+          $('#siteDetail').hide();
 
         })
         .catch(function (err) {
