@@ -42,7 +42,8 @@ angular.module('stalkApp')
     };
 
     $scope.gotoChat = function (ch) {
-      $scope.currentChannel = ch.C;
+      console.log( ch );
+      $scope.currentChannel = ch.channel;
       $scope.tabs.length = 0;
       $scope.tabs = [];
       $scope.tabs.push( ch );

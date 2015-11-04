@@ -24,13 +24,15 @@ angular.module('stalkApp')
           currentUser = user;
 
           $rootScope.xpush.on('info', function (channel, name, data) {
+            console.log( data );
             if( !channelInfos[channel] ){
               channelInfos[channel] = data;
             }
 
-            var origin = data.OG;
+            var origin = data.origin;
             if( !sites[origin] ){
               sites[origin] = [];
+              data.channel = channel;
               sites[origin].push( data );
             }
   

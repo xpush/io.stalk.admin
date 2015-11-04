@@ -77,10 +77,18 @@
       setTimeout( function(){
         var oid = operator.UID;
         socket.emit( 'channel.join', {U: oid}, function(data){
-          var origin = document.origin;
-          console.log( origin );
-          var info = {'NM' : 'info', 'DT' : {'C':channelId, 'NM':'www.gsshop.com', 'OG':origin } };      
-          socket.emit( 'send', info );
+          var info = {};
+          info.title = document.title;
+          info.origin = document.origin;
+          info.url = location.href;
+          info.agent =  navigator.userAgent.toLowerCase(); 
+          info.browser = 'chrome'; 
+          info.os = 'Window';
+          info.refer = document.referrer; 
+          info.name = 'user01';
+
+          var message = {'NM' : 'info', 'DT' : info };     
+          socket.emit( 'send', message );
         });
 
       }, 1000);  
