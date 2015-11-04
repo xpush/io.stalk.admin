@@ -37,7 +37,7 @@ angular.module('stalkApp')
             }
   
             if( onInfoChangeListener ){
-              onInfoChangeListener();
+              onInfoChangeListener(data);
             }
           });
 
@@ -90,8 +90,8 @@ angular.module('stalkApp')
       getMessages : function(channel){
         return channelMessages[channel];
       },
-      getSite : function(channel){
-        return sites[channel];
+      getChannels : function(origin){
+        return sites[origin];
       },
       getAllSites : function(){
 	return sites;

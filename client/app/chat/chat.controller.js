@@ -8,8 +8,8 @@ angular.module('stalkApp')
     $scope.currentChannel = "";
     $scope.messageText = "";
 
-    $scope.channelIdArray = {};
-    $scope.waitingChannelArray = [];
+    $scope.siteArray = [];
+    $scope.siteIds = {};
     $scope.messages = [];
     $scope.currentUser;
     $rootScope.isLogin = false;
@@ -17,18 +17,39 @@ angular.module('stalkApp')
     Auth.getCurrentUser().$promise.then(function (user) {
       $scope.currentUser = user;
     });
- 
-    var sites = Chat.getAllSites();
-    for( var key in sites ){
-      $scope.waitingChannelArray = sites[key];
-    }
 
-    Chat.setOnInfoChangeListener( function(){
-      var sites = Chat.getAllSites();
-      for( var key in sites ){
-        $scope.waitingChannelArray = sites[key];
+    $scope.setSites = function(data){
+      var changed = false;
+      if( !data ){
+        var sites = Chat.getAllSites();
+        for( var origin in sites ){
+          $scope.siteArray.push( { 'origin':origin , 'channels':sites[origin] } );
+          $scope.siteIds[origin] = $scope.siteArray.length;
+          changed = true;
+        }
+      } else {
+
+        var origin = data.origin;
+        if( $scope.siteIds[origin] == undefined ){      
+          var channels = Chat.getChannels( origin );
+          $scope.siteArray.push( { 'origin':origin , 'channels':channels } );
+          $scope.siteIds[origin] = $scope.siteArray.length;
+        } else {
+          var inx = $scope.siteIds[origin];          
+          $scope.siteArray[inx].channels.push( data );
+        }
+        changed = true;
+      }
+       
+      if( changed ){
         $scope.$apply();
       }
+    };
+
+    $scope.setSites();
+ 
+    Chat.setOnInfoChangeListener( function(data){
+      $scope.setSites(data);
     });
 
     $scope.sendMessage = function () {
