@@ -63,6 +63,11 @@ angular.module('stalkApp')
             var time = self.timeToString(data.TS)[0];
             var newMessage = {userid: data.UO.NM, time: time, message: data.MG, side: side, opposite: opposite, timestamp:data.TS};
 
+            if( data.I ){
+              newMessage.image = data.I;
+            } else {
+              newMessage.image = 'https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/p160x160/10409695_904936939541182_6229440240546485630_n.jpg?oh=8936673cf42c58178f6910099b779b84&oe=56C4D0A6&__gda__=1455343643_3164d276c8a49ad4b9edeb010d6d58a2';
+            }
             channelMessages[channel].push( newMessage );
 
             if( activeChannel == channel ){
@@ -70,6 +75,12 @@ angular.module('stalkApp')
             } else {
               totalUnreadCount = totalUnreadCount + 1;
               $rootScope.totalUnreadCount = totalUnreadCount;
+              var chInfo = channelInfos[data.C];
+              if( chInfo ){
+                newMessage.title = chInfo.title;
+                newMessage.timeBefore = "1 min";
+              }
+            
               unreadMessages.push( newMessage );
             }
 
@@ -103,8 +114,8 @@ angular.module('stalkApp')
       getAllSites : function(){
 	return sites;
       },
-      getUnreadMssages : function(channel){
-        return unreadMessages[channel];
+      getUnreadMssages : function(){
+        return unreadMessages;
       },      
       timeToString : function(timestamp){
         var cDate = new Date();

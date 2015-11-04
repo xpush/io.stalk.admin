@@ -1,239 +1,142 @@
 <header id="navHeader" class="main-header" ng-controller="NavbarCtrl">
-    <!-- Logo -->
-    <a href="/" class="logo">
-        <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini"><img src="assets/images/logo/stalk_white.png" height="40px"/></span>
-        <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg"><img src="assets/images/logo/stalk_white.png" height="40px"/></span>
+  <!-- Logo -->
+  <a href="/" class="logo">
+    <!-- mini logo for sidebar mini 50x50 pixels -->
+    <span class="logo-mini"><img src="assets/images/logo/stalk_white.png" height="40px"/></span>
+    <!-- logo for regular state and mobile devices -->
+    <span class="logo-lg"><img src="assets/images/logo/stalk_white.png" height="40px"/></span>
 
+  </a>
+  <!-- Header Navbar: style can be found in header.less -->
+  <nav class="navbar navbar-static-top" role="navigation">
+    <!-- Sidebar toggle button-->
+    <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+      <span class="sr-only">Toggle navigation</span>
     </a>
-    <!-- Header Navbar: style can be found in header.less -->
-    <nav class="navbar navbar-static-top" role="navigation">
-        <!-- Sidebar toggle button-->
-        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-            <span class="sr-only">Toggle navigation</span>
-        </a>
 
-        <!--<div class="navbar-custom-menu" style="margin-top: 7px;margin-right: 7px;">-->
-        <!-- -->
-        <!--<a href="/chat" class="btn btn-social-icon btn-foursquare" style="background-color:#376682"><i class="fa fa-commenting-o"></i></a>-->
-        <!--<a ng-show="isLoggedIn()"  ng-click="logout()" class="btn btn-social-icon btn-foursquare" style="background-color:#D60E0E"><i class="fa fa-power-off"></i></a>-->
-        <!--</div>-->
-        <div class="navbar-custom-menu">
-            <ul class="nav navbar-nav">
-                <!-- Messages: style can be found in dropdown.less-->
-                <li class="dropdown messages-menu">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <i class="fa fa-envelope-o"></i>
-                        <span class="label label-success" ng-bind="unreadCount"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li class="header">You have <span ng-bind="unreadCount"></span> messages</li>
-                        <li>
-                            <!-- inner menu: contains the actual data -->
-                            <div class="slimScrollDiv"
-                                 style="position: relative; overflow: scroll; width: auto; height: 200px;">
-                                <ul class="menu" style="overflow: scroll; width: 100%; height: 200px;">
-                                    <li><!-- start message -->
-                                        <a href="#">
-                                            <div class="pull-left">
-                                                <img src="assets/images/user2-160x160.jpg" class="img-circle"
-                                                     alt="User Image">
-                                            </div>
-                                            <h4>
-                                                Support Team
-                                                <small><i class="fa fa-clock-o"></i> 5 mins</small>
-                                            </h4>
-                                            <p>Why not buy a new awesome theme?</p>
-                                        </a>
-                                    </li>
-                                    <!-- end message -->
-                                    <li>
-                                        <a href="#">
-                                            <div class="pull-left">
-                                                <img src="assets/images/user3-128x128.jpg" class="img-circle"
-                                                     alt="User Image">
-                                            </div>
-                                            <h4>
-                                                AdminLTE Design Team
-                                                <small><i class="fa fa-clock-o"></i> 2 hours</small>
-                                            </h4>
-                                            <p>Why not buy a new awesome theme?</p>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <div class="pull-left">
-                                                <img src="assets/images/user4-128x128.jpg" class="img-circle"
-                                                     alt="User Image">
-                                            </div>
-                                            <h4>
-                                                Developers
-                                                <small><i class="fa fa-clock-o"></i> Today</small>
-                                            </h4>
-                                            <p>Why not buy a new awesome theme?</p>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <div class="pull-left">
-                                                <img src="assets/images/user3-128x128.jpg" class="img-circle"
-                                                     alt="User Image">
-                                            </div>
-                                            <h4>
-                                                Sales Department
-                                                <small><i class="fa fa-clock-o"></i> Yesterday</small>
-                                            </h4>
-                                            <p>Why not buy a new awesome theme?</p>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <div class="pull-left">
-                                                <img src="assets/images/user4-128x128.jpg" class="img-circle"
-                                                     alt="User Image">
-                                            </div>
-                                            <h4>
-                                                Reviewers
-                                                <small><i class="fa fa-clock-o"></i> 2 days</small>
-                                            </h4>
-                                            <p>Why not buy a new awesome theme?</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <div class="slimScrollBar"
-                                     style="width: 3px; position: absolute; top: 0px; opacity: 0.4; display: block; border-radius: 7px; z-index: 99; right: 1px; background: rgb(0, 0, 0);"></div>
-                                <div class="slimScrollRail"
-                                     style="width: 3px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; opacity: 0.2; z-index: 90; right: 1px; background: rgb(51, 51, 51);"></div>
-                            </div>
-                        </li>
-
-                    </ul>
-                </li>
-                <!-- Notifications: style can be found in dropdown.less -->
-                <!-- Tasks: style can be found in dropdown.less -->
-                <!-- User Account: style can be found in dropdown.less -->
-                <li class="dropdown user user-menu">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                        <img src="assets/images/user2-160x160.jpg" class="user-image" alt="User Image">
-                        <span class="hidden-xs">{{ getCurrentUser().name }}</span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <!-- User image -->
-                        <li class="user-header">
-                            <img src="assets/images/user2-160x160.jpg" class="img-circle" alt="User Image">
-
-                            <p>
-                                {{ getCurrentUser().name }}
-                                <small>{{ getCurrentUser().email }}</small>
-                            </p>
-                        </li>
-                        <!-- Menu Body -->
-                        <!-- Menu Footer-->
-                        <li class="user-footer">
-                            <div class="pull-left">
-                                <a href="#" ng-click="profile();" class="btn btn-default btn-flat">Profile</a>
-                            </div>
-                            <div class="pull-right">
-                                <a href="#" ng-click="logout();" class="btn btn-default btn-flat">Log out</a>
-                            </div>
-                        </li>
-                    </ul>
-                </li>
-                <!-- Control Sidebar Toggle Button -->
-                <li>
-                    <a href="/chat"><i class="fa fa-commenting-o"></i> Chat</a>
-                    <!--<a href="/chat" class="btn btn-social-icon btn-foursquare" style="background-color:#376682"><i class="fa fa-commenting-o"></i></a>-->
-                </li>
-            </ul>
-        </div>
-
-    </nav>
-
-
+    <!--<div class="navbar-custom-menu" style="margin-top: 7px;margin-right: 7px;">-->
+    <!-- -->
+    <!--<a href="/chat" class="btn btn-social-icon btn-foursquare" style="background-color:#376682"><i class="fa fa-commenting-o"></i></a>-->
+    <!--<a ng-show="isLoggedIn()"  ng-click="logout()" class="btn btn-social-icon btn-foursquare" style="background-color:#D60E0E"><i class="fa fa-power-off"></i></a>-->
+    <!--</div>-->
+    <div class="navbar-custom-menu">
+      <ul class="nav navbar-nav">
+        <!-- Messages: style can be found in dropdown.less-->
+        <li class="dropdown messages-menu">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-envelope-o"></i>
+            <span class="label label-success" ng-bind="unreadCount"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li class="header">You have <span ng-bind="unreadCount"></span> messages</li>
+            <li>
+              <!-- inner menu: contains the actual data -->
+              <ul class="menu">
+                <li ng-repeat="m in unreadMessage"><!-- start message -->
+                  <a href="#">
+                    <div class="pull-left">
+                      <img ng-src="{{m.image}}" class="img-circle" alt="{{m.userid}}">
+                    </div>
+                    <h4>
+                      {{m.title}}
+                      <small><i class="fa fa-clock-o"></i> {{m.timeBefore}}</small>
+                    </h4>
+                    <p>{{m.message}}</p>
+                  </a>
+                </li><!-- end message -->                        
+              </ul>
+            </li>
+            <li class="footer"><a href="/chat">View all</a></li>
+          </ul>
+        </li>
+        <!-- Notifications: style can be found in dropdown.less -->
+        <!-- Tasks: style can be found in dropdown.less -->
+        <!-- User Account: style can be found in dropdown.less -->
+        <li class="dropdown user user-menu">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" >
+            <img src="assets/images/user2-160x160.jpg" class="user-image" alt="User Image">
+            <span class="hidden-xs">{{ getCurrentUser().name }}</span>
+          </a>
+          <ul class="dropdown-menu">
+            <!-- User image -->
+            <li class="user-header">
+              <img src="assets/images/user2-160x160.jpg" class="img-circle" alt="User Image">
+              <p>
+                {{ getCurrentUser().name }}
+                <small>{{ getCurrentUser().email }}</small>
+              </p>
+            </li>
+            <!-- Menu Body -->
+            <!-- Menu Footer-->
+            <li class="user-footer">
+              <div class="pull-left">
+                <a href="#" ng-click="profile();" class="btn btn-default btn-flat">Profile</a>
+              </div>
+              <div class="pull-right">
+                <a href="#" ng-click="logout();" class="btn btn-default btn-flat">Log out</a>
+              </div>
+            </li>
+          </ul>
+        </li>
+        <!-- Control Sidebar Toggle Button -->
+        <li>
+          <a href="/chat"><i class="fa fa-commenting-o"></i> Chat</a>
+          <!--<a href="/chat" class="btn btn-social-icon btn-foursquare" style="background-color:#376682"><i class="fa fa-commenting-o"></i></a>-->
+        </li>
+      </ul>
+    </div>
+  </nav>
 </header>
 
 <aside id="navAside" class="main-sidebar">
-    <!-- sidebar: style can be found in sidebar.less -->
-    <section class="sidebar">
-        <!-- Sidebar user panel -->
-        <!-- sidebar menu: : style can be found in sidebar.less -->
-        <ul class="sidebar-menu">
-            <li class="header">MAIN NAVIGATION</li>
-            <li class="treeview">
-                <a href="/dashboard">
-                    <i class="fa fa-dashboard"></i> <span>Realtime Manager</span> <i
-                        class="fa fa-angle-left pull-right"></i>
-                </a>
-            </li>
-            <li class="treeview">
-                <a href="/site">
-                    <i class="fa fa-laptop"></i> <span>SITE</span> <i class="fa fa-angle-left pull-right"></i>
-                </a>
-            </li>
-            <li>
+  <!-- sidebar: style can be found in sidebar.less -->
+  <section class="sidebar">
+    <!-- Sidebar user panel -->
+    <!-- sidebar menu: : style can be found in sidebar.less -->
+    <ul class="sidebar-menu">
+      <li class="header">MAIN NAVIGATION</li>
+      <li class="treeview">
+        <a href="/dashboard">
+          <i class="fa fa-dashboard"></i> <span>Realtime Manager</span> <i
+                class="fa fa-angle-left pull-right"></i>
+        </a>
+      </li>
+      <li class="treeview">
+        <a href="/site">
+          <i class="fa fa-laptop"></i> <span>SITE</span> <i class="fa fa-angle-left pull-right"></i>
+        </a>
+      </li>
+      <li>
 
-            </li>
-
-        </ul>
-    </section>
+      </li>
+    </ul>
+  </section>
     <!-- /.sidebar -->
 </aside>
 
 <script src="assets/js/app.js"></script>
 
-
 <div id="errorModal" class="modal fade" role="dialog">
 
-    <div class="modal-danger">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title"><i class="fa fa-warning text-red"></i> &nbsp; Oops! Something went wrong.</h4>
-                </div>
-                <div class="modal-body">
-                    <div ng-bind-html="errorMessage"></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-            <!-- /.modal-content -->
+  <div class="modal-danger">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title"><i class="fa fa-warning text-red"></i> &nbsp; Oops! Something went wrong.</h4>
         </div>
-        <!-- /.modal-dialog -->
+        <div class="modal-body">
+          <div ng-bind-html="errorMessage"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+        <!-- /.modal-content -->
     </div>
-    <!-- /.modal -->
-
-</div>
-
-<!--div class="navbar navbar-default navbar-static-top" ng-controller="NavbarCtrl">
-  <div class="container">
-    <div class="navbar-header">
-      <button class="navbar-toggle" type="button" ng-click="isCollapsed = !isCollapsed">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a href="/" class="navbar-brand">stalk</a>
-    </div>
-    <div collapse="isCollapsed" class="navbar-collapse collapse" id="navbar-main">
-      <ul class="nav navbar-nav">
-        <li ng-repeat="item in menu" ng-class="{active: isActive(item.link)}">
-            <a ng-href="{{item.link}}">{{item.title}}</a>
-        </li>
-        <li ng-show="isAdmin()" ng-class="{active: isActive('/admin')}"><a href="/admin">Admin</a></li>
-      </ul>
-
-      <ul class="nav navbar-nav navbar-right">
-        <li ng-hide="isLoggedIn()" ng-class="{active: isActive('/signup')}"><a href="/signup">Sign up</a></li>
-        <li ng-hide="isLoggedIn()" ng-class="{active: isActive('/login')}"><a href="/login">Login</a></li>
-        <li ng-show="isLoggedIn()"><p class="navbar-text">Hello {{ getCurrentUser().name }}</p> </li>
-        <li ng-show="isLoggedIn()" ng-class="{active: isActive('/settings')}"><a href="/settings"><span class="glyphicon glyphicon-cog"></span></a></li>
-        <li ng-show="isLoggedIn()" ng-class="{active: isActive('/logout')}"><a href="" ng-click="logout()">Logout</a></li>
-      </ul>
-    </div>
+      <!-- /.modal-dialog -->
   </div>
-</div-->
+  <!-- /.modal -->
+</div>
