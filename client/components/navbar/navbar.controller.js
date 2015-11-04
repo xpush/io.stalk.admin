@@ -23,7 +23,9 @@ angular.module('stalkApp')
             $scope.$apply();
           });
         }else{
-          toaster.pop('error', "Network Error", "Connection to server failed.");
+          if( err ){
+            toaster.pop('error', "Network Error", "Connection to server failed.");
+          }
         }
 
       });

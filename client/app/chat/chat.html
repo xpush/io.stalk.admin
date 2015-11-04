@@ -42,7 +42,7 @@
                 <div class="nav-tabs-custom">
                     <ul class="nav nav-tabs">
                         <li ng-repeat="tab in tabs"><a href="#" data-toggle="tab"
-                                                       ng-click="gotoChat(tab)">{{tab.NM}}</a></li>
+                                                       ng-click="gotoChat(tab)">{{tab.title}}</a></li>
                         <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>
                     </ul>
                     <div class="tab-content">
@@ -50,7 +50,7 @@
                             <!-- DIRECT CHAT PRIMARY -->
                             <div class="box box-primary direct-chat direct-chat-primary" id="tab_{{tab.C}}">
                                 <div class="box-header with-border">
-                                    <h3 class="box-title">Direct Chat</h3>
+                                    <h3 class="box-title">{{tab.name}}</h3>
 
                                     <div class="box-tools pull-right">
                                         <span data-toggle="tooltip" title="3 New Messages"
@@ -120,11 +120,11 @@
                     </div>
                     <div class="box-body no-padding">
                         <ul class="nav nav-pills nav-stacked">
-                            <li><a href="#"><i class="fa fa-inbox"></i> Started : 1, June 10:50 AM. </a></li>
-                            <li><a href="#"><i class="fa fa-envelope-o"></i> DNS : 127.0.0.1</a></li>
-                            <li><a href="#"><i class="fa fa-file-text-o"></i> Path : http://stalk.io</a></li>
-                            <li><a href="#"><i class="fa fa-file-text-o"></i> OS : Chrome, Window 7</a></li>
-                            <li><a href="#"><i class="fa fa-file-text-o"></i> Location : Seoul, Korea</a></li>
+                            <li><a href="#"><i class="fa fa-inbox"></i> Started : {{currentChannel.startTime}}</a></li>
+                            <li><a href="#"><i class="fa fa-envelope-o"></i> URL : {{currentChannel.url}}</a></li>
+                            <li><a href="#"><i class="fa fa-file-text-o"></i> Path : {{currentChannel.origin}}</a></li>
+                            <li><a href="#"><i class="fa fa-file-text-o"></i> OS : {{currentChannel.os}}</a></li>
+                            <li><a href="#"><i class="fa fa-file-text-o"></i> Browser : {{currentChannel.browser}}</a></li>
                         </ul>
                     </div>
                     <!-- /.box-body -->

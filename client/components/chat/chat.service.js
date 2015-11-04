@@ -24,20 +24,24 @@ angular.module('stalkApp')
           currentUser = user;
 
           $rootScope.xpush.on('info', function (channel, name, data) {
-            console.log( data );
+            var newChannelFlag = false;
             if( !channelInfos[channel] ){
               channelInfos[channel] = data;
+              newChannelFlag = true;
             }
 
             var origin = data.origin;
             if( !sites[origin] ){
               sites[origin] = [];
-              data.channel = channel;
-              sites[origin].push( data );
             }
+
+            if( newChannelFlag ){
+              data.startTime = new Date( data.TS ).toLocaleTimeString();
+              sites[origin].push( data );
   
-            if( onInfoChangeListener ){
-              onInfoChangeListener(data);
+              if( onInfoChangeListener ){
+                onInfoChangeListener(data);
+              }
             }
           });
 
@@ -88,6 +92,9 @@ angular.module('stalkApp')
         onInfoChangeListener = cb;
       },
       getMessages : function(channel){
+        if( !channelMessages[channel] ){
+          channelMessages[channel] = [];
+        }
         return channelMessages[channel];
       },
       getChannels : function(origin){

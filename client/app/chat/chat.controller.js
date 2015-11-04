@@ -5,7 +5,7 @@ angular.module('stalkApp')
     $scope.tabs = [];
     $scope.sites = [];
 
-    $scope.currentChannel = "";
+    $scope.currentChannel = {};
     $scope.messageText = "";
 
     $scope.siteArray = [];
@@ -21,31 +21,33 @@ angular.module('stalkApp')
     $scope.setSites = function(data){
       var changed = false;
       if( !data ){
+   
         var sites = Chat.getAllSites();
         for( var origin in sites ){
-          $scope.siteArray.push( { 'origin':origin , 'channels':sites[origin] } );
           $scope.siteIds[origin] = $scope.siteArray.length;
-          changed = true;
+          $scope.siteArray.push( { 'origin':origin , 'channels':sites[origin] } );
         }
       } else {
 
         var origin = data.origin;
         if( $scope.siteIds[origin] == undefined ){      
           var channels = Chat.getChannels( origin );
-          $scope.siteArray.push( { 'origin':origin , 'channels':channels } );
           $scope.siteIds[origin] = $scope.siteArray.length;
+          $scope.siteArray.push( { 'origin':origin , 'channels':channels } )
         } else {
           var inx = $scope.siteIds[origin];          
           $scope.siteArray[inx].channels.push( data );
         }
         changed = true;
       }
-       
+  
       if( changed ){
         $scope.$apply();
+        changed = false;
       }
     };
 
+    // Init Site List
     $scope.setSites();
  
     Chat.setOnInfoChangeListener( function(data){
@@ -58,22 +60,23 @@ angular.module('stalkApp')
 
       var DT = {UO: {U: $scope.currentUser.uid, NM: $scope.currentUser.name}, MG: msg};
 
-      $rootScope.xpush.send($scope.currentChannel, 'message', DT);
+      $rootScope.xpush.send($scope.currentChannel.C, 'message', DT);
       document.getElementById("inputMessage").value = "";
     };
 
     $scope.gotoChat = function (ch) {
-      console.log( ch );
-      $scope.currentChannel = ch.channel;
+      $scope.currentChannel = ch;
       $scope.tabs.length = 0;
       $scope.tabs = [];
       $scope.tabs.push( ch );
+   
+      $scope.messages = Chat.getMessages( ch.C );
   
       Chat.setOnMessageListener(function(channel, data, totalUnreadCount ){
 
-        if( channel == $scope.currentChannel ){
-          $scope.messages.push( data );
+        if( channel == $scope.currentChannel.C ){
           $scope.$apply();
+          $scope.$broadcast('items_changed');
         }
       });
 
