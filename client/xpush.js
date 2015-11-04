@@ -1412,6 +1412,10 @@
       self._userEventNames = [];
     };
 
+    XPush.prototype.getServerAddress = function() {
+      return this.hostname;
+    };
+
     /**
      * event stack에 등록되어 있는 함수를 호출한다.
      * 읽지 않은 메세지가 존재하면, 초기화 중인 상태이므로 message가 오더라도 해당 event의 function을 즉시 발생시키지 않고 stack에 쌓는다.

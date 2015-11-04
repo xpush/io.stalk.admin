@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('stalkApp')
-  .controller('NavbarCtrl', function ($scope, $location, $rootScope, toaster, Auth, Chat) {
+  .controller('NavbarCtrl', function ($scope, $location, $rootScope, Auth, Chat) {
     $scope.menu = [{
       'title': 'Home',
       'link': '/'
@@ -15,15 +15,23 @@ angular.module('stalkApp')
 
       $rootScope.xpush.login(user.uid, pw, 'WEB', function (err, data) {
         console.log('login success : ', data);
-        if( data ){
+        if (data) {
           Chat.init();
 
-          Chat.setOnMessageListener(function(channel, data, totalUnreadCount ){
+          Chat.setOnMessageListener(function (channel, data, totalUnreadCount) {
             $scope.unreadCount = totalUnreadCount;
             $scope.$apply();
           });
-        }else{
-          toaster.pop('error', "Network Error", "Connection to server failed.");
+        } else {
+
+          console.log($rootScope.xpush.getServerAddress());
+          $rootScope.errorMessage = '<h3>Connection to server failed ! </h3><br>Check XPUSH session server (<b>' + $rootScope.xpush.getServerAddress() + '</b>)';
+
+          $('#dashboardPage').hide();
+          $('#navAside').hide();
+          $('#navHeader').hide();
+          $('#errorModal').modal('show');
+
         }
 
       });
