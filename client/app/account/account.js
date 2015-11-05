@@ -23,6 +23,11 @@ angular.module('stalkApp')
         templateUrl: 'app/account/signup/signup.html',
         controller: 'SignupCtrl'
       })
+      .state('signupdirect', { // constant.js NEED_EMAIL_CONFIRM==false
+        url: '/signupdirect',
+        templateUrl: 'app/account/signupdirect/signupdirect.html',
+        controller: 'SignupDirectCtrl'
+      })
       .state('settings', {
         url: '/settings',
         templateUrl: 'app/account/settings/settings.html',

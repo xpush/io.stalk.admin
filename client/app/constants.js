@@ -4,5 +4,6 @@ angular.module('stalk.constants', [])
     version: '1.0 BETA',
     appKey : 'STALK'
   })
-  .constant('XPUSH_SESSION', 'http://dev.session.stalk.io:8000');
+  .constant('XPUSH_SESSION', 'http://dev.session.stalk.io:8000')
+  .constant('NEED_EMAIL_CONFIRM', false);
 

@@ -14,6 +14,8 @@ router.post('/activate', controller.activate);
 router.post('/reactivate', controller.reconfirm);
 
 router.post('/signup', controller.create);
+router.post('/signupdirect', controller.createDirect);
+
 router.post('/signin', controller.signin);
 
 router.get('/me', auth.isAuthenticated(), controller.me);

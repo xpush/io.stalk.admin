@@ -167,7 +167,7 @@ h6,
 }
 /* General Links */
 a {
-  color: #3c8dbc;
+  color: #00AEEF;
 }
 a:hover,
 a:active,
@@ -3207,10 +3207,13 @@ table.text-center th {
 }
 .login-box-body,
 .register-box-body {
-  background: #fff;
-  padding: 20px;
-  border-top: 0;
+  /*background: #fff;*/
+  padding: 30px;
+  /*border-top: 0;*/
   color: #666;
+  border-color: #00aeef;
+  border-style: solid;
+  border-radius: 10px;
 }
 .login-box-body .form-control-feedback,
 .register-box-body .form-control-feedback {

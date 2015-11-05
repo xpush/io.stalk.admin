@@ -51,6 +51,29 @@ angular.module('stalkApp')
         return deferred.promise;
       },
 
+      signUpDirect: function (user, callback) {
+        var cb = callback || angular.noop;
+        var deferred = $q.defer();
+
+        $http.post('/api/auths/signupdirect', {
+          name: user.name,
+          email: user.email,
+          password: user.password
+        }).
+        success(function (data) {
+          deferred.resolve(data);
+          return cb();
+        }).
+        error(function (err) {
+          deferred.reject(err);
+          return cb(err);
+        }.bind(this));
+
+        return deferred.promise;
+      },
+
+
+
 
       /**
        * Authenticate user and save token

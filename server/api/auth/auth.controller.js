@@ -152,6 +152,49 @@ exports.create = function (req, res) {
   });
 };
 
+exports.createDirect = function (req, res) {
+  var email = req.body.email;
+  var name = req.body.name;
+  var pass = req.body.password;
+
+  console.log(" /api/auths - post : ", email);
+  var uid = UT.createUniqueId();
+
+  var saveData = {
+    email: email
+  };
+
+  Auth.findOne(saveData, function (err, auth) {
+    if (err) {
+      return handleError(res, err);
+    }
+    if (!auth) {
+      saveData.uid = uid;
+      saveData.name = name;
+      saveData.pass = UT.encrypto(pass);
+      saveData.uid =  undefined;
+      saveData.active = true;
+
+
+      Auth.create(saveData, function (err, auth) {
+        if (err) {
+          return handleError(res, err);
+        }
+
+        XPUSH.signup(auth.uid, UT.encrypto(auth.uid), "WEB", function(){
+          console.log("**** xpush : signup complete");
+          console.log(arguments);
+          //if (config.auth && config.auth.email) EMAIL.sendVerifyMail(auth.name, auth.email, auth.uid);
+          return res.status(201).json(auth);
+        })
+
+      });
+    }  else {
+      res.send({status: 'USER-EXIST', message: DICT.USER_EXIST});
+    }
+  });
+};
+
 exports.reconfirm = function (req, res) {
   var email = req.body.email;
   var uid = uuid.v4();

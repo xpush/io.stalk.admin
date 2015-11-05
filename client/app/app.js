@@ -44,7 +44,7 @@ angular.module('stalkApp', [
     };
   })
 
-  .run(function ($rootScope, $location, Auth, XPUSH_SESSION) {
+  .run(function ($rootScope, $location, Auth, XPUSH_SESSION,NEED_EMAIL_CONFIRM) {
 
     // xpush 를 생성한다.
     $rootScope.xpush = new XPush(XPUSH_SESSION, 'STALK', function (type, data) {
@@ -54,6 +54,8 @@ angular.module('stalkApp', [
     $rootScope.xpush.enableDebug(true);
 
     $rootScope.totalUnreadCount = 0;
+
+    $rootScope.needEmailConfirm = NEED_EMAIL_CONFIRM;
 
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$stateChangeStart', function (event, next) {
