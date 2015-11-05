@@ -8,10 +8,12 @@ angular.module('stalkApp')
     }];
 
     $scope.unreadCount = 0;
+    $scope.unreadMessage = [];
 
     Auth.getCurrentUser().$promise.then(function (user) {
       var hash = CryptoJS.HmacSHA256(user.uid, "sha256");
       var pw = CryptoJS.enc.Base64.stringify(hash);
+
 
       $rootScope.xpush.login(user.uid, pw, 'WEB', function (err, data) {
         console.log('login success : ', data);
@@ -32,6 +34,7 @@ angular.module('stalkApp')
         }else {
           if (data) {
             Chat.init();
+            $scope.unreadMessage = Chat.getUnreadMssages();
 
             Chat.setOnMessageListener(function (channel, data, totalUnreadCount) {
               $scope.unreadCount = totalUnreadCount;
