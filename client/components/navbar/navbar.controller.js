@@ -31,20 +31,17 @@ angular.module('stalkApp')
           $('#navHeader').hide();
           $('#errorModal').modal('show');
 
-        }else {
+        } else {
           if (data) {
             Chat.init();
           }
-          $scope.unreadMessage = Chat.getUnreadMssages();
+          $scope.unreadMessage = Chat.getAllUnreadMssages();
 
-          $rootScope.$on( "$onMessage",function (event, channel, data, totalUnreadCount) {
-
-            if( $location.path().indexOf('dash') > -1 ){
-              $scope.unreadCount = totalUnreadCount;
-              $scope.$apply();
-            }
+          $rootScope.$on( "$onMessage",function(event, channel, data ){
+            $scope.unreadMessage = Chat.getAllUnreadMssages();  
+            $scope.unreadCount = $scope.unreadMessage.length;
+            $scope.$apply();
           });
-          
         }
 
       });

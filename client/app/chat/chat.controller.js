@@ -64,21 +64,16 @@ angular.module('stalkApp')
       document.getElementById("inputMessage").value = "";
     };
 
-    $rootScope.$on( "$onMessage",function(event, channel, data, totalUnreadCount ){
+    $scope.getUnreadCnt = function( channel ){
+      return Chat.getUnreadMessages( channel ).length;
+    };
+
+    $rootScope.$on( "$onMessage",function(event, channel, data ){
 
       if( channel == $scope.currentChannel.C ){
         $scope.$apply();
         $scope.$broadcast('items_changed');
       } else {
-        for( var inx in $scope.siteArray ){
-          for ( var jnx in $scope.siteArray[inx].channels ){
-            if( $scope.siteArray[inx].channels[jnx].C == channel ){
-              $scope.siteArray[inx].channels[jnx].unreadCnt += 1;
-              $scope.$apply();
-              break;
-            }
-          }
-        }
       }
     });
 
@@ -88,6 +83,7 @@ angular.module('stalkApp')
       $scope.tabs = [];
       $scope.tabs.push( ch );
    
+      Chat.clearUnreadMessages( ch.C );
       $scope.messages = Chat.getMessages( ch.C );
 
       var tab = document.getElementById("tab_" + ch.C);

@@ -7,7 +7,7 @@ angular.module('stalkApp')
     var activeChannel = "";
     var channelMessages = {};
     var channelInfos = {};
-    var unreadMessages = [];
+    var unreadMessages = {};
 
     var sites = {};
     var onMessageListener;
@@ -40,7 +40,6 @@ angular.module('stalkApp')
                 data.name = data.title;
               }
               data.startTime = new Date( data.TS ).toLocaleTimeString();
-              data.unreadCnt = 0;
               sites[origin].push( data );
   
               if( onInfoChangeListener ){
@@ -53,6 +52,7 @@ angular.module('stalkApp')
           $rootScope.xpush.on('message', function (channel, name, data) {
             if( !channelMessages[channel] ){
               channelMessages[channel] = [];
+              unreadMessages[channel] = [];
             }
 
             data.MG = decodeURIComponent(data.MG);
@@ -81,7 +81,7 @@ angular.module('stalkApp')
               $rootScope.totalUnreadCount = totalUnreadCount;
               newMessage.timeBefore = "1 min";
             
-              unreadMessages.push( newMessage );
+              unreadMessages[channel].push( newMessage );
             }
 
             $rootScope.$broadcast( "$onMessage", channel, newMessage, totalUnreadCount );
@@ -109,8 +109,19 @@ angular.module('stalkApp')
       getAllSites : function(){
 	return sites;
       },
-      getUnreadMssages : function(){
-        return unreadMessages;
+      clearUnreadMessages : function(channel){
+        unreadMessages[channel].length = 0;
+      },
+      getUnreadMessages : function(channel){
+        return unreadMessages[channel];
+      },
+      getAllUnreadMssages : function(){
+        var allUnreadMessages = [];
+        for( var key in unreadMessages ){
+           allUnreadMessages = allUnreadMessages.concat( unreadMessages[key] );
+
+        }
+        return allUnreadMessages;
       },      
       timeToString : function(timestamp){
         var cDate = new Date();
