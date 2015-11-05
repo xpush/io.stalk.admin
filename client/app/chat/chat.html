@@ -13,8 +13,11 @@
         </ul>
             <ul class="sidebar-menu" ng-repeat="site in siteArray">
               <li class="header" style="color:#BDD5E0" ><b>{{site.origin}}</b></li>        
-              <li ng-repeat="channel in site.channels"><a href="#" ng-click="gotoChat(channel)">
-                <i class="fa fa-circle-o text-red"></i> <span>{{channel.name}}</span></a>
+              <li ng-repeat="channel in site.channels">
+                <a href="#" ng-click="gotoChat(channel)">
+                  <i class="fa fa-circle-o text-red"></i> <span>{{channel.name}}</span>
+                  <span class="label label-primary pull-right" ng-bind="channel.unreadCnt"></span>
+                </a>
               </li>
             </ul>
     </section>

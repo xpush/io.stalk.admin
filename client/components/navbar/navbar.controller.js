@@ -34,13 +34,17 @@ angular.module('stalkApp')
         }else {
           if (data) {
             Chat.init();
-            $scope.unreadMessage = Chat.getUnreadMssages();
+          }
+          $scope.unreadMessage = Chat.getUnreadMssages();
 
-            Chat.setOnMessageListener(function (channel, data, totalUnreadCount) {
+          $rootScope.$on( "$onMessage",function (event, channel, data, totalUnreadCount) {
+
+            if( $location.path().indexOf('dash') > -1 ){
               $scope.unreadCount = totalUnreadCount;
               $scope.$apply();
-            });
-          }
+            }
+          });
+          
         }
 
       });

@@ -36,7 +36,11 @@ angular.module('stalkApp')
             }
 
             if( newChannelFlag ){
+              if( !data.name ){
+                data.name = data.title;
+              }
               data.startTime = new Date( data.TS ).toLocaleTimeString();
+              data.unreadCnt = 0;
               sites[origin].push( data );
   
               if( onInfoChangeListener ){
@@ -80,9 +84,7 @@ angular.module('stalkApp')
               unreadMessages.push( newMessage );
             }
 
-            if( onMessageListener ){
-              onMessageListener( channel, newMessage, totalUnreadCount );
-            }
+            $rootScope.$broadcast( "$onMessage", channel, newMessage, totalUnreadCount );
           });
 
         }).catch(function () {
@@ -91,9 +93,6 @@ angular.module('stalkApp')
       },      
       setActiveChannel : function(channel){        
         activeChannel = channel;        
-      },
-      setOnMessageListener : function(cb){
-        onMessageListener = cb;
       },
       setOnInfoChangeListener : function(cb){
         onInfoChangeListener = cb;
