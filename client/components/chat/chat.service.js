@@ -113,6 +113,9 @@ angular.module('stalkApp')
         unreadMessages[channel].length = 0;
       },
       getUnreadMessages : function(channel){
+        if( !unreadMessages[channel] ){
+          unreadMessages[channel] = [];
+        }
         return unreadMessages[channel];
       },
       getAllUnreadMssages : function(){

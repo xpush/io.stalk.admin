@@ -9,7 +9,8 @@ var userSchema = new Schema({
   ID: {type: String, required: true, trim: true}, // user id
   NM: {type: String, trim: true},                 // user name
   P: {type: String, trim: true},                 // user picture
-  R: {type: String, trim: true}
+  R: {type: String, trim: true},
+  I: {type: String, trim: true}
   //,status: { type: String, trim: true}  -- to redis db;
 });
 

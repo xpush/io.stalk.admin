@@ -2714,10 +2714,11 @@ table.text-center th {
   padding: 5px 10px;
   background: #d2d6de;
   border: 1px solid #d2d6de;
-  margin: 5px 0 0 5px;
+  margin: 5px 0 0 50px;
   color: #444444;
+  text-overflow: ellipsis;
+  word-break: break-word;
   width: 40%;
-  word-break: break-all;
 }
 .direct-chat-text:after,
 .direct-chat-text:before {
@@ -2763,7 +2764,10 @@ table.text-center th {
   display: block;
   margin-bottom: 2px;
   font-size: 12px;
-  width: 40%;
+  width: -webkit-calc(40% + 50px);
+  width: -moz-calc(40% + 50px);
+  height: -o-calc(40% + 50px);
+  height: calc(40% + 50px);
 }
 
     

@@ -58,7 +58,7 @@ angular.module('stalkApp')
       var msg = document.getElementById("inputMessage").value;
       msg = encodeURIComponent(msg);
 
-      var DT = {UO: {U: $scope.currentUser.uid, NM: $scope.currentUser.name}, MG: msg};
+      var DT = {UO: {U: $scope.currentUser.uid, NM: $scope.currentUser.name, I: $scope.currentUser.image}, MG: msg};
 
       $rootScope.xpush.send($scope.currentChannel.C, 'message', DT);
       document.getElementById("inputMessage").value = "";
