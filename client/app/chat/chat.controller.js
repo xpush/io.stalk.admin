@@ -19,10 +19,13 @@ angular.module('stalkApp')
     });
 
     $scope.setSites = function(data){
+
+
       var changed = false;
       if( !data ){
    
         var sites = Chat.getAllSites();
+
         for( var origin in sites ){
           $scope.siteIds[origin] = $scope.siteArray.length;
           $scope.siteArray.push( { 'origin':origin , 'channels':sites[origin] } );
@@ -30,7 +33,7 @@ angular.module('stalkApp')
       } else {
 
         var origin = data.origin;
-        if( $scope.siteIds[origin] == undefined ){      
+        if( $scope.siteIds[origin] == undefined ){
           var channels = Chat.getChannels( origin );
           $scope.siteIds[origin] = $scope.siteArray.length;
           $scope.siteArray.push( { 'origin':origin , 'channels':channels } )

@@ -172,7 +172,7 @@ exports.createDirect = function (req, res) {
       saveData.uid = uid;
       saveData.name = name;
       saveData.pass = UT.encrypto(pass);
-      saveData.uid =  undefined;
+      saveData.uid =  uid;
       saveData.active = true;
 
 
@@ -180,7 +180,6 @@ exports.createDirect = function (req, res) {
         if (err) {
           return handleError(res, err);
         }
-
         XPUSH.signup(auth.uid, UT.encrypto(auth.uid), "WEB", function(){
           console.log("**** xpush : signup complete");
           console.log(arguments);

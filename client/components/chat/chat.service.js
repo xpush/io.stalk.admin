@@ -54,7 +54,6 @@ angular.module('stalkApp')
               channelMessages[channel] = [];
               unreadMessages[channel] = [];
             }
-
             data.MG = decodeURIComponent(data.MG);
 
             var side = "left";

@@ -128,9 +128,12 @@ exports.operators = function (req, res) {
     }
 
     var referer = req.headers.referer;
+
     var url = app.url;
-    // to do ... referer가 없으면 조회 되지 않아야 한다.
+
+    // TODO ... referer가 없으면 조회 되지 않아야 한다.
     if(!referer || referer.indexOf(url) < 0 ){
+
       return res.status(200).json({});
     }
 
@@ -156,11 +159,14 @@ exports.operators = function (req, res) {
             var returnJson = {};
             returnJson['app'] = config.xpush.A;
             returnJson['server'] = config.xpush.url;
+            console.log(resData);
+            console.log(oid);
+
+            console.log(resData.result[oid]);
 
             if (!resData.result || !resData.result[oid]) return res.status(200).json(returnJson);
 
             returnJson['operator'] = app.users[0];
-
             return res.status(200).json(returnJson);
 
           } else if ("ERR-INTERNAL" == resData.status && "ERR-USER_EXIST" == resData.message) {

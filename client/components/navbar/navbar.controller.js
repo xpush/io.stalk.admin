@@ -16,6 +16,7 @@ angular.module('stalkApp')
 
 
       $rootScope.xpush.login(user.uid, pw, 'WEB', function (err, data) {
+        console.log('login success : ', err);
         console.log('login success : ', data);
 
         if(err){
