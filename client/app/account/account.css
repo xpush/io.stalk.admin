@@ -29,3 +29,7 @@ html, body, div.wrapper {
 .form-control-feedback {
     top: 0px;
 }
+
+.login-box-body, .register-box-body{
+    border-width: 4px;
+}
