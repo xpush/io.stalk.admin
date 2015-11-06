@@ -51,9 +51,7 @@ angular.module('stalkApp', [
     }, false);
 
     // for debugging
-    $rootScope.xpush.enableDebug(true);
-
-    $rootScope.totalUnreadCount = 0;
+    //$rootScope.xpush.enableDebug(true);
 
     $rootScope.needEmailConfirm = NEED_EMAIL_CONFIRM;
 

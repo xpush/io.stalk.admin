@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('stalkApp')
-  .controller('NavbarCtrl', function ($scope, $location, $rootScope, Auth, Chat) {
+  .controller('NavbarCtrl', function ($scope, $location, $rootScope, Auth, Chat, NotificationManager) {
     $scope.menu = [{
       'title': 'Home',
       'link': '/'
@@ -16,8 +16,7 @@ angular.module('stalkApp')
 
 
       $rootScope.xpush.login(user.uid, pw, 'WEB', function (err, data) {
-        console.log('login success : ', err);
-        console.log('login success : ', data);
+        console.log( 'login result : ' + err  );
 
         if(err){
           if(err == 'ERR-SRV_NOT_EXISTED'){
@@ -42,6 +41,9 @@ angular.module('stalkApp')
             $scope.unreadMessage = Chat.getAllUnreadMssages();  
             $scope.unreadCount = $scope.unreadMessage.length;
             $scope.$apply();
+            var noti = data;
+            noti.channel = channel;
+            NotificationManager.notify( data );           
           });
         }
 

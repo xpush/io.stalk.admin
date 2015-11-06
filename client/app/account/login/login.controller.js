@@ -1,10 +1,12 @@
 'use strict';
 
 angular.module('stalkApp')
-  .controller('LoginCtrl', function ($rootScope, $scope, Auth, $location, $window) {
+  .controller('LoginCtrl', function ($rootScope, $scope, Auth, $location, $window, NotificationManager) {
     $scope.user = {};
     $scope.errors = {};
     $rootScope.isLogin = true;
+
+    NotificationManager.start();
 
     $scope.login = function (form) {
       $scope.submitted = true;

@@ -83,7 +83,7 @@ angular.module('stalkApp')
               unreadMessages[channel].push( newMessage );
             }
 
-            $rootScope.$broadcast( "$onMessage", channel, newMessage, totalUnreadCount );
+            $rootScope.$emit( "$onMessage", channel, newMessage, totalUnreadCount );
           });
 
         }).catch(function () {
@@ -159,6 +159,115 @@ angular.module('stalkApp')
         return result;  
       }
     };
-  });
+  })
+.factory('NotificationManager', function($window){
+  var notificationsSupport = ('Notification' in window) || ('mozNotification' in navigator);
+  var notificationsCnt = 0;
+  var notificationsInx = 0;
+  var win = angular.element($window);
+  var notificationsShown = {};
+
+  return {
+    start: start,
+    notify: notify,
+    clear:clearNotification
+  };
+
+  function start () {
+    if (!notificationsSupport) {
+      return false;
+    }
+
+    if ('Notification' in window && Notification.permission !== 'granted' && Notification.permission !== 'denied') {
+      win.on('click', requestPermission );
+    }
+
+    try {
+      win.on('beforeunload', clearNotification);
+    } catch (e) {}
+  }
+
+  function requestPermission() {
+    Notification.requestPermission(function (permission) {
+      if(!('permission' in Notification)) {
+        Notification.permission = permission;
+      }
+    });
+    win.off('click', requestPermission );
+  }
+
+  function notify (data) {
+    notificationsCnt++;
+
+    if (!notificationsSupport ||
+        'Notification' in window && Notification.permission !== 'granted') {
+      return false;
+    }
+
+    var idx = ++notificationsInx,
+        channel = data.channel,
+        notification;
+
+    if ('Notification' in window) {
+      notification = new Notification(data.name, {
+        icon: data.image, body: data.message
+      });
+    } else if ('mozNotification' in navigator) {
+      notification = navigator.mozNotification.createNotification(data.name, data.message, data.image);
+    } else {
+      return;
+    }
+
+    notification.onclick = function () {
+      notification.close();
+
+      var $stateParams = {};
+      var channelId = data.channel;
+
+      closeChannelNotification( channelId );
+    };
+
+    if (notification.show) {
+      notification.show();
+    }
+
+    if( !notificationsShown[channel] ){
+      notificationsShown[channel] = [];
+    }
+
+    notificationsShown[channel].push( notification );
+  };
+
+  function closeChannelNotification( channel ) {
+    angular.forEach(notificationsShown[channel], function (notification) {
+      try {
+        if (notification.close) {
+          notification.close();
+        }
+
+        if( notificationsCnt > 0 ){
+          notificationsCnt--;
+        }
+      } catch (e) {}
+    });
+
+    notificationsShown[channel] = [];
+  }
+
+  function clearNotification() {
+    for( var channel in notificationsShown ){
+      angular.forEach(notificationsShown[channel], function (notification) {
+        try {
+          if (notification.close) {
+            notification.close();
+          }
+        } catch (e) {}
+      });
+    }
+
+    notificationsShown = {};
+    notificationsCnt = 0;
+  }
+});
 
 
