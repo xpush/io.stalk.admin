@@ -17,7 +17,7 @@
               <li ng-repeat="channel in site.channels">
                 <a href="#" ng-click="gotoChat(channel)">
                   <i class="fa fa-circle-o text-red"></i> <span>{{channel.name}}</span>
-                  <span class="label label-primary pull-right">{{ getUnreadCnt(channel.C) }}</span>
+                  <span ng-if="getUnreadCnt(channel.C) > 0" class="label label-primary pull-right">{{ getUnreadCnt(channel.C) }}</span>
                 </a>
               </li>
             </ul>
@@ -164,5 +164,3 @@
     <!-- /.Left col -->
     <!-- right col (We are only adding the ID to make the widgets sortable)-->
 </div><!-- /.content-wrapper -->
-
-
