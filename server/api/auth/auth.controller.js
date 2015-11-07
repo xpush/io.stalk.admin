@@ -8,6 +8,7 @@ var UT = require('./../../components/utils');
 var config = require('./../../config/environment');
 var XPUSH = require("./../../xpush-node-client")(config.xpush);
 var request = require('request');
+var satelize = require('satelize');
 
 var EMAIL;
 if (config.auth && config.auth.email) EMAIL = require('./../../components/email');
@@ -312,6 +313,28 @@ exports.destroy = function (req, res) {
   });
 };
 
+exports.getLatLng = function(req, res, next){
+  var ip = req.params.ip;
+
+  satelize.satelize({ip:ip}, function(err, geoData) {
+    // process err
+
+    // if data is JSON, we may wrap it in js object
+    var obj = JSON.parse(geoData);
+    res.json(obj);
+  });
+}
+exports.getGeoLocation = function(req, res, next){
+  var ip = req.params.ip;
+
+  satelize.satelize({ip:ip}, function(err, geoData) {
+    // process err
+
+    // if data is JSON, we may wrap it in js object
+    var obj = JSON.parse(geoData);
+    res.json(obj);
+  });
+}
 function handleError(res, err) {
   return res.status(500).send(err);
 }
