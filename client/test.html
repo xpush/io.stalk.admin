@@ -16,7 +16,8 @@
   var xpushSession;
   var operator;
   var host = "http://localhost:9000";
-  var key = "5f62d270-84e4-11e5-a246-57299af16335";
+  //var key = "5f62d270-84e4-11e5-a246-57299af16335";
+  var key = "93827700-8510-11e5-9f0c-f5ada554473";
 
   $(document).ready(function () {
     var channelId = "ch00001";
@@ -76,7 +77,7 @@
       });
 
       setTimeout( function(){
-        var oid = operator.UID;
+        var oid = operator.uid;
         socket.emit( 'channel.join', {U: oid}, function(data){
 
           var info = {};

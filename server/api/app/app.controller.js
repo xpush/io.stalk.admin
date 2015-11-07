@@ -2,6 +2,7 @@
 
 var _ = require('lodash');
 var App = require('./app.model');
+var Auth = require('../auth/auth.model');
 var uuid = require('node-uuid');
 var config = require('./../../config/environment');
 var XPUSH = require("./../../xpush-node-client")(config.xpush);
@@ -17,7 +18,7 @@ exports.chooseApplication = function (req, res) {
       return res.json(404, 'does not exist');
     }
     app.users.forEach(function (user) {
-      if (user.ID == req.user.login) {
+      if (user == req.user.uid) {
         req.session.appKey = key;
         return res.json(200, app);
       }
@@ -31,9 +32,9 @@ exports.chooseApplication = function (req, res) {
 
 // Get list of apps
 exports.index = function (req, res) {
-  var userId = req.user.email;
+  var userId = req.user.uid;
 
-  App.find({"users.ID": userId}, function (err, apps) {
+  App.find({"users": userId}, function (err, apps) {
     if (err) {
       return handleError(res, err);
     }
@@ -60,13 +61,7 @@ exports.create = function (req, res) {
 
   var user = req.user;
 
-  body.users = [{
-    UID: user.uid,
-    ID: user.email,
-    NM: user.name,
-    P: user.image,
-    R: 'admin'
-  }];
+  body.users = [user.uid];
 
   App.create(body, function (err, app) {
     if (err) {
@@ -124,7 +119,7 @@ exports.operators = function (req, res) {
     }
 
     if (!app) {
-      return res.status(404);
+      return res.status(200).json({});
     }
 
     var referer = req.headers.referer;
@@ -141,14 +136,13 @@ exports.operators = function (req, res) {
     if (!app.users || app.users.length < 1) {
       return res.send(200).json({});
     }
-    var oid = app.users[0].UID;
+
+    var oid = app.users[0];
 
     request.post(
       config.xpush.url + '/user/active',
       {form: {A: config.xpush.A, U: oid}},
       function (error, response, result) {
-
-        console.log(response.statusCode, error, result, oid);
 
         if (!error && response.statusCode == 200) {
           // user-register success
@@ -158,21 +152,30 @@ exports.operators = function (req, res) {
             var returnJson = {};
             returnJson['app'] = config.xpush.A;
             returnJson['server'] = config.xpush.url;
-            console.log(resData);
 
             if (!resData.result || !resData.result[oid]) return res.status(200).json(returnJson);
-            
-            if( !app.users[0].P ){
-              app.users[0].P = 'https://raw.githubusercontent.com/xpush/io.stalk.admin/master/client/assets/images/face.png';
-            }
+              Auth.findOne( {uid:oid}, {'name':1, 'image':1, 'email':'1', 'uid':'1', '_id' :'0'} ).exec(function (err, user) {
+                console.log( user );
+              if( err ){
+                console.log( err );
+                return handleError(res, err);
+              }
 
-            returnJson['operator'] = app.users[0];  
-            returnJson['clientIp'] = req.headers['x-forwarded-for'] || 
-                 req.connection.remoteAddress || 
-                 req.socket.remoteAddress ||
-                 req.connection.socket.remoteAddress;
-            return res.status(200).json(returnJson);
+              if( user ){
+                if( !user.image ){
+                  user.image = 'https://raw.githubusercontent.com/xpush/io.stalk.admin/master/client/assets/images/face.png';
+                }
 
+                user._id = undefined;
+
+                returnJson['operator'] = user;  
+                returnJson['clientIp'] = req.headers['x-forwarded-for'] || 
+                     req.connection.remoteAddress || 
+                     req.socket.remoteAddress ||
+                     req.connection.socket.remoteAddress;
+                return res.status(200).json(returnJson);
+              }
+            });
           } else if ("ERR-INTERNAL" == resData.status && "ERR-USER_EXIST" == resData.message) {
             return handleError(res, result);
           } else {
