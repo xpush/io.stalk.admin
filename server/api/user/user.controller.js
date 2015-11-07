@@ -49,6 +49,8 @@ exports.show = function (req, res, next) {
   });
 };
 
+
+
 /**
  * Deletes a user
  * restriction: 'admin'

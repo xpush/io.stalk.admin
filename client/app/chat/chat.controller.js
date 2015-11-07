@@ -38,7 +38,6 @@ angular.module('stalkApp')
         }
         changed = true;
       }
-  
       if( changed ){
         $scope.$apply();
         changed = false;
@@ -76,6 +75,7 @@ angular.module('stalkApp')
     });
 
     $scope.gotoChat = function (ch) {
+
       $scope.currentChannel = ch;
       $scope.tabs.length = 0;
       $scope.tabs = [];
@@ -86,7 +86,19 @@ angular.module('stalkApp')
 
       var tab = document.getElementById("tab_" + ch.C);
       angular.element(tab).parent().addClass("active");
+
+      var ip = ch.ip;
+      Chat.getGeoLocation(ip).then(function (geo){
+        var lng = geo.longitude;
+        var lat = geo.latitude;
+        var name = geo.country;
+
+        setWorldMap(lat, lng, name);
+      });
+
     };
+
+
 
     $scope.timeToString = function (timestamp) {
 
@@ -124,6 +136,26 @@ angular.module('stalkApp')
     };
   });
 
+function setWorldMap(lat, lng, name){
+  $('#world-map').vectorMap({
+    map: 'world_mill_en',
+    scaleColors: ['#C8EEFF', '#0071A4'],
+    normalizeFunction: 'polynomial',
+    hoverOpacity: 0.7,
+    hoverColor: false,
+    markerStyle: {
+      initial: {
+        fill: '#F8E23B',
+        stroke: '#383f47'
+      }
+    },
+    backgroundColor: 'transparent',
+    markers: [
+      {latLng: [lat, lng], name: name},
+
+    ]
+  });
+}
 
 function currentTime() {
   var d = new Date;

@@ -213,6 +213,31 @@ angular.module('stalkApp')
           }.bind(this));
 
         return deferred.promise;
-      }    
+      },
+      /**
+       * Get GEO Location by user ip
+       *
+       * @param  {Object}   user     - user info
+       * @param  {Function} callback - optional
+       * @return {Promise}
+       */
+      getGeoLocation: function (ip, callback) {
+        var cb = callback || angular.noop;
+        var deferred = $q.defer();
+
+        $http.get('/api/auths/geo/', {
+          ip: ip
+        }).
+          success(function (data) {
+            deferred.resolve(data);
+            return cb();
+          }).
+          error(function (err) {
+            deferred.reject(err);
+            return cb(err);
+          }.bind(this));
+
+        return deferred.promise;
+      }
     };
   });

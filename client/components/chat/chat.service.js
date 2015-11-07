@@ -21,6 +21,7 @@ angular.module('stalkApp')
           currentUser = user;
 
           $rootScope.xpush.on('info', function (channel, name, data) {
+
             var newChannelFlag = false;
             if( !channelInfos[channel] ){
               channelInfos[channel] = data;
@@ -101,6 +102,9 @@ angular.module('stalkApp')
       },
       getAllSites : function(){
         return sites;
+      },
+      getGeoLocation : function(ip){
+        return Auth.getGeoLocation(ip);
       },
       clearUnreadMessages : function(channel){
         unreadMessages[channel].length = 0;
