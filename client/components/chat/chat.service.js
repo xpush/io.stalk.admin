@@ -65,7 +65,7 @@ angular.module('stalkApp')
             if( data.I ){
               newMessage.image = data.I;
             } else {
-              newMessage.image = 'https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/p160x160/10409695_904936939541182_6229440240546485630_n.jpg?oh=8936673cf42c58178f6910099b779b84&oe=56C4D0A6&__gda__=1455343643_3164d276c8a49ad4b9edeb010d6d58a2';
+              newMessage.image = 'https://raw.githubusercontent.com/xpush/io.stalk.admin/master/client/assets/images/face.png';
             }
             channelMessages[channel].push( newMessage );
 
