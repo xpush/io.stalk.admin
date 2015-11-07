@@ -115,30 +115,6 @@ angular.module('stalkApp')
         $cookieStore.remove('token');
         currentUser = {};
       },
-
-      /**
-       * Create a new user
-       *
-       * @param  {Object}   user     - user info
-       * @param  {Function} callback - optional
-       * @return {Promise}
-       */
-      createUser: function (user, callback) {
-        var cb = callback || angular.noop;
-        console.log(user);
-
-        return User.save(user,
-          function (data) {
-            $cookieStore.put('token', data.token);
-            currentUser = User.get();
-            return cb(user);
-          },
-          function (err) {
-            this.logout();
-            return cb(err);
-          }.bind(this)).$promise;
-      },
-
       /**
        * Change password
        *
@@ -209,6 +185,34 @@ angular.module('stalkApp')
        */
       getToken: function () {
         return $cookieStore.get('token');
-      }
+      },
+
+      /**
+       * UpdateUser a new user
+       *
+       * @param  {Object}   user     - user info
+       * @param  {Function} callback - optional
+       * @return {Promise}
+       */
+      updateUser: function (user, callback) {
+        var cb = callback || angular.noop;
+        var deferred = $q.defer();
+
+        $http.put('/api/auths/'+user.uid, {
+          name: user.name,
+          image: user.image,
+        }).
+          success(function (data) {
+            currentUser = User.get();
+            deferred.resolve(data);
+            return cb();
+          }).
+          error(function (err) {
+            deferred.reject(err);
+            return cb(err);
+          }.bind(this));
+
+        return deferred.promise;
+      }    
     };
   });

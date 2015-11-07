@@ -268,8 +268,17 @@ exports.update = function (req, res) {
   if (req.body._id) {
     delete req.body._id;
   }
-  Auth.findById(req.params.id, function (err, auth) {
+
+  var saveData = {
+    //email: email,
+    uid: req.params.id
+  };
+
+  Auth.findOne(saveData, function (err, auth) {
+
+    console.log( req.params.id );
     if (err) {
+      console.log( err );
       return handleError(res, err);
     }
     if (!auth) {

@@ -54,13 +54,13 @@
         <!-- User Account: style can be found in dropdown.less -->
         <li class="dropdown user user-menu">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" >
-            <img src="assets/images/user2-160x160.jpg" class="user-image" alt="User Image">
+            <img ng-src="{{ getCurrentUser().image }}" class="user-image" alt="User Image">
             <span class="hidden-xs">{{ getCurrentUser().name }}</span>
           </a>
           <ul class="dropdown-menu">
             <!-- User image -->
             <li class="user-header">
-              <img src="assets/images/user2-160x160.jpg" class="img-circle" alt="User Image">
+              <img src="{{ getCurrentUser().image }}" class="img-circle" alt="User Image">
               <p>
                 {{ getCurrentUser().name }}
                 <small>{{ getCurrentUser().email }}</small>
@@ -140,3 +140,5 @@
   </div>
   <!-- /.modal -->
 </div>
+
+<div ng-include="'components/navbar/navbar.modal_profile.html'"></div>

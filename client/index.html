@@ -155,58 +155,6 @@
 <script src="components/site/site.service.js"></script>
 <!-- endinjector -->
 <!-- endbuild -->
-<div id="profileModal" class="modal fade" role="dialog">
 
-  <div class="modal-default">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                  aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">Edit Profile</h4>
-        </div>
-        <div class="modal-body">
-          <form role="form" name="form" class="form-horizontal" novalidate>
-            <div class="box-body">
-              <div class="form-group has-feedback" ng-class="{ 'has-success': form.site_name.$valid && submitted, 'has-error': form.site_name.$invalid && submitted }">
-                <label for="site_name">User Name</label>
-                <input type="text" class="form-control" id="site_name" name="site_name" ng-model="currentUser.name" placeholder="Enter your Name" required>
-
-                <p class="help-block" ng-show="form.site_name.$error.required && submitted">
-                    What's your name?
-                </p>
-              </div>
-
-              <div class="form-group has-feedback" ng-class="{ 'has-success': form.site_url.$valid && submitted,'has-error': form.site_url.$invalid && submitted }">
-                <label for="site_url">Site Url</label>
-                <input type="url" class="form-control" id="site_url" name="site_url"
-                       ng-model="newSite.site_url" placeholder="http://yoursite" required>
-
-                <p class="help-block" ng-show="form.site_name.$error.required && submitted">
-                  What's your site url?
-                </p>
-
-                <p class="help-block" ng-show="form.site_url.$error.url && submitted">
-                   Doesn't look like a valid url.
-                </p>
-              </div>
-            </div>
-            <!-- /.box-body -->
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-          <button type="button" id="addNewSite" ng-click="addNewSite(form)" class="btn btn-info">
-            Save
-          </button>
-        </div>
-      </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-  </div>
-    <!-- /.modal -->
-
-</div>
 </body>
 </html>
