@@ -174,7 +174,7 @@ exports.createDirect = function (req, res) {
       saveData.pass = UT.encrypto(pass);
       saveData.uid =  uid;
       saveData.active = true;
-
+      saveData.image = "https://raw.githubusercontent.com/xpush/io.stalk.admin/master/client/assets/images/face.png";
 
       Auth.create(saveData, function (err, auth) {
         if (err) {

@@ -64,7 +64,7 @@ exports.create = function (req, res) {
     UID: user.uid,
     ID: user.email,
     NM: user.name,
-    P: "",
+    P: user.image,
     R: 'admin'
   }];
 
@@ -141,7 +141,6 @@ exports.operators = function (req, res) {
     if (!app.users || app.users.length < 1) {
       return res.send(200).json({});
     }
-    console.log( app.users );
     var oid = app.users[0].UID;
 
     request.post(
@@ -160,13 +159,14 @@ exports.operators = function (req, res) {
             returnJson['app'] = config.xpush.A;
             returnJson['server'] = config.xpush.url;
             console.log(resData);
-            console.log(oid);
-
-            console.log(resData.result[oid]);
 
             if (!resData.result || !resData.result[oid]) return res.status(200).json(returnJson);
 
-            returnJson['operator'] = app.users[0];
+            if( !app.users[0].P ){
+              app.users[0].P = 'https://raw.githubusercontent.com/xpush/io.stalk.admin/master/client/assets/images/face.png';
+            }
+
+            returnJson['operator'] = app.users[0];         
             return res.status(200).json(returnJson);
 
           } else if ("ERR-INTERNAL" == resData.status && "ERR-USER_EXIST" == resData.message) {
