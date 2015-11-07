@@ -167,6 +167,11 @@ exports.operators = function (req, res) {
             if (!resData.result || !resData.result[oid]) return res.status(200).json(returnJson);
 
             returnJson['operator'] = app.users[0];
+            returnJson['clientIp'] = req.headers['x-forwarded-for'] || 
+                 req.connection.remoteAddress || 
+                 req.socket.remoteAddress ||
+                 req.connection.socket.remoteAddress;
+
             return res.status(200).json(returnJson);
 
           } else if ("ERR-INTERNAL" == resData.status && "ERR-USER_EXIST" == resData.message) {
