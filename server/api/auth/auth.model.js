@@ -9,7 +9,7 @@ var AuthSchema = new Schema({
   uid: String,
   pass: {type: String, default: undefined},
   active: {type: Boolean, default: false},
-  image: {type: String },
+  image: {type: String},
   ts: {type: Date, default: new Date()}
 });
 
