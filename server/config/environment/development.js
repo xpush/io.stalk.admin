@@ -4,7 +4,7 @@ module.exports = {
 
   // MongoDB connection options
   mongo: {
-    uri: 'mongodb://dev.session.stalk.io:27017/STALK'
+    uri: 'mongodb://localhost:27017/STALK'
   },
 
   // XPUSH server

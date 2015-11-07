@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('stalkApp')
-  .controller('NavbarCtrl', function ($scope, $location, $rootScope, Auth, Chat, NotificationManager) {
+  .controller('NavbarCtrl', function ($scope, $location, $rootScope, Auth, Chat) {
     $scope.menu = [{
       'title': 'Home',
       'link': '/'
@@ -9,11 +9,13 @@ angular.module('stalkApp')
 
     $scope.unreadCount = 0;
     $scope.unreadMessage = [];
+    $rootScope.currentUser;
 
     Auth.getCurrentUser().$promise.then(function (user) {
       var hash = CryptoJS.HmacSHA256(user.uid, "sha256");
       var pw = CryptoJS.enc.Base64.stringify(hash);
 
+      $rootScope.currentUser = user;
 
       $rootScope.xpush.login(user.uid, pw, 'WEB', function (err, data) {
         console.log( 'login result : ' + err  );
@@ -40,10 +42,7 @@ angular.module('stalkApp')
           $rootScope.$on( "$onMessage",function(event, channel, data ){
             $scope.unreadMessage = Chat.getAllUnreadMssages();  
             $scope.unreadCount = $scope.unreadMessage.length;
-            $scope.$apply();
-            var noti = data;
-            noti.channel = channel;
-            NotificationManager.notify( data );           
+            $scope.$apply();         
           });
         }
 

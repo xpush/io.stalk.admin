@@ -15,13 +15,14 @@
   var appId;
   var xpushSession;
   var operator;
-  var key = "90ad8360-8152-11e5-a482-fff6e9a81367";
+  var host = "http://localhost:9000";
+  var key = "5f62d270-84e4-11e5-a246-57299af16335";
 
   $(document).ready(function () {
     var channelId = "ch00001";
 
     var getOperator = function(data){
-      $.get('http://54.65.235.3:9000/api/apps/operators/'+key, function (res) {
+      $.get(host + '/api/apps/operators/'+key, function (res) {
           console.log( res );
           if( res ){
             appId = res.app;
@@ -40,10 +41,10 @@
 
       var query = "/channel?A="+appId+"&D=web&U=suzie"+"&S=" + val.result.server.name+"&C="+channelId;
 
-      //console.log( val.result.server.url+ query );
+      console.log( val.result.server.url+ query );
 
 
-      socket = io.connect("http://54.65.166.203:8080" + query, {
+      socket = io.connect(val.result.server.url + query, {
         'sync disconnect on unload': true,
             'force new connection': true
       });
@@ -77,6 +78,7 @@
       setTimeout( function(){
         var oid = operator.UID;
         socket.emit( 'channel.join', {U: oid}, function(data){
+
           var info = {};
           info.title = document.title;
           info.origin = document.origin;

@@ -11,12 +11,7 @@ angular.module('stalkApp')
     $scope.siteArray = [];
     $scope.siteIds = {};
     $scope.messages = [];
-    $scope.currentUser;
     $rootScope.isLogin = false;
-
-    Auth.getCurrentUser().$promise.then(function (user) {
-      $scope.currentUser = user;
-    });
 
     $scope.setSites = function(data){
 
@@ -53,7 +48,7 @@ angular.module('stalkApp')
     // Init Site List
     $scope.setSites();
  
-    Chat.setOnInfoChangeListener( function(data){
+    $rootScope.$on( "$onInfo", function( event,data ){
       $scope.setSites(data);
     });
 
@@ -61,7 +56,7 @@ angular.module('stalkApp')
       var msg = document.getElementById("inputMessage").value;
       msg = encodeURIComponent(msg);
 
-      var DT = {UO: {U: $scope.currentUser.uid, NM: $scope.currentUser.name, I: $scope.currentUser.image}, MG: msg};
+      var DT = {UO: {U: $rootScope.currentUser.uid, NM: $rootScope.currentUser.name, I: $rootScope.currentUser.image}, MG: msg};
 
       $rootScope.xpush.send($scope.currentChannel.C, 'message', DT);
       document.getElementById("inputMessage").value = "";
@@ -86,7 +81,7 @@ angular.module('stalkApp')
       $scope.tabs = [];
       $scope.tabs.push( ch );
    
-      Chat.clearUnreadMessages( ch.C );
+      Chat.setActiveChannel( ch.C );
       $scope.messages = Chat.getMessages( ch.C );
 
       var tab = document.getElementById("tab_" + ch.C);

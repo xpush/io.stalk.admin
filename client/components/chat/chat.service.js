@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('stalkApp')
-  .factory('Chat', function Chat($rootScope, Auth) {
+  .factory('Chat', function Chat($rootScope, Auth, NotificationManager) {
     var currentUser = {};
 
     var activeChannel = "";
@@ -10,9 +10,6 @@ angular.module('stalkApp')
     var unreadMessages = {};
 
     var sites = {};
-    var onMessageListener;
-    var onInfoChangeListener;
-    var totalUnreadCount = 0;
     var self;
 
     return {
@@ -41,10 +38,8 @@ angular.module('stalkApp')
               }
               data.startTime = new Date( data.TS ).toLocaleTimeString();
               sites[origin].push( data );
-  
-              if( onInfoChangeListener ){
-                onInfoChangeListener(data);
-              }
+
+              $rootScope.$emit( "$onInfo", data );              
             }
           });
 
@@ -76,14 +71,15 @@ angular.module('stalkApp')
             if( activeChannel == channel ){
 
             } else {
-              totalUnreadCount = totalUnreadCount + 1;
-              $rootScope.totalUnreadCount = totalUnreadCount;
               newMessage.timeBefore = "1 min";
             
               unreadMessages[channel].push( newMessage );
+
+              newMessage.channel = channel;
+              NotificationManager.notify( newMessage );
             }
 
-            $rootScope.$emit( "$onMessage", channel, newMessage, totalUnreadCount );
+            $rootScope.$emit( "$onMessage", channel, newMessage );
           });
 
         }).catch(function () {
@@ -91,10 +87,8 @@ angular.module('stalkApp')
         });
       },      
       setActiveChannel : function(channel){        
-        activeChannel = channel;        
-      },
-      setOnInfoChangeListener : function(cb){
-        onInfoChangeListener = cb;
+        activeChannel = channel;
+        self.clearUnreadMessages(channel);
       },
       getMessages : function(channel){
         if( !channelMessages[channel] ){
@@ -106,7 +100,7 @@ angular.module('stalkApp')
         return sites[origin];
       },
       getAllSites : function(){
-	return sites;
+        return sites;
       },
       clearUnreadMessages : function(channel){
         unreadMessages[channel].length = 0;
@@ -120,7 +114,7 @@ angular.module('stalkApp')
       getAllUnreadMssages : function(){
         var allUnreadMessages = [];
         for( var key in unreadMessages ){
-           allUnreadMessages = allUnreadMessages.concat( unreadMessages[key] );
+          allUnreadMessages = allUnreadMessages.concat( unreadMessages[key] );
 
         }
         return allUnreadMessages;
