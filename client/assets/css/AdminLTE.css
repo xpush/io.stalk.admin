@@ -3369,14 +3369,14 @@ table.text-center th {
 }
 .btn-social-icon {
   position: relative;
-  padding-left: 44px;
+  font-size: 12px;
   text-align: left;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  height: 34px;
-  width: 34px;
-  padding: 0;
+  height: 30px;
+  width: 30px;
+
 }
 .btn-social-icon > :first-child {
   position: absolute;
@@ -3384,7 +3384,7 @@ table.text-center th {
   top: 0;
   bottom: 0;
   width: 32px;
-  line-height: 34px;
+  line-height: 30px;
   font-size: 1.6em;
   text-align: center;
   border-right: 1px solid rgba(0, 0, 0, 0.2);
