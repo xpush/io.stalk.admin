@@ -42,6 +42,26 @@ exports.update = function(req, res) {
   });
 };
 
+exports.updateActivity = function(req, res) {
+  var q = {CH: req.body.CH, VID: req.body.VID};
+  Activity.findOneAndUpdate(q, req.body, {upsert: true}, function(err, activity){
+  //Activity.findOne(q, function (err, activity) {
+    if (err) { return handleError(res, err); }
+    if(!activity) { return res.status(404).send('Not Found'); }
+      return res.status(200).json(activity);
+
+    /*
+    var updated = _.extend(activity, req.body);
+    console.log(updated);
+    updated.save(function (err) {
+
+      if (err) { return handleError(res, err); }
+      return res.status(200).json(activity);
+    });
+    */
+  });
+};
+
 // Deletes a activity from the DB.
 exports.destroy = function(req, res) {
   Activity.findById(req.params.id, function (err, activity) {

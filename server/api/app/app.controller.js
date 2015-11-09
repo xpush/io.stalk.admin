@@ -114,6 +114,11 @@ exports.destroy = function (req, res) {
 
 exports.operators = function (req, res) {
   var key = req.params.key;
+  var clientIp = req.headers['x-forwarded-for'] || 
+       req.connection.remoteAddress || 
+       req.socket.remoteAddress ||
+       req.connection.socket.remoteAddress;
+  req.body.ip = clientIp;
 
   Activity.create(req.body, function(err, activity) {
     if(err) { return handleError(res, err); }
@@ -161,7 +166,6 @@ exports.operators = function (req, res) {
 
             if (!resData.result || !resData.result[oid]) return res.status(200).json(returnJson);
               Auth.findOne( {uid:oid}, {'name':1, 'image':1, 'email':'1', 'uid':'1', '_id' :'0'} ).exec(function (err, user) {
-                console.log( user );
               if( err ){
                 console.log( err );
                 return handleError(res, err);
@@ -175,10 +179,7 @@ exports.operators = function (req, res) {
                 user._id = undefined;
 
                 returnJson['operator'] = user;  
-                returnJson['clientIp'] = req.headers['x-forwarded-for'] || 
-                     req.connection.remoteAddress || 
-                     req.socket.remoteAddress ||
-                     req.connection.socket.remoteAddress;
+                returnJson['clientIp'] = clientIp;
                 return res.status(200).json(returnJson);
               }
             });
