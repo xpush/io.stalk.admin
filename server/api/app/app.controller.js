@@ -2,6 +2,7 @@
 
 var _ = require('lodash');
 var App = require('./app.model');
+var Activity = require('./../activity/activity.model');
 var Auth = require('../auth/auth.model');
 var uuid = require('node-uuid');
 var config = require('./../../config/environment');
@@ -113,6 +114,11 @@ exports.destroy = function (req, res) {
 
 exports.operators = function (req, res) {
   var key = req.params.key;
+
+  Activity.create(req.body, function(err, activity) {
+    if(err) { return handleError(res, err); }
+  });
+
   App.findOne({key: key}, function (err, app) {
     if (err) {
       return handleError(res, err);
