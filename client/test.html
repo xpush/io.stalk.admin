@@ -15,15 +15,15 @@
   var appId;
   var xpushSession;
   var operator;
-  var host = "http://localhost:9000";
+  var host = "http://54.65.235.3:9000";
   //var key = "5f62d270-84e4-11e5-a246-57299af16335";
-  var key = "93827700-8510-11e5-9f0c-f5ada554473";
+  var key = "4b2d1560-8799-11e5-b65f-c9ccbc40af68";
 
   $(document).ready(function () {
     var channelId = "ch00001";
 
     var getOperator = function(data){
-      $.get(host + '/api/apps/operators/'+key, function (res) {
+      $.post(host + '/api/apps/operators/'+key, function (res) {
           console.log( res );
           if( res ){
             appId = res.app;

@@ -234,6 +234,11 @@ angular.module('stalkApp')
     }
 
     notificationsShown[channel].push( notification );
+    var chNotiCnt = notificationsShown[channel].length;
+    if( chNotiCnt > 3 ){
+      notificationsShown[channel][0].close();
+       notificationsShown[channel] = notificationsShown[channel].slice(1, chNotiCnt );
+    }  
   };
 
   function closeChannelNotification( channel ) {

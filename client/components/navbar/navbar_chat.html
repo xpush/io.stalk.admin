@@ -54,13 +54,13 @@
         <!-- User Account: style can be found in dropdown.less -->
         <li class="dropdown user user-menu">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-            <img src="assets/images/user2-160x160.jpg" class="user-image" alt="User Image">
-            <span class="hidden-xs">{{ getCurrentUser().name }}</span>
+            <img ng-src="{{currentUser.image}}" class="user-image" alt="{{currentUser.name}}">
+            <span class="hidden-xs">{{ currentUser.name }}</span>
           </a>
           <ul class="dropdown-menu">
             <!-- User image -->
             <li class="user-header">
-              <img src="assets/images/user2-160x160.jpg" class="img-circle" alt="User Image">
+              <img ng-src="{{currentUser.image}}" class="img-circle" alt="{{currentUser.name}}">
 
               <p>
                 {{ getCurrentUser().name }}
