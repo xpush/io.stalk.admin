@@ -24,8 +24,6 @@ angular.module('stalkApp')
       $rootScope.profileInfo.image = user.image;
 
       $rootScope.xpush.login(user.uid, pw, 'WEB', function (err, data) {
-        console.log( 'login result : ' + err  );
-
         if(err){
           if(err == 'ERR-SRV_NOT_EXISTED'){
             $rootScope.errorMessage = '<h3>Connection to server failed ! </h3><br><b>Channel server is not existed.</b>';
