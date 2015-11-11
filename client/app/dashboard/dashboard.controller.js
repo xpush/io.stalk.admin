@@ -31,33 +31,61 @@ angular.module('stalkApp')
       }, 10);
     }
 
-
-    var getCurrentCustomer = function(){
+    var postData = function(url, data, cb){
+      data  = data || {};
       var req = {
        method: 'POST',
-       url: '/api/analytics/currentCustomers',
+       url: '/api/analytics/'+url,
        headers: {
          'Content-Type': undefined
        },
-       data: { test: 'test' }
+       data: data
       }
 
       $http(req).then(function(data){
+        if(cb)cb(null,data);
+      }, function(err){
+        if(cb) cb(err)
+      });
+    }
+
+    var getCurrentCustomer = function(){
+      postData("currentCustomers", {}, function(err, data){
         var count = data.data.count;
         startDashboard("current_visitor", count);     
-      }, function(){
-        console.log("-====== err");
-        console.log(arguments);
-      });
-
+      })
     }
+
+    var todayCustomers = function(){
+      postData("todayCustomers", {}, function(err, data){
+        $scope.todayVisitors = data.data.count;
+      })
+    }
+    var getReferSite = function(){
+      postData("getReferSite", {}, function(err, data){
+        console.log("=-===== getReferSite");
+        var refers = data.data;
+        refers = refers.filter(function(r){
+          if(!r._id || r._id.length < 1){
+            return false;
+          }else{
+            return true;
+          }
+        });
+
+        refers.sort(function(a, b){
+          return a.count > b.count;
+        })
+
+        $scope.referSites = refers;
+        //$scope.getReferSite = ;
+      })
+    }
+
+
+
     getCurrentCustomer();
-
-
-    $scope.sendNotificaton = function () {
-
-      alert(CKEDITOR.instances['editor1'].getData());
-    };
-
+    todayCustomers();
+    getReferSite();
 
   });

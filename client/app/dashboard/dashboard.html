@@ -82,7 +82,7 @@
             </div>
             <!-- /.row -->
 
-            <div class="row">
+            <!--div class="row">
                 <div class="col-md-12">
                     <section class="content">
                         <div class="row">
@@ -92,7 +92,6 @@
                                         <h3 class="box-title">Send your message to customer
                                             <small>or operators</small>
                                         </h3>
-                                        <!-- tools box -->
                                         <div class="pull-right box-tools">
                                             <button class="btn btn-info btn-sm" data-widget="collapse"
                                                     data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i>
@@ -101,9 +100,7 @@
                                                     data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i>
                                             </button>
                                         </div>
-                                        <!-- /. tools -->
                                     </div>
-                                    <!-- /.box-header -->
                                     <div class="box-body pad">
                                         <form>
                     <textarea id="editor1" name="editor1" rows="10" cols="80">
@@ -116,19 +113,13 @@
                                                 class="btn btn-info pull-right" ng-disabled="isDisable">Send
                                         </button>
                                     </div>
-                                    <!-- /.box-footer -->
                                 </div>
-                                <!-- /.box -->
 
                             </div>
-                            <!-- /.col-->
                         </div>
-                        <!-- ./row -->
                     </section>
-                    <!-- /.content -->
                 </div>
-                <!-- /.content-wrapper -->
-            </div>
+            </div-->
 
 
             <!-- Main row -->
@@ -1186,7 +1177,7 @@
                                                 <canvas width="34" height="30"
                                                         style="display: inline-block; width: 34px; height: 30px; vertical-align: top;"></canvas>
                                             </div>
-                                            <h5 class="description-header">8390</h5>
+                                            <h5 class="description-header">{{todayVisitors}}</h5>
                                             <span class="description-text">Visits</span>
                                         </div>
                                         <!-- /.description-block -->
@@ -1241,29 +1232,9 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td>portal.gshs.co.kr</td>
-                                        <td> 655</td>
-                                    </tr>
-                                    <tr>
-                                        <td>(direct access)</td>
-                                        <td>258</td>
-                                    </tr>
-                                    <tr>
-                                        <td>m.facebook.com</td>
-                                        <td>15</td>
-                                    </tr>
-                                    <tr>
-                                        <td>www.facebook.com</td>
-                                        <td>12</td>
-                                    </tr>
-                                    <tr>
-                                        <td>postit.gsshop.com</td>
-                                        <td> 3</td>
-                                    </tr>
-                                    <tr>
-                                        <td> gwmail.gshs.co.kr</td>
-                                        <td>2</td>
+                                    <tr ng-repeat="refer in referSites">
+                                        <td>{{refer._id}}</td>
+                                        <td>{{refer.count}}</td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -1419,7 +1390,7 @@
     $(function () {
         // Replace the <textarea id="editor1"> with a CKEditor
         // instance, using default configuration.
-        CKEDITOR.replace('editor1');
+        //CKEDITOR.replace('editor1');
         var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
 
         var pieChart = new Chart(pieChartCanvas);
