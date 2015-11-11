@@ -53,18 +53,22 @@ angular.module('stalkApp')
       postData("currentCustomers", {}, function(err, data){
         var count = data.data.count;
         startDashboard("current_visitor", count);     
+        startDashboard("current_operators", 1);             
       })
     }
 
     var todayCustomers = function(){
       postData("todayCustomers", {}, function(err, data){
         $scope.todayVisitors = data.data.count;
+        getReferSite();
       })
     }
     var getReferSite = function(){
       postData("getReferSite", {}, function(err, data){
         console.log("=-===== getReferSite");
         var refers = data.data;
+        var totalCnt = 0;
+
         refers = refers.filter(function(r){
           if(!r._id || r._id.length < 1){
             return false;
@@ -77,8 +81,14 @@ angular.module('stalkApp')
           return a.count > b.count;
         })
 
+        refers.forEach(function(r){
+          totalCnt += r.count;
+        })
+
+        $scope.referrals = Math.round((totalCnt / $scope.todayVisitors) * 100);
+        $scope.organic =  100 - $scope.referrals;
+
         $scope.referSites = refers;
-        //$scope.getReferSite = ;
       })
     }
 
@@ -86,6 +96,6 @@ angular.module('stalkApp')
 
     getCurrentCustomer();
     todayCustomers();
-    getReferSite();
+    // getReferSite();
 
   });

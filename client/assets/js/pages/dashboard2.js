@@ -132,7 +132,7 @@ $(function () {
         stroke: '#111'
       }
     },
-    markers: [
+    markers: [/*
       {latLng: [41.90, 12.45], name: 'Vatican City'},
       {latLng: [43.73, 7.41], name: 'Monaco'},
       {latLng: [-0.52, 166.93], name: 'Nauru'},
@@ -159,6 +159,7 @@ $(function () {
       {latLng: [-20.2, 57.5], name: 'Mauritius'},
       {latLng: [26.02, 50.55], name: 'Bahrain'},
       {latLng: [0.33, 6.73], name: 'São Tomé and Príncipe'}
+      */
     ]
   });
 
