@@ -237,8 +237,14 @@ angular.module('stalkApp')
     var chNotiCnt = notificationsShown[channel].length;
     if( chNotiCnt > 3 ){
       notificationsShown[channel][0].close();
-       notificationsShown[channel] = notificationsShown[channel].slice(1, chNotiCnt );
+      notificationsCnt = 0;
+      notificationsShown[channel] = notificationsShown[channel].slice(1, chNotiCnt );
     }  
+
+    // Auto close after 15s
+    setTimeout( function(){
+      notification.close();      
+    }, 15000 );
   };
 
   function closeChannelNotification( channel ) {

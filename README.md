@@ -65,10 +65,6 @@ Install modules
 ## 2. Create config file
 
 ### config.js
-
-``
-'use strict';
-
     module.exports = {
 
       // MongoDB connection options
@@ -83,7 +79,6 @@ Install modules
       }
     };
 
-``				
 	
 ## 3. Run your application
 
