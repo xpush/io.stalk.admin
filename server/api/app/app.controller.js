@@ -118,7 +118,7 @@ exports.operators = function (req, res) {
        req.connection.remoteAddress || 
        req.socket.remoteAddress ||
        req.connection.socket.remoteAddress;
-  req.body.ip = clientIp;
+  req.body.IP = clientIp;
 
   Activity.create(req.body, function(err, activity) {
     if(err) { return handleError(res, err); }

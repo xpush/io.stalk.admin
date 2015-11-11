@@ -325,7 +325,7 @@ exports.getLatLng = function(req, res, next){
   });
 }
 exports.getGeoLocation = function(req, res, next){
-  var ip = req.params.ip;
+  var ip = req.body.ip;
 
   satelize.satelize({ip:ip}, function(err, geoData) {
     // process err
