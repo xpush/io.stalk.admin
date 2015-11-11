@@ -65,3 +65,25 @@ exports.currentCustomers = function(req, res){
     return res.status(200).json({count: activity.length});
   });
 }
+
+exports.todayCustomers = function(req, res){
+  var today = new Date();
+  var year = 1900 + today.getYear();
+  var month = today.getMonth();
+  var day = today.getDate();
+  Activity.find({"ENS": { "$gte" : new Date(year,month,day) } }, function(err, activity){
+    if(err) { return handleError(res, err); }
+    return res.status(200).json({count: activity.length});
+  });
+}
+
+exports.getReferSite = function(req, res){
+  Activity.aggregate([ { $match: {} },{ $group : { _id : "$REF" ,count: { $sum: 1 }  } } ], function(err, activity){
+    if(err) { return handleError(res, err); }
+    return res.status(200).json(activity);
+  });
+
+}
+
+
+
