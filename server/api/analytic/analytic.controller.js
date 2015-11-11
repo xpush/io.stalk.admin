@@ -68,22 +68,35 @@ exports.currentCustomers = function(req, res){
 
 exports.todayCustomers = function(req, res){
   var today = new Date();
+  today.setHours(0); today.setMinutes(0);
   var year = 1900 + today.getYear();
   var month = today.getMonth();
   var day = today.getDate();
-  Activity.find({"ENS": { "$gte" : new Date(year,month,day) } }, function(err, activity){
+  today = today.toISOString().substring(0, 19);
+  Activity.find({"ENS": { "$gte" : today} }, function(err, activity){
     if(err) { return handleError(res, err); }
     return res.status(200).json({count: activity.length});
   });
 }
 
-exports.getReferSite = function(req, res){
+exports.getReferSites = function(req, res){
   Activity.aggregate([ { $match: {} },{ $group : { _id : "$REF" ,count: { $sum: 1 }  } } ], function(err, activity){
     if(err) { return handleError(res, err); }
     return res.status(200).json(activity);
   });
-
 }
 
+exports.getBrowserInfos = function(req, res){
+  Activity.aggregate([ { $match: {} },{ $group : { _id : "$BR" ,count: { $sum: 1 }  } } ], function(err, activity){
+    if(err) { return handleError(res, err); }
+    return res.status(200).json(activity);
+  });
+}
 
+exports.completeChattings = function(req, res){
+  Activity.find({A: req.body.A, LTS : {"$exists": false} }, function(err, activity){
+    if(err) { return handleError(res, err); }
+    return res.status(200).json({count: activity.length});
+  });
+}
 

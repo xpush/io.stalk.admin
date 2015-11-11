@@ -328,9 +328,9 @@ exports.getGeoLocation = function(req, res, next){
   var ip = req.body.ip;
 
   satelize.satelize({ip:ip}, function(err, geoData) {
-    // process err
-
-    // if data is JSON, we may wrap it in js object
+    if (err) {
+      return handleError(res, err);
+    }    
     var obj = JSON.parse(geoData);
     res.json(obj);
   });

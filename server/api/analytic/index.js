@@ -7,6 +7,8 @@ var router = express.Router();
 
 router.post("/currentCustomers", controller.currentCustomers);
 router.post("/todayCustomers", controller.todayCustomers);
-router.post("/getReferSite", controller.getReferSite);
+router.post("/getReferSites", controller.getReferSites);
+router.post("/getBrowserInfos", controller.getBrowserInfos);
+router.post("/completeChattings", controller.completeChattings);
 
 module.exports = router;
