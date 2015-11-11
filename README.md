@@ -1,13 +1,13 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/xpush/node-xpush/master/logo.png" width="200px"/>
+  <img src="https://raw.githubusercontent.com/xpush/io.stalk.static/master/logo.jpeg" width="200px"/>
 </p>
 
 
-xpush-link
+stalk.io admin
 =======
 
-xpush-link is a realtime communication service between operators and customers.
-xpush-link run on the basis of **XPUSH** (eXtensional PUSH)
+admin.stalk.io is a realtime communication service between operators and customers.
+admin.stalk.io run on the basis of **XPUSH** (eXtensional PUSH)
 
 
 
@@ -61,10 +61,33 @@ Install modules
 
 	bower install
 	npm install
+
+## 2. Create config file
+
+### config.js
+
+``
+'use strict';
+
+    module.exports = {
+
+      // MongoDB connection options
+      mongo: {
+        uri: 'mongodb://127.0.0.1/STALK'
+      },
+      
+      // Session Server url of XPUSH
+      xpush: {
+        url: "http://127.0.0.1:8000",
+        A: "STALK"
+      }
+    };
+
+``				
 	
-## 2. Run your application
+## 3. Run your application
 
 
 ### Run Server
 
-	grunt serve
+	grunt serve --config config.js
