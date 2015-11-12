@@ -9,7 +9,7 @@ module.exports = {
 
   // XPUSH server
   xpush: {
-    url: "http://dev.session.stalk.io:8000",
+    url: "http://session.stalk.io:8000",
     //url: "http://www.notdol.com:8000",
     A: "STALK"
   },
