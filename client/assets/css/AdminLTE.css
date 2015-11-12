@@ -604,6 +604,9 @@ a:focus {
   .sidebar-mini.sidebar-collapse .sidebar-menu > li > a > span {
     border-top-right-radius: 4px;
   }
+  .sidebar-mini.sidebar-collapse .sidebar-menu > li > a > div > span {
+    border-top-right-radius: 4px;
+  }
   .sidebar-mini.sidebar-collapse .sidebar-menu > li:not(.treeview) > a > span {
     border-bottom-right-radius: 4px;
   }

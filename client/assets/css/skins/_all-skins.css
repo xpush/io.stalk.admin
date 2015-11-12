@@ -73,6 +73,7 @@
   border-left: 3px solid transparent;
 }
 .skin-blue .sidebar-menu > li:hover > a,
+.skin-blue .sidebar-menu > li:hover > a > div,
 .skin-blue .sidebar-menu > li.active > a {
   color: #ffffff;
   background: #52C8FF;
