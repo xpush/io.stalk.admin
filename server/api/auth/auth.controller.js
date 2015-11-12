@@ -320,12 +320,16 @@ exports.getLatLng = function(req, res, next){
     // process err
 
     // if data is JSON, we may wrap it in js object
-    var obj = JSON.parse(geoData);
+    var obj = {}
+    if(geoData){
+      obj = JSON.parse(geoData);
+    }
+
     res.json(obj);
   });
 }
 exports.getGeoLocation = function(req, res, next){
-  var ip = req.body.ip;
+  var ip = req.params.ip;
 
   satelize.satelize({ip:ip}, function(err, geoData) {
     if (err) {
