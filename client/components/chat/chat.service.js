@@ -36,8 +36,8 @@ angular.module('stalkApp')
             if( newChannelFlag ){
               if( !data.name ){
                 data.name = data.title;
-                data.channel = channel;
               }
+              data.channel = channel;
               data.startTime = new Date( data.TS ).toLocaleTimeString();
               sites[origin].push( data );
 

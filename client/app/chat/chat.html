@@ -5,14 +5,7 @@
   <!-- sidebar: style can be found in sidebar.less -->
   <section class="sidebar">
     <!-- sidebar menu: : style can be found in sidebar.less -->
-    <ul class="sidebar-menu">
-      <li class="header" style="color:#FFFFFF"><b>Live stalk</b></li>
-      <li><a href="documentation/index.html"><i class="fa fa-circle-o text-red"></i> <span>eskozz</span></a></li>
-      <li><a href="documentation/index.html"><i class="fa fa-circle-o text-yellow"></i> <span>notdol</span></a>
-      </li>
-    </ul>
       <ul class="sidebar-menu" ng-repeat="site in siteArray">
-
         <li class="header" style="color:#FFFFFF" >{{site.origin}}</li>
         <li ng-repeat="channel in site.channels">
         <a href="#" ng-click="gotoChat(channel)">
