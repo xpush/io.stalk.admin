@@ -33,8 +33,8 @@ angular.module('stalkApp')
           $scope.siteIds[origin] = $scope.siteArray.length;
           $scope.siteArray.push( { 'origin':origin , 'channels':channels } )
         } else {
-          var inx = $scope.siteIds[origin];          
-          $scope.siteArray[inx].channels.push( data );
+          //var inx = $scope.siteIds[origin];          
+          //$scope.siteArray[inx].channels.push( data );
         }
         changed = true;
       }

@@ -1643,7 +1643,7 @@
     Connection.prototype.joinChannel = function(param, cb){
       var self = this;
       if(self._socket.connected){
-        self._socket.emit('join', param, function( data ){
+        self._socket.emit('channel.join', param, function( data ){
           cb( data );
         });
       }
