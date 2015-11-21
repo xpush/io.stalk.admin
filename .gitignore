@@ -190,3 +190,4 @@ public
 server/config/environment
 #/server/config/local.env.js
 npm-debug.log
+config.js

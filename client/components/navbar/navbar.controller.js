@@ -24,14 +24,18 @@ angular.module('stalkApp')
       $rootScope.profileInfo.image = user.image;
 
       $rootScope.xpush.login(user.uid, pw, 'WEB', function (err, data) {
-        if(err){
-          if(err == 'ERR-SRV_NOT_EXISTED'){
+
+        if (err) {
+          if (err == 'ERR-SRV_NOT_EXISTED') {
             $rootScope.errorMessage = '<h3>Connection to server failed ! </h3><br><b>Channel server is not existed.</b>';
-          }else if(err == 'ERR-SRV_CONNECT_FAILED'){
+          } else if (err == 'ERR-SRV_CONNECT_FAILED') {
             $rootScope.errorMessage = '<h3>Connection to server failed ! </h3><br>Check XPUSH session server ( <b>' + $rootScope.xpush.getServerAddress() + '</b> )';
-          }else{
+          } else if (err == 'ERR-NOTEXIST') {
+            $rootScope.errorMessage = '<h3>User is not existed ! </h3><br>Check XPUSH session server ( <b>' + $rootScope.xpush.getServerAddress() + '</b> )';
+          } else {
             $rootScope.errorMessage = '<h3>Server Error</h3>';
           }
+
           $('#dashboardPage').hide();
           $('#navAside').hide();
           $('#navHeader').hide();
@@ -43,10 +47,10 @@ angular.module('stalkApp')
           }
           $scope.unreadMessage = Chat.getAllUnreadMssages();
 
-          $rootScope.$on( "$onMessage",function(event, channel, data ){
-            $scope.unreadMessage = Chat.getAllUnreadMssages();  
+          $rootScope.$on("$onMessage", function (event, channel, data) {
+            $scope.unreadMessage = Chat.getAllUnreadMssages();
             $scope.unreadCount = $scope.unreadMessage.length;
-            $scope.$apply();         
+            $scope.$apply();
           });
         }
 
@@ -83,21 +87,21 @@ angular.module('stalkApp')
       $scope.submitted = true;
       if (form.$valid) {
         Auth.updateUser({
-          uid : $rootScope.currentUser.uid,
+          uid: $rootScope.currentUser.uid,
           name: $rootScope.profileInfo.name,
           image: $rootScope.profileInfo.image
         })
-        .then(function (data) {
-          // Account created, redirect to home
-          console.log( "==============" );
-          toaster.pop('success', "Info", "Saved Successfully");
-          $('#profileModal').modal('hide');
-        })
-        .catch(function (err) {
-          err = err.data;
-          // Update validity of form fields that match the mongoose errors
-        });
+          .then(function (data) {
+            // Account created, redirect to home
+            console.log("==============");
+            toaster.pop('success', "Info", "Saved Successfully");
+            $('#profileModal').modal('hide');
+          })
+          .catch(function (err) {
+            err = err.data;
+            // Update validity of form fields that match the mongoose errors
+          });
       }
 
-    };    
+    };
   });
