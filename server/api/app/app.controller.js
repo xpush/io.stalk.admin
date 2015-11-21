@@ -114,14 +114,16 @@ exports.destroy = function (req, res) {
 
 exports.operators = function (req, res) {
   var key = req.params.key;
-  var clientIp = req.headers['x-forwarded-for'] || 
-       req.connection.remoteAddress || 
-       req.socket.remoteAddress ||
-       req.connection.socket.remoteAddress;
+  var clientIp = req.headers['x-forwarded-for'] ||
+    req.connection.remoteAddress ||
+    req.socket.remoteAddress ||
+    req.connection.socket.remoteAddress;
   req.body.IP = clientIp;
 
-  Activity.create(req.body, function(err, activity) {
-    if(err) { return handleError(res, err); }
+  Activity.create(req.body, function (err, activity) {
+    if (err) {
+      return handleError(res, err);
+    }
   });
 
   App.findOne({key: key}, function (err, app) {
@@ -138,7 +140,7 @@ exports.operators = function (req, res) {
     var url = app.url;
 
     // TODO ... referer가 없으면 조회 되지 않아야 한다.
-    if(!referer || referer.indexOf(url) < 0 ){
+    if (!referer || referer.indexOf(url) < 0) {
 
       return res.status(200).json({});
     }
@@ -165,20 +167,26 @@ exports.operators = function (req, res) {
             returnJson['server'] = config.xpush.url;
 
             if (!resData.result || !resData.result[oid]) return res.status(200).json(returnJson);
-              Auth.findOne( {uid:oid}, {'name':1, 'image':1, 'email':'1', 'uid':'1', '_id' :'0'} ).exec(function (err, user) {
-              if( err ){
-                console.log( err );
+            Auth.findOne({uid: oid}, {
+              'name': 1,
+              'image': 1,
+              'email': '1',
+              'uid': '1',
+              '_id': '0'
+            }).exec(function (err, user) {
+              if (err) {
+                console.log(err);
                 return handleError(res, err);
               }
 
-              if( user ){
-                if( !user.image ){
+              if (user) {
+                if (!user.image) {
                   user.image = 'https://raw.githubusercontent.com/xpush/io.stalk.admin/master/client/assets/images/face.png';
                 }
 
                 user._id = undefined;
 
-                returnJson['operator'] = user;  
+                returnJson['operator'] = user;
                 returnJson['clientIp'] = clientIp;
                 return res.status(200).json(returnJson);
               }

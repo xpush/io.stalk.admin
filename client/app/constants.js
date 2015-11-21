@@ -1,9 +1,9 @@
 angular.module('stalk.constants', [])
 
-  .constant('APP_INFO', {
+/* TODO 어디서 사용할 것인지 고민
+ .constant('APP_INFO', {
     version: '1.0 BETA',
-    appKey : 'STALK'
-  })
-  .constant('XPUSH_SESSION', 'http://session.stalk.io:8000')
+    appKey: 'STALK'
+}) */
   .constant('NEED_EMAIL_CONFIRM', false);
 

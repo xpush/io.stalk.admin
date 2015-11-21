@@ -212,9 +212,6 @@
       var sendData = {A: self.appId, U: userId, PW: password, D: deviceId};
       if (mode) sendData.MD = mode;
 
-
-      console.log(sendData);
-      console.log(XPush.Context.LOGIN);
       self.ajax(XPush.Context.LOGIN, 'POST', sendData, function (err, result) {
 
         if (err) {

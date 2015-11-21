@@ -11,7 +11,7 @@ angular.module('stalkApp', [
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     //$urlRouterProvider
-      //.otherwise('/signupmail');
+    //.otherwise('/signupmail');
 
     $locationProvider.html5Mode(true);
     $httpProvider.interceptors.push('authInterceptor');
@@ -44,11 +44,25 @@ angular.module('stalkApp', [
     };
   })
 
-  .run(function ($rootScope, $location, Auth, XPUSH_SESSION,NEED_EMAIL_CONFIRM) {
+  .run(function ($rootScope, $location, $http, Auth, NEED_EMAIL_CONFIRM) {
 
-    // xpush 를 생성한다.
-    $rootScope.xpush = new XPush(XPUSH_SESSION, 'STALK', function (type, data) {
-    }, false);
+    $http({
+      method: 'GET',
+      url: '/api/auths/server',
+      headers: {
+        'Content-Type': "application/json; charset=utf-8"
+      }
+    }).then(function (result) {
+      $rootScope.xpush = new XPush(result.data.server, result.data.app, function (type, data) {
+        console.log(type, data);
+      }, false);
+
+
+    }, function (err) {
+      console.log(XPUSH_SESSION);
+      console.log(err);
+    });
+
 
     // for debugging
     //$rootScope.xpush.enableDebug(true);

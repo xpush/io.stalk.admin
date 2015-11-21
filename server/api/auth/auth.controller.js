@@ -124,26 +124,26 @@ exports.create = function (req, res) {
 
 
         /*
-        request.post(
-          'http://54.178.160.166:8000/user/register',
-          {form: {A: 'stalk', U: saveData.uid, PW: saveData.uid, D: 'web', DT: {NM: saveData.name, I: ''}}},
-          function (error, response, result) {
-            if (!error && response.statusCode == 200) {
-              // user-register success
-              var resData = JSON.parse(result);
-              if ("ok" == resData.status) {
-                return res.status(201).json(auth);
-              } else if ("ERR-INTERNAL" == resData.status && "ERR-USER_EXIST" == resData.message) {
-                return handleError(res, result);
-              } else {
-                return handleError(res, result);
-              }
-            } else {
-              return handleError(res, error);
-            }
-          }
-        );
-        */
+         request.post(
+         'http://54.178.160.166:8000/user/register',
+         {form: {A: 'stalk', U: saveData.uid, PW: saveData.uid, D: 'web', DT: {NM: saveData.name, I: ''}}},
+         function (error, response, result) {
+         if (!error && response.statusCode == 200) {
+         // user-register success
+         var resData = JSON.parse(result);
+         if ("ok" == resData.status) {
+         return res.status(201).json(auth);
+         } else if ("ERR-INTERNAL" == resData.status && "ERR-USER_EXIST" == resData.message) {
+         return handleError(res, result);
+         } else {
+         return handleError(res, result);
+         }
+         } else {
+         return handleError(res, error);
+         }
+         }
+         );
+         */
       });
     } else if (!auth.active) {
       res.send({status: 'AUTH-DEACTIVE', message: DICT.EMAIL_DEACTIVE});
@@ -173,7 +173,7 @@ exports.createDirect = function (req, res) {
       saveData.uid = uid;
       saveData.name = name;
       saveData.pass = UT.encrypto(pass);
-      saveData.uid =  uid;
+      saveData.uid = uid;
       saveData.active = true;
       saveData.image = "https://raw.githubusercontent.com/xpush/io.stalk.admin/master/client/assets/images/face.png";
 
@@ -181,7 +181,7 @@ exports.createDirect = function (req, res) {
         if (err) {
           return handleError(res, err);
         }
-        XPUSH.signup(auth.uid, UT.encrypto(auth.uid), "WEB", function(){
+        XPUSH.signup(auth.uid, UT.encrypto(auth.uid), "WEB", function () {
           console.log("**** xpush : signup complete");
           console.log(arguments);
           //if (config.auth && config.auth.email) EMAIL.sendVerifyMail(auth.name, auth.email, auth.uid);
@@ -189,7 +189,7 @@ exports.createDirect = function (req, res) {
         })
 
       });
-    }  else {
+    } else {
       res.send({status: 'USER-EXIST', message: DICT.USER_EXIST});
     }
   });
@@ -251,7 +251,7 @@ exports.activate = function (req, res) {
         if (err) {
           return handleError(res, err);
         }
-        XPUSH.signup(updated.uid, UT.encrypto(updated.uid), "WEB", function(){
+        XPUSH.signup(updated.uid, UT.encrypto(updated.uid), "WEB", function () {
           console.log("**** xpush : signup complete");
           console.log(arguments);
           //if (config.auth && config.auth.email) EMAIL.sendVerifyMail(auth.name, auth.email, auth.uid);
@@ -277,9 +277,9 @@ exports.update = function (req, res) {
 
   Auth.findOne(saveData, function (err, auth) {
 
-    console.log( req.params.id );
+    console.log(req.params.id);
     if (err) {
-      console.log( err );
+      console.log(err);
       return handleError(res, err);
     }
     if (!auth) {
@@ -313,32 +313,45 @@ exports.destroy = function (req, res) {
   });
 };
 
-exports.getLatLng = function(req, res, next){
+exports.getLatLng = function (req, res, next) {
   var ip = req.params.ip;
 
-  satelize.satelize({ip:ip}, function(err, geoData) {
+  satelize.satelize({ip: ip}, function (err, geoData) {
     // process err
 
     // if data is JSON, we may wrap it in js object
     var obj = {}
-    if(geoData){
+    if (geoData) {
       obj = JSON.parse(geoData);
     }
 
     res.json(obj);
   });
-}
-exports.getGeoLocation = function(req, res, next){
+};
+
+exports.getGeoLocation = function (req, res, next) {
   var ip = req.params.ip;
 
-  satelize.satelize({ip:ip}, function(err, geoData) {
+  satelize.satelize({ip: ip}, function (err, geoData) {
     if (err) {
       return handleError(res, err);
-    }    
+    }
     var obj = JSON.parse(geoData);
+
     res.json(obj);
   });
-}
+};
+
+exports.getSessionServerUrl = function (req, res, next) {
+
+  var returnJson = {};
+  returnJson['app'] = config.xpush.A;
+  returnJson['server'] = config.xpush.url;
+
+  res.json(returnJson);
+
+};
+
 function handleError(res, err) {
   return res.status(500).send(err);
 }
