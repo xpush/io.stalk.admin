@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('stalkApp')
-  .controller('ChatCtrl', function ($rootScope, $scope, Auth,Chat) {
+  .controller('ChatCtrl', function ($rootScope, $scope, Auth, Chat) {
     $scope.tabs = [];
     $scope.sites = [];
 
@@ -13,32 +13,32 @@ angular.module('stalkApp')
     $scope.messages = [];
     $rootScope.isLogin = false;
 
-    $scope.setSites = function(data){
+    $scope.setSites = function (data) {
 
 
       var changed = false;
-      if( !data ){
-   
+      if (!data) {
+
         var sites = Chat.getAllSites();
 
-        for( var origin in sites ){
+        for (var origin in sites) {
           $scope.siteIds[origin] = $scope.siteArray.length;
-          $scope.siteArray.push( { 'origin':origin , 'channels':sites[origin] } );
+          $scope.siteArray.push({'origin': origin, 'channels': sites[origin]});
         }
       } else {
 
         var origin = data.origin;
-        if( $scope.siteIds[origin] == undefined ){
-          var channels = Chat.getChannels( origin );
+        if ($scope.siteIds[origin] == undefined) {
+          var channels = Chat.getChannels(origin);
           $scope.siteIds[origin] = $scope.siteArray.length;
-          $scope.siteArray.push( { 'origin':origin , 'channels':channels } )
+          $scope.siteArray.push({'origin': origin, 'channels': channels})
         } else {
           //var inx = $scope.siteIds[origin];          
           //$scope.siteArray[inx].channels.push( data );
         }
         changed = true;
       }
-      if( changed ){
+      if (changed) {
         $scope.$apply();
         changed = false;
       }
@@ -46,28 +46,34 @@ angular.module('stalkApp')
 
     // Init Site List
     $scope.setSites();
- 
-    $rootScope.$on( "$onInfo", function( event,data ){
+
+    $rootScope.$on("$onInfo", function (event, data) {
       $scope.setSites(data);
     });
 
     $scope.sendMessage = function () {
-      var msg = document.getElementById("inputMessage").value;
+      var msg = document.getElementById("inputMessage").value.toString().trim();
       msg = encodeURIComponent(msg);
 
-      var DT = {UO: {U: $rootScope.currentUser.uid, NM: $rootScope.currentUser.name, I: $rootScope.currentUser.image}, MG: msg};
+      if (msg !== "") {
+        var DT = {
+          UO: {U: $rootScope.currentUser.uid, NM: $rootScope.currentUser.name, I: $rootScope.currentUser.image},
+          MG: msg
+        };
 
-      $rootScope.xpush.send($scope.currentChannel.C, 'message', DT);
-      document.getElementById("inputMessage").value = "";
+        $rootScope.xpush.send($scope.currentChannel.C, 'message', DT);
+        document.getElementById("inputMessage").value = "";
+
+      }
     };
 
-    $scope.getUnreadCnt = function( channel ){
-      return Chat.getUnreadMessages( channel ).length;
+    $scope.getUnreadCnt = function (channel) {
+      return Chat.getUnreadMessages(channel).length;
     };
 
-    $rootScope.$on( "$onMessage",function(event, channel, data ){
+    $rootScope.$on("$onMessage", function (event, channel, data) {
 
-      if( channel == $scope.currentChannel.C ){
+      if (channel == $scope.currentChannel.C) {
         $scope.$apply();
         $scope.$broadcast('items_changed');
       } else {
@@ -79,16 +85,16 @@ angular.module('stalkApp')
       $scope.currentChannel = ch;
       $scope.tabs.length = 0;
       $scope.tabs = [];
-      $scope.tabs.push( ch );
-   
-      Chat.setActiveChannel( ch.C );
-      $scope.messages = Chat.getMessages( ch.C );
+      $scope.tabs.push(ch);
+
+      Chat.setActiveChannel(ch.C);
+      $scope.messages = Chat.getMessages(ch.C);
 
       var tab = document.getElementById("tab_" + ch.C);
       angular.element(tab).parent().addClass("active");
 
       var ip = ch.ip;
-      Chat.getGeoLocation(ip).then(function (geo){
+      Chat.getGeoLocation(ip).then(function (geo) {
         var lng = geo.longitude;
         var lat = geo.latitude;
         var name = geo.country;
@@ -97,7 +103,6 @@ angular.module('stalkApp')
       });
 
     };
-
 
 
     $scope.timeToString = function (timestamp) {
@@ -136,7 +141,7 @@ angular.module('stalkApp')
     };
   });
 
-function setWorldMap(lat, lng, name){
+function setWorldMap(lat, lng, name) {
   $('#world-map').vectorMap({
     map: 'world_mill_en',
     scaleColors: ['#C8EEFF', '#0071A4'],
