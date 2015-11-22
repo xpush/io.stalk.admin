@@ -54,11 +54,12 @@ angular.module('stalkApp', [
       }
     }).then(function (result) {
 
-      $rootScope.GLOBAL_SERVER_URL = result.data.server;
+      $rootScope.GLOBAL_SERVER_XPUSH_URL = result.data.server.xpush;
+      $rootScope.GLOBAL_SERVER_STALK_URL = result.data.server.stalk;
       $rootScope.GLOBAL_APP = result.data.app;
 
-      $rootScope.xpush = new XPush(result.data.server, result.data.app, function (type, data) {
-        console.log(type, data);
+      $rootScope.xpush = new XPush($rootScope.GLOBAL_SERVER_XPUSH_URL, $rootScope.GLOBAL_APP, function (type, data) {
+
       }, false);
     }, function (err) {
       console.log(err);

@@ -73,7 +73,10 @@ angular.module('stalkApp')
     };
     var generateScript = function (site) {
       var script = "<script>\n" + "window.stalkConfig = ";
-      var metaObj = {"server": $rootScope.GLOBAL_SERVER_URL, id: site.key};
+      var metaObj = {
+        "server": 'http://' + $rootScope.GLOBAL_SERVER_STALK_URL, // TODO http 프로토콜을 하드코딩 하지 말고 어떻게하면 좋을까?
+        id: site.key
+      };
       script += JSON.stringify(metaObj, null, 4) + ";\n</script>\n";
       script += '<script src="http://static.stalk.io/widget.js"></script>';
       return script;

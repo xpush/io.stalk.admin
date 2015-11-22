@@ -4,7 +4,6 @@ var _ = require('lodash');
 var App = require('./app.model');
 var Activity = require('./../activity/activity.model');
 var Auth = require('../auth/auth.model');
-var uuid = require('node-uuid');
 var config = require('./../../config/environment');
 var XPUSH = require("./../../xpush-node-client")(config.xpush);
 var request = require('request');

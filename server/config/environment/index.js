@@ -11,7 +11,6 @@ function requiredProcessEnv(name) {
   return process.env[name];
 }
 
-
 // All configurations will extend these options
 // ============================================
 var all = {
@@ -24,8 +23,10 @@ var all = {
   port: process.env.PORT || 9000,
 
   // Server IP
-  //ip: process.env.IP || '0.0.0.0',
-  ip: '0.0.0.0',
+  ip: process.env.IP || '0.0.0.0',
+
+  // Server Host
+  host: 'localhost',
 
   // Should we populate the DB with initial data?
   seedDB: false,

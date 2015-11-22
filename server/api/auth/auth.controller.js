@@ -333,20 +333,31 @@ exports.getGeoLocation = function (req, res, next) {
   var ip = req.params.ip;
 
   satelize.satelize({ip: ip}, function (err, geoData) {
+
+
     if (err) {
       return handleError(res, err);
     }
-    var obj = JSON.parse(geoData);
+    if(!geoData){
+      return handleError(res, 'Not Found');
+    }else {
+      var obj = JSON.parse(geoData);
+      res.json(obj);
+    }
 
-    res.json(obj);
+
   });
 };
 
 exports.getSessionServerUrl = function (req, res, next) {
 
   var returnJson = {};
+
   returnJson['app'] = config.xpush.A;
-  returnJson['server'] = config.xpush.url;
+
+  returnJson['server'] = {};
+  returnJson.server['xpush'] = config.xpush.url;
+  returnJson.server['stalk'] = config.host + ':' + config.port;
 
   res.json(returnJson);
 
