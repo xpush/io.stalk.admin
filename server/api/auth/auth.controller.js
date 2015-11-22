@@ -186,7 +186,7 @@ exports.createDirect = function (req, res) {
           console.log(arguments);
           //if (config.auth && config.auth.email) EMAIL.sendVerifyMail(auth.name, auth.email, auth.uid);
           return res.status(201).json(auth);
-        })
+        });
 
       });
     } else {

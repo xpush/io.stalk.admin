@@ -5,14 +5,17 @@ module.exports = {
 
   // MongoDB connection options
   mongo: {
-    uri: 'mongodb://127.0.0.1/STALK'
+    uri: 'mongodb://localhost/STALK'
   },
 
   // Session Server url of XPUSH
   xpush: {
-    url: "http://127.0.0.1:8000",
+    url: "http://localhost:8000",
     A: "STALK"
-  }
+  },
+
+  // Should we populate the DB with initial data?
+  seedDB: true
 
   /* TODO 제거 해야 하는지 확인 필요
   , auth: {
@@ -37,9 +40,7 @@ module.exports = {
       }
 
     }
-  },
-
-  seedDB: true
+  }
   */
 
 };

@@ -9,6 +9,8 @@ module.exports = {
   xpush: {
     url: "http://127.0.0.1:8000",
     A: "STALK"
-  }
+  },
+
+  seedDB: true
 
 };
