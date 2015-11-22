@@ -182,12 +182,3 @@ dist/
 
 # Grunt usually preprocesses files such as coffeescript, compass... inside the .tmp directory
 .tmp/
-
-
-
-### xpush-link ###
-public
-server/config/environment
-#/server/config/local.env.js
-npm-debug.log
-config.js

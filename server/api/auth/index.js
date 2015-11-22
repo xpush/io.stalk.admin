@@ -27,6 +27,6 @@ router.delete('/:id', controller.destroy);
 router.post('/geo', controller.getGeoLocation);
 
 // Session  서버 정보 가져오기!
-router.get('/server', auth.isAuthenticated(), controller.getSessionServerUrl);
+router.get('/server', controller.getSessionServerUrl);
 
 module.exports = router;

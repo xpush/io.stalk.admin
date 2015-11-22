@@ -53,13 +53,14 @@ angular.module('stalkApp', [
         'Content-Type': "application/json; charset=utf-8"
       }
     }).then(function (result) {
+
+      $rootScope.GLOBAL_SERVER_URL = result.data.server;
+      $rootScope.GLOBAL_APP = result.data.app;
+
       $rootScope.xpush = new XPush(result.data.server, result.data.app, function (type, data) {
         console.log(type, data);
       }, false);
-
-
     }, function (err) {
-      console.log(XPUSH_SESSION);
       console.log(err);
     });
 

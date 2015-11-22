@@ -256,7 +256,7 @@ exports.activate = function (req, res) {
           console.log(arguments);
           //if (config.auth && config.auth.email) EMAIL.sendVerifyMail(auth.name, auth.email, auth.uid);
           return res.status(201).json(auth);
-        })
+        });
 
         //return res.status(200).json(auth);
       });
@@ -320,7 +320,7 @@ exports.getLatLng = function (req, res, next) {
     // process err
 
     // if data is JSON, we may wrap it in js object
-    var obj = {}
+    var obj = {};
     if (geoData) {
       obj = JSON.parse(geoData);
     }

@@ -47,8 +47,7 @@ angular.module('stalkApp')
       $http(req).then(function (data) {
         if (cb)cb(null, data);
       }, function (err) {
-
-        console.log(err);
+        console.error(err);
         if (cb) cb(err)
       });
     };
@@ -56,8 +55,6 @@ angular.module('stalkApp')
     var getCurrentCustomer = function () {
       postData("currentCustomers", {A: $scope.siteId}, function (err, data) {
         var count = data.data.count;
-        console.log("===== current Customer ");
-        console.log(data.data);
         startDashboard("current_visitor", count);
         startDashboard("current_operators", 1);
       })
@@ -72,7 +69,6 @@ angular.module('stalkApp')
 
     var getReferSite = function () {
       postData("getReferSites", {}, function (err, data) {
-        console.log("=-===== getReferSite");
         var refers = data.data;
         var totalCnt = 0;
 

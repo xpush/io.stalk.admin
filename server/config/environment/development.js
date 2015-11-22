@@ -2,19 +2,20 @@
 
 module.exports = {
 
+
   // MongoDB connection options
   mongo: {
-    uri: 'mongodb://localhost:27017/STALK'
+    uri: 'mongodb://127.0.0.1/STALK'
   },
 
-  // XPUSH server
+  // Session Server url of XPUSH
   xpush: {
-    url: "http://session.stalk.io:8000",
-    //url: "http://www.notdol.com:8000",
+    url: "http://127.0.0.1:8000",
     A: "STALK"
-  },
+  }
 
-  auth: {
+  /* TODO 제거 해야 하는지 확인 필요
+  , auth: {
     email: {
       smtc: {
         host: "[SMTC Hostname]", // hostname
@@ -39,5 +40,6 @@ module.exports = {
   },
 
   seedDB: true
+  */
 
 };

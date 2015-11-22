@@ -23,14 +23,11 @@
     "nodemailer": "^1.8.0",
     "optimist": "^0.6.1",
     "passport": "~0.2.0",
-    "passport-facebook": "latest",
-    "passport-google-oauth": "latest",
     "passport-local": "~0.1.6",
-    "passport-twitter": "latest",
     "request": "~2.65.0",
     "restify": "^4.0.3",
     "serve-favicon": "~2.0.1",
-    "satelize":"~0.1.2"
+    "satelize": "~0.1.2"
   },
   "devDependencies": {
     "grunt": "~0.4.4",
