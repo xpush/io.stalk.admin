@@ -27,7 +27,6 @@ angular.module('stalkApp')
             $('#successModal').modal('show');
 
             var status = data.status;
-            var message = data.message;
 
             $scope.getSites();
             if (status == 'ERR-ACTIVE') {
@@ -35,11 +34,11 @@ angular.module('stalkApp')
             } else {
               //$location.path('/login');
             }
-
-
           })
           .catch(function (err) {
             err = err.data;
+
+            console.error(err);
 
             // Update validity of form fields that match the mongoose errors
 
