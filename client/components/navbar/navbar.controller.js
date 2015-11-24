@@ -15,6 +15,7 @@ angular.module('stalkApp')
     $rootScope.profileInfo = {};
 
     Auth.getCurrentUser().$promise.then(function (user) {
+
       var hash = CryptoJS.HmacSHA256(user.uid, "sha256");
       var pw = CryptoJS.enc.Base64.stringify(hash);
 

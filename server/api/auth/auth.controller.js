@@ -62,7 +62,8 @@ exports.signin = function (req, res) {
       res.send({
         status: 'ok',
         result: {
-          email: email
+          email: email,
+          uid: auth.uid
         }
       });
     }
