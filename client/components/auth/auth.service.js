@@ -225,7 +225,7 @@ angular.module('stalkApp')
         var cb = callback || angular.noop;
         var deferred = $q.defer();
 
-        $http.get('/api/auths/geo/', {
+        $http.post('/api/auths/geo/', {
           ip: ip
         }).
           success(function (data) {

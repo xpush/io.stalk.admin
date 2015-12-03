@@ -63,8 +63,8 @@ angular.module('stalkApp')
             var time = self.timeToString(data.TS)[0];
             var newMessage = {name: data.UO.NM, time: time, message: data.MG, side: side, opposite: opposite, timestamp:data.TS};
 
-            if( data.I ){
-              newMessage.image = data.I;
+            if( data.UO.I ){
+              newMessage.image = data.UO.I;
             } else {
               newMessage.image = 'https://raw.githubusercontent.com/xpush/io.stalk.admin/master/client/assets/images/face.png';
             }

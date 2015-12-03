@@ -331,10 +331,9 @@ exports.getLatLng = function (req, res, next) {
 };
 
 exports.getGeoLocation = function (req, res, next) {
-  var ip = req.params.ip;
+  var ip = req.body.ip;
 
   satelize.satelize({ip: ip}, function (err, geoData) {
-
 
     if (err) {
       return handleError(res, err);
@@ -342,7 +341,12 @@ exports.getGeoLocation = function (req, res, next) {
     if(!geoData){
       return handleError(res, 'Not Found');
     }else {
-      var obj = JSON.parse(geoData);
+      var obj = {};
+      try {
+        obj = JSON.parse(geoData);
+      } catch ( err ){
+        console.log(err);
+      }
       res.json(obj);
     }
 
