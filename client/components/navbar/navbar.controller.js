@@ -94,7 +94,6 @@ angular.module('stalkApp')
         })
           .then(function (data) {
             // Account created, redirect to home
-            console.log("==============");
             toaster.pop('success', "Info", "Saved Successfully");
             $('#profileModal').modal('hide');
           })
@@ -104,5 +103,12 @@ angular.module('stalkApp')
           });
       }
 
+    };
+
+    $scope.gotoChat = function( message ){
+      if( message ){
+        $rootScope.selectedChannelId = message.channel;
+      }
+      $location.path('/chat');  
     };
   });

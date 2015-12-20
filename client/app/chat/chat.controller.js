@@ -15,16 +15,27 @@ angular.module('stalkApp')
 
     $scope.setSites = function (data) {
 
-
+      var selectedChannel;
       var changed = false;
       if (!data) {
 
         var sites = Chat.getAllSites();
 
         for (var origin in sites) {
+          var channels = sites[origin];
           $scope.siteIds[origin] = $scope.siteArray.length;
-          $scope.siteArray.push({'origin': origin, 'channels': sites[origin]});
+          $scope.siteArray.push({'origin': origin, 'channels': channels});
+
+          if( !selectedChannel && $rootScope.selectedChannelId ){
+            for( var inx = 0; inx < channels.length ; inx++ ){
+              if ( $rootScope.selectedChannelId == channels[inx].C ){
+                selectedChannel = channels[inx];
+                $rootScope.selectedChannelId = undefined;
+              }
+            }
+          }
         }
+
       } else {
 
         var origin = data.origin;
@@ -42,10 +53,11 @@ angular.module('stalkApp')
         $scope.$apply();
         changed = false;
       }
-    };
 
-    // Init Site List
-    $scope.setSites();
+      if( selectedChannel ){
+        $scope.gotoChat( selectedChannel );  
+      }
+    };
 
     $rootScope.$on("$onInfo", function (event, data) {
       $scope.setSites(data);
@@ -139,6 +151,10 @@ angular.module('stalkApp')
 
       return result;
     };
+
+
+    // Init Site List
+    $scope.setSites();    
   });
 
 function setWorldMap(lat, lng, name) {

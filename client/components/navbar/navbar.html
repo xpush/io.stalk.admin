@@ -33,7 +33,7 @@
               <!-- inner menu: contains the actual data -->
               <ul class="menu">
                 <li ng-repeat="m in unreadMessage"><!-- start message -->
-                  <a href="#">
+                  <a href="###" ng-click="gotoChat(m)">
                     <div class="pull-left">
                       <img ng-src="{{m.image}}" class="img-circle" alt="{{m.name}}">
                     </div>
@@ -46,7 +46,7 @@
                 </li><!-- end message -->
               </ul>
             </li>
-            <li class="footer"><a href="/chat">View all</a></li>
+            <li class="footer"><a href="###" ng-click="gotoChat()">View all</a></li>
           </ul>
         </li>
         <!-- Notifications: style can be found in dropdown.less -->

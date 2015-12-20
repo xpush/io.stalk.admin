@@ -21,6 +21,7 @@ router.post('/signin', controller.signin);
 router.get('/me', auth.isAuthenticated(), controller.me);
 
 router.put('/:id', controller.update);
+router.post('/:id', controller.update);
 router.patch('/:id', controller.update);
 router.delete('/:id', controller.destroy);
 

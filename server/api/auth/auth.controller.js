@@ -57,13 +57,16 @@ exports.signin = function (req, res) {
       res.send({status: 'AUTH-DEACTIVE', message: DICT.EMAIL_DEACTIVE});
     }
     else if (auth.pass == UT.encrypto(pass)) {
+      console.log( auth );
       req.session.email = auth.email;
       req.session.name = auth.name;
       res.send({
         status: 'ok',
         result: {
           email: email,
-          uid: auth.uid
+          uid: auth.uid,
+          name:auth.name,
+          image:auth.image
         }
       });
     }
