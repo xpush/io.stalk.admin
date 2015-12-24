@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('stalkApp')
-  .factory('Chat', function Chat($rootScope, Auth, NotificationManager) {
+  .factory('Chat', function Chat($rootScope, Auth, Channel, NotificationManager) {
     var currentUser = {};
 
     var activeChannel = "";
@@ -20,28 +20,39 @@ angular.module('stalkApp')
         Auth.getCurrentUser().$promise.then(function (user) {
           currentUser = user;
 
-          $rootScope.xpush.on('info', function (channel, name, data) {
+          $rootScope.xpush.on('info', function (channel, name, info) {
+            info.data = angular.copy(info);
 
             var newChannelFlag = false;
             if( !channelInfos[channel] ){
-              channelInfos[channel] = data;
+              channelInfos[channel] = info;
               newChannelFlag = true;
             }
 
-            var origin = data.origin;
+            var origin = info.origin;
             if( !sites[origin] ){
               sites[origin] = [];
             }
 
             if( newChannelFlag ){
-              if( !data.name ){
-                data.name = data.title;
+              if( !info.name ){
+                info.name = info.title;
               }
-              data.channel = channel;
-              data.startTime = new Date( data.TS ).toLocaleTimeString();
-              sites[origin].push( data );
+              info.channel = channel;
+              info.startTime = new Date( info.TS ).toLocaleTimeString();
+              info.startTimestamp = info.TS;
+              sites[origin].push( info );
 
-              $rootScope.$emit( "$onInfo", data );              
+              console.log( info.data );
+ 
+              Channel.save( info ).then( function(result){
+                console.log( result );
+              })
+              .catch(function(err) {
+                console.log( err );
+              });
+
+              $rootScope.$emit( "$onInfo", info );              
             }
           });
 

@@ -4,14 +4,13 @@ var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
 var ChannelSchema = new Schema({
-  channel: {type: String, required: true},
+  channel: {type: String},
   name: String,
   origin: String,
   active: {type: Boolean, default: true},
   startTime: {type: Date},
   endTime:{type: Date},
-  data: {},
-  uid: {type: String, required: true}
+  uid: {type: String}
 });
 
 module.exports = mongoose.model('Channel', ChannelSchema);

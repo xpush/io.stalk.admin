@@ -34,23 +34,26 @@ exports.listByOrigin = function (req, res) {
 exports.save = function (req, res) {
   var channel = req.body.channel;
   var name = req.body.name;
-  var startTime = req.body.startTime;
+  var startTime = req.body.startTimestamp;
   var origin = req.body.origin;
   var data = req.body.data;
 
   var saveData = {
-    channel: channel,
-    origin: origin
+    channel: channel
   };
 
   Channel.findOne(saveData, function (err, channel) {
+
     if (err) {
+      console.log( err );
       return handleError(res, err);
     }
     if (!channel) {
       saveData.name = name;
       saveData.startTime = startTime;
       saveData.data = data;
+
+      console.log( saveData );
 
       Channel.create(saveData, function (err, _channel) {
         if (err) {
@@ -71,4 +74,8 @@ exports.save = function (req, res) {
     }
   });
 };
+
+function handleError(res, err) {
+  return res.status(500).send(err);
+}
 
