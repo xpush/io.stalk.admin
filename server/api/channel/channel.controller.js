@@ -6,6 +6,8 @@ var Channel = require('./channel.model');
 exports.index = function (req, res) {
   var uid = req.user.uid;
 
+  console.log( uid );
+
   Channel.find({"uid": uid}, function (err, apps) {
     if (err) {
       return handleError(res, err);
@@ -14,14 +16,22 @@ exports.index = function (req, res) {
   });
 };
 
-exports.listByOrigin = function (req, res) {
-  var origin = req.params.origin;
+exports.search = function (req, res) {
+  var origin = req.body.origin;
   var uid = req.body.uid;
+  var active = req.body.active;
 
   var query = {
-    origin: origin,
     uid: uid
   };
+
+  if( active ){
+    query.active = active;
+  }
+
+  if( origin ){
+    query.origin = origin;
+  }
 
   Channel.find(query, function (err, channels) {
     if (err) {

@@ -16,7 +16,7 @@ angular.module('stalkApp')
 
       init: function () {
         self = this;
-        console.log( "event chat service" );
+
         Auth.getCurrentUser().$promise.then(function (user) {
           currentUser = user;
 
@@ -42,9 +42,8 @@ angular.module('stalkApp')
               info.startTime = new Date( info.TS ).toLocaleTimeString();
               info.startTimestamp = info.TS;
               sites[origin].push( info );
-
-              console.log( info.data );
  
+              info.uid = currentUser.uid;
               Channel.save( info ).then( function(result){
                 console.log( result );
               })
