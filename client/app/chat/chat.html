@@ -111,8 +111,11 @@
                       <!-- /.direct-chat-info -->
                       <br/>
                       <img class="direct-chat-img" ng-src="{{m.image}}" alt="{{m.name}}">
-                      <div class="direct-chat-text">
+                      <div class="direct-chat-text" ng-if="m.type=='MG'">
                         {{m.message}}
+                      </div>
+                      <div ng-if="m.type=='IM'">
+                        <img ng-src="{{m.message}}" class="direct-chat-message-image-{{m.side}}"/>
                       </div>
                       <!-- /.direct-chat-text -->
                     </div>

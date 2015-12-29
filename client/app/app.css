@@ -36,3 +36,15 @@
     color: #000;
     padding: 0.2em 0;
 }
+
+.direct-chat-message-image-right{ 
+  max-width:100px;
+  max-height:100px;
+  float:right;
+}
+
+.direct-chat-message-image-left{
+  max-width:100px;
+  max-height:100px;
+  float:left;
+}
