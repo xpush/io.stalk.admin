@@ -714,10 +714,22 @@
 
       self.getChannelAsync(channel, function (err, ch) {
 
+        var headers = {
+          'XP-A': self.appId,
+          'XP-C': channel,
+          'XP-U': JSON.stringify({
+            U: self.userId,
+            D: self.deviceId
+          }) //[U]^[D]^[TK] @ TODO add user token
+        };
+
+        headers['XP-FU-org'] = inputObj.name;
+        if (inputObj.overwrite) headers['XP-FU-nm'] = inputObj.name;
+        if (inputObj.type) headers['XP-FU-tp'] = inputObj.type;
+
+        var url = ch._server.serverUrl + '/upload';
+
         if (window.FileTransfer && window.FileUploadOptions) {
-
-          var url = ch._server.serverUrl + '/upload';
-
           var options = new FileUploadOptions();
           options.fileKey = "post";
           options.chunkedMode = false;
@@ -725,17 +737,7 @@
             'key1': 'VAL1',
             'key2': 'VAL2'
           };
-          options.headers = {
-            'XP-A': self.appId,
-            'XP-C': channel,
-            'XP-U': JSON.stringify({
-              U: self.userId,
-              D: self.deviceId
-            }) //[U]^[D]^[TK] @ TODO add user token
-          };
-          options.headers['XP-FU-org'] = inputObj.name;
-          if (inputObj.overwrite) options.headers['XP-FU-nm'] = inputObj.name;
-          if (inputObj.type)      options.headers['XP-FU-tp'] = inputObj.type;
+          options.headers = headers;
 
           var ft = new FileTransfer();
           if (fnPrg != undefined) {
@@ -755,8 +757,12 @@
             debug("On fail " + e);
           }, options);
 
+        } else if( typeof FormData !='undefined' ){
+          // 일반 REST FILE UPLOAD
+          var formData = new FormData();
+          formData.append("file", inputObj.files[0] );
+          self.ajax( "/upload", "POST", formData, headers, fnCallback );
         }
-
       });
     };
 
@@ -922,7 +928,6 @@
       debug("xpush : queryUser ", params);
 
       self.ajax('/user/search', 'POST', params, function (err, response, count) {
-        console.log(response);
         if (response.status == 'ok') {
           cb(null, response.result.users, response.result.users.length);
         } else {
@@ -1281,16 +1286,26 @@
         }
       }
 
-      var _url = self.hostname + context;
-
-      var param = Object.keys(data).map(function (k) {
-        return encodeURIComponent(k) + '=' + encodeURIComponent(data[k]);
-      }).join('&');
-
+      var _url;
+      if( context.indexOf( "http://" ) > -1 || context.indexOf( "https://" ) > -1  ){
+        _url = context;
+      } else {
+        _url = self.hostname + context;
+      }
       method = (method.toLowerCase() == "get") ? "GET" : "POST";
-      param = (param == null || param == "") ? null : param;
-      if (method == "GET" && param != null) {
-        _url = _url + "?" + param;
+
+      var param;
+      if ( data instanceof FormData ){
+        param = data;
+      } else {
+        param = Object.keys(data).map(function (k) {
+          return encodeURIComponent(k) + '=' + encodeURIComponent(data[k]);
+        }).join('&');
+
+        param = (param == null || param == "") ? null : param;
+        if (method == "GET" && param != null) {
+          _url = _url + "?" + param;
+        }         
       }
 
       xhr.open(method, _url, true);
@@ -1324,7 +1339,10 @@
           }
         }
       }
-      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      
+      if ( !(param instanceof FormData) ){
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      }
       xhr.send((method == "POST") ? param : null);
 
       return;

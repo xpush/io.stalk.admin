@@ -10,7 +10,7 @@ module.exports = {
 
   // Session Server url of XPUSH
   xpush: {
-    url: "http://localhost:8000",
+    url: "http://54.178.160.166:8000",
     A: "STALK"
   },
 

@@ -127,13 +127,14 @@
                 <!-- /.box-body -->
                 <div class="box-footer">
                   <div class="input-group">
+                    <strong class="action-button upload-button" title="Send attachment" id="attachment" style="display: inline;" ng-click="openFile()"></strong>
                     <input type="text" id="inputMessage" name="inputMessage" ng-model="messageText"
-                         placeholder="Type Message ..." class="form-control"
+                         placeholder="Type Message ..." class="form-control" style="padding-left:30px;"
                          ng-enter="sendMessage()">
-          <span class="input-group-btn">
-            <button type="button" id="send" class="btn btn-primary btn-flat" ng-click="sendMessage()">Send
-            </button>
-          </span>
+                    <span class="input-group-btn">
+                      <button type="button" id="send" class="btn btn-primary btn-flat" ng-click="sendMessage()">Send</button>
+                      <input type="file" id="file" style="display:none"/>
+                    </span>
                   </div>
                 </div>
                 <!-- /.box-footer-->

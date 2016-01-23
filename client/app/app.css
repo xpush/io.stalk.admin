@@ -38,65 +38,85 @@
 }
 
 .direct-chat-message-image-right{ 
-  float:right;
+    float:right;
 }
 
 .direct-chat-message-image-left{
-  float:left;
+    float:left;
 }
 
 .direct-chat-image {
-  max-width: 266px;
-  border-radius: 5px;
-  position: relative;
-  background: transparent;
-  border: 1px solid #d2d6de;
-  margin: 5px 0 0 5px;
-  color: #444444;
-  text-overflow: ellipsis;
-  word-break: break-word;
+    max-width: 266px;
+    border-radius: 5px;
+    position: relative;
+    background: transparent;
+    border: 1px solid #d2d6de;
+    margin: 5px 0 0 5px;
+    color: #444444;
+    text-overflow: ellipsis;
+    word-break: break-word;
 }
 
 .direct-chat-image.right {
-  float:right;
+    float:right;
 }
 
 .direct-chat-image.left {
-  float:left;
+    float:left;
 }
 
 .direct-chat-image img{
-  display: block;
-  max-width: 100%;
-  margin: 2px;  
-  border-radius: 4px;
+    display: block;
+    max-width: 100%;
+    margin: 2px;  
+    border-radius: 4px;
 }
 
 .right .direct-chat-image:after, .right .direct-chat-image:before {
-  right: auto;
-  left: 100%;
-  border-right-color: transparent;
-  border-left-color: #d2d6de;
+    right: auto;
+    left: 100%;
+    border-right-color: transparent;
+    border-left-color: #d2d6de;
 }
 
 .direct-chat-image:after, .direct-chat-image:before {
-  position: absolute;
-  right: 100%;
-  top: 15px;
-  border: solid transparent;
-  border-right-color: #d2d6de;
-  content: ' ';
-  height: 0;
-  width: 0;
-  pointer-events: none;
+    position: absolute;
+    right: 100%;
+    top: 15px;
+    border: solid transparent;
+    border-right-color: #d2d6de;
+    content: ' ';
+    height: 0;
+    width: 0;
+    pointer-events: none;
 }
 
 .direct-chat-image:before {
-  border-width: 6px;
-  margin-top: -6px;
+    border-width: 6px;
+    margin-top: -6px;
 }
 
 .direct-chat-image:after {
-  border-width: 5px;
-  margin-top: -5px;
+    border-width: 5px;
+    margin-top: -5px;
+}
+
+.input-group .action-button{
+    z-index: 2147483001;
+    opacity: .4;
+    background-position: center;
+    display: none;
+    height: 18px;
+    width: 18px;
+    position: absolute;
+    float: left;
+    cursor: pointer;
+    top: 9px;
+    margin: 0 2px 0 8px;
+}
+
+.input-group .action-button.upload-button {
+    background-image: url(http://static.stalk.io/images/ic_attachment.png);
+    background-size: 18px 18px;
+    background-repeat: no-repeat;
 }

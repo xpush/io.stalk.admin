@@ -13,6 +13,38 @@ angular.module('stalkApp')
     $scope.messages = [];
     $rootScope.isLogin = false;
 
+    var fileObj;
+
+    $scope.openFile = function(){
+      fileObj = document.getElementById("file");
+      angular.element( fileObj ).click();
+
+      if( !fileObj.onchange ){
+        fileObj.onchange = function(e) {
+          $scope.uploadFile();
+        };
+      }
+    };
+
+    $scope.uploadFile = function(){
+      var file = fileObj.files[0];
+
+      // File Type check, image type 이 아닌 경우를 체크
+      if( file.type.indexOf( "image" ) < 0 ){
+        var alertMessage = {title: 'Upload Failed'};
+        alertMessage.subTitle = 'Upload only images';
+
+        //$ionicPopup.alert( alertMessage );
+        inputObj.value = ""
+
+        return;
+      }
+
+      $rootScope.xpush.uploadFile( $scope.currentChannel.C, fileObj.value, fileObj, null, function(err, result){
+        console.log( result );
+      });
+    };
+
     $scope.setSites = function (data) {
 
       var selectedChannel;
@@ -115,7 +147,6 @@ angular.module('stalkApp')
       });
 
     };
-
 
     $scope.timeToString = function (timestamp) {
 
