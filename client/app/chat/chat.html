@@ -115,7 +115,7 @@
                         {{m.message}}
                       </div>
                       <div ng-if="m.type=='IM'" class="direct-chat-image {{m.side}}">
-                        <img ng-src="{{m.message}}" class="direct-chat-message-image-{{m.side}}"/>
+                        <img ng-src="{{m.message}}" class="direct-chat-message-image-{{m.side}} stalk-image-viewable" ng-click="viewImage($event);"/>
                       </div>
                       <!-- /.direct-chat-text -->
                     </div>
@@ -197,6 +197,7 @@
           <!-- /.box -->
         </div>
       </div>
+      <div id="stalk-image-viewer" class="stalk-image-viewer" style="display:none;" ng-click="closeImage();"><div class="stalk-image-viewer-overlay" style="opacity: 0.8;"></div><img id="stalk-zoomed-image" class="stalk-zoomed-image" style="transform: translate(0px, 0px) scale(1, 1);top:0px;"></div></div>
     </div>
     <!-- /.row (main row) -->
   </section>

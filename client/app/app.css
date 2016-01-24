@@ -120,6 +120,11 @@
     background-repeat: no-repeat;
 }
 
+.stalk-image-viewable {
+    cursor: -webkit-zoom-in;
+    cursor: zoom-in;    
+}
+
 .stalk-viewer-overlay {
     z-index: 2147483003;
     position: fixed;

@@ -41,11 +41,71 @@ angular.module('stalkApp')
       }
 
       $rootScope.xpush.uploadFile( $scope.currentChannel.C, fileObj.value, fileObj, null, function(err, result){
-        console.log( result );
         if( !err ){
           $scope.sendMessage( result.url, 'IM' );
         }
       });
+    };
+
+    $scope.viewImage = function($event){
+
+      var obj = $event.target;
+      if( obj.src ){
+
+        var zoomImg = document.getElementById( "stalk-zoomed-image" );
+        var maxWidth = window.innerWidth - 80;
+        var w;
+        var h;
+        var ratio = ( obj.naturalWidth / obj.naturalHeight) ;
+
+        var isMaxWidth = false;
+        if( maxWidth > obj.naturalWidth ) {
+          w =  obj.naturalWidth;
+        } else {
+          isMaxWidth = true;
+          w = maxWidth;
+        }
+
+        var isMaxHeight = false;
+        var maxHeight = window.innerHeight - 80;
+        if( maxHeight  > obj.naturalHeight ){
+          h = obj.naturalHeight;
+        } else {
+          isMaxHeight = true;
+          h = maxHeight;
+        }
+
+        if( isMaxWidth && isMaxHeight ){
+          if( w > h ){
+            w = h * ratio;
+          } else {
+            
+            h = w / ratio;
+          }
+        } else if( isMaxWidth ){
+          h = w / ratio;
+        } else if ( isMaxHeight ){
+          w = h * ratio;
+        }
+
+        zoomImg.style.width = w+"px";
+        zoomImg.style.height = h+"px";
+        zoomImg.style.left = ( window.innerWidth - w ) / 2+"px";
+        zoomImg.style.top = ( window.innerHeight - h ) / 2+"px";
+        zoomImg.src = obj.src;
+        zoomImg.onload = function(){
+          if( document.getElementById( "stalk-image-viewer" ) ){
+            document.getElementById( "stalk-image-viewer" ).style.display = "block";
+          }
+        };
+      }
+    };
+
+    $scope.closeImage = function($event){
+      var obj = document.getElementById( "stalk-image-viewer" );
+      if( obj.style.display != "none" ){
+        obj.style.display = 'none';
+      }
     };
 
     $scope.setSites = function (data) {
