@@ -42,6 +42,9 @@ angular.module('stalkApp')
 
       $rootScope.xpush.uploadFile( $scope.currentChannel.C, fileObj.value, fileObj, null, function(err, result){
         console.log( result );
+        if( !err ){
+          $scope.sendMessage( result.url, 'IM' );
+        }
       });
     };
 
@@ -95,8 +98,13 @@ angular.module('stalkApp')
       $scope.setSites(data);
     });
 
-    $scope.sendMessage = function () {
-      var msg = document.getElementById("inputMessage").value.toString().trim();
+    $scope.sendMessage = function (message, type) {
+      var msg;
+      if( message ){
+        msg = message;
+      } else {
+        msg = document.getElementById("inputMessage").value.toString().trim();
+      }
       msg = encodeURIComponent(msg);
 
       if (msg !== "") {
@@ -104,6 +112,10 @@ angular.module('stalkApp')
           UO: {U: $rootScope.currentUser.uid, NM: $rootScope.currentUser.name, I: $rootScope.currentUser.image},
           MG: msg
         };
+
+        if( type ){
+          DT.TP = type;
+        }
 
         $rootScope.xpush.send($scope.currentChannel.C, 'message', DT);
         document.getElementById("inputMessage").value = "";

@@ -761,7 +761,13 @@
           // 일반 REST FILE UPLOAD
           var formData = new FormData();
           formData.append("file", inputObj.files[0] );
-          self.ajax( "/upload", "POST", formData, headers, fnCallback );
+          self.ajax( "/upload", "POST", formData, headers, function(err, result){
+            if (result.status == 'ok') {
+              fnCallback(null, result.result);
+            } else {
+              fnCallback(result.status,result.message);
+            }
+          });
         }
       });
     };
