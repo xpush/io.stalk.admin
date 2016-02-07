@@ -15,6 +15,7 @@ module.exports = function (app) {
   app.use('/api/apps', require('./api/app'));
   app.use('/api/auths', require('./api/auth'));
   app.use('/api/channels', require('./api/channel'));
+  app.use('/api/messages', require('./api/message'));
 
   app.use('/auth', require('./auth'));
 
