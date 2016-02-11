@@ -6,6 +6,8 @@ var mongoose = require('mongoose'),
 var MessageSchema = new Schema({
   email: String,
   name: {type: String, default: "anonymous"},
+  url: String,
+  appkey:String,
   message: String,
   image: {type: String},
   unread: {type: Boolean, default: true},
