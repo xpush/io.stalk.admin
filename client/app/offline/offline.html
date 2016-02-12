@@ -1,0 +1,40 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Offline Messages( Comming Soon )
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">Offline Messages</li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box-body">
+                    <div class="direct-chat-messages" id="chatArea">
+                        <!-- Message. Default to the left -->
+                        <div class="direct-chat-msg {{m.side}}" data-ng-repeat="m in messages">
+                            <div class="direct-chat-info pull-{{m.side}} clearfix">
+                                <span class="direct-chat-name pull-{{m.side}}">{{m.name}}</span>
+                                <span class="direct-chat-timestamp pull-{{m.opposite}}">{{m.time}}</span>
+                            </div>
+                            <!-- /.direct-chat-info -->
+                            <br/>
+                            <img class="direct-chat-img" ng-src="{{m.image}}" alt="{{m.name}}">
+                            <div class="direct-chat-text" >
+                                {{m.message}}
+                            </div>
+                            <!-- /.direct-chat-text -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- /.row (main row) -->
+    </section>
+</div><!-- /.content-wrapper -->
