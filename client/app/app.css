@@ -158,3 +158,21 @@
     cursor: zoom-out;
     opacity: 0;
 }
+
+.direct-offline-messages {
+    -webkit-transform: translate(0, 0);
+    -ms-transform: translate(0, 0);
+    -o-transform: translate(0, 0);
+    transform: translate(0, 0);
+    padding: 10px;
+    height: 480px;
+    overflow: auto;
+    background: #fff;
+}
+
+.direct-offline-messages {
+    -webkit-transition: -webkit-transform 0.5s ease-in-out;
+    -moz-transition: -moz-transform 0.5s ease-in-out;
+    -o-transition: -o-transform 0.5s ease-in-out;
+    transition: transform 0.5s ease-in-out;
+}

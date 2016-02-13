@@ -3,7 +3,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Offline Messages( Comming Soon )
+            Offline Messages
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -16,16 +16,16 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="box-body">
-                    <div class="direct-chat-messages" id="chatArea">
+                    <div class="direct-offline-messages" id="chatArea">
                         <!-- Message. Default to the left -->
-                        <div class="direct-chat-msg {{m.side}}" data-ng-repeat="m in messages">
-                            <div class="direct-chat-info pull-{{m.side}} clearfix">
-                                <span class="direct-chat-name pull-{{m.side}}">{{m.name}}</span>
-                                <span class="direct-chat-timestamp pull-{{m.opposite}}">{{m.time}}</span>
+                        <div class="direct-chat-msg left" data-ng-repeat="m in messages">
+                            <div class="direct-chat-info pull-left clearfix">
+                                <span class="direct-chat-name pull-left">{{m.name}}</span>
+                                <span class="direct-chat-timestamp pull-right">{{m.time}}</span>
                             </div>
                             <!-- /.direct-chat-info -->
                             <br/>
-                            <img class="direct-chat-img" ng-src="{{m.image}}" alt="{{m.name}}">
+                            <img class="direct-chat-img" ng-src="https://raw.githubusercontent.com/xpush/io.stalk.admin/master/client/assets/images/face.png">
                             <div class="direct-chat-text" >
                                 {{m.message}}
                             </div>

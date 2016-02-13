@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('stalkApp')
-  .factory('Chat', function Chat($rootScope, Auth, Channel, NotificationManager) {
+  .factory('Chat', function Chat($rootScope, Auth, Channel, NotificationManager, Util) {
     var currentUser = {};
 
     var activeChannel = "";
@@ -70,7 +70,7 @@ angular.module('stalkApp')
               opposite = "left";
             }
 
-            var time = self.timeToString(data.TS)[0];
+            var time = Util.timeToString(data.TS)[0];
             var newMessage = {name: data.UO.NM, time: time, message: data.MG, side: side, opposite: opposite, timestamp:data.TS};
 	    if( data.TP ){
               newMessage.type = data.TP;
@@ -138,39 +138,6 @@ angular.module('stalkApp')
 
         }
         return allUnreadMessages;
-      },      
-      timeToString : function(timestamp){
-        var cDate = new Date();
-
-        var cYyyymmdd = cDate.getFullYear() + "" + (cDate.getMonth() + 1) + "" + cDate.getDate();
-        var date = new Date(timestamp);
-
-        var yyyy = date.getFullYear();
-        var mm = date.getMonth() + 1;
-        var dd = date.getDate();
-
-        var hour = date.getHours();
-        hour = hour >= 10 ? hour : "0" + hour;
-
-        var minute = date.getMinutes();
-        minute = minute >= 10 ? "" + minute : "0" + minute;
-
-        var second = date.getSeconds();
-        second = second >= 10 ? "" + second : "0" + second;
-
-        var yyyymmdd = yyyy + "" + mm + "" + dd;
-
-        var result = [];
-        if (cYyyymmdd != yyyymmdd) {
-          result.push(yyyy + "-" + mm + "-" + dd);
-        } else {
-          result.push(hour + ":" + minute + ":" + second);
-        }
-
-        result.push(yyyy + "." + mm + "." + dd);
-        result.push(date.toLocaleTimeString());
-
-        return result;  
       }
     };
   })

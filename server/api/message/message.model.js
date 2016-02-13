@@ -11,7 +11,7 @@ var MessageSchema = new Schema({
   message: String,
   image: {type: String},
   unread: {type: Boolean, default: true},
-  ts: {type: Date, default: new Date()}
+  timestamp: Number
 });
 
 module.exports = mongoose.model('Message', MessageSchema);
