@@ -2,38 +2,36 @@
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-        <h1>
-            Offline Messages
-        </h1>
+        <h1>Offline Messages</h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
             <li class="active">Offline Messages</li>
         </ol>
     </section>
-
-    <!-- Main content -->
     <section class="content">
         <div class="row">
             <div class="col-md-12">
-                <div class="box-body">
-                    <div class="direct-offline-messages" id="chatArea">
-                        <!-- Message. Default to the left -->
-                        <div class="direct-chat-msg left" data-ng-repeat="m in messages">
-                            <div class="direct-chat-info pull-left clearfix">
-                                <span class="direct-chat-name pull-left">{{m.name}}</span>
-                                <span class="direct-chat-timestamp pull-right">{{m.time}}</span>
+                <ul style="padding-left:10px;height:600px;overflow-y:auto" class="slimScrollDiv" >
+                    <div class="timeline " data-ng-repeat="tl in timelines">
+                        <li class="time-label">
+                            <span class="bg-red">{{tl.date}}</span>
+                        </li>
+                        <li data-ng-repeat="m in tl.messages">
+                            <i class="fa fa-envelope bg-blue"></i>
+                            <div class="timeline-item">
+                                <span class="time"><i class="fa fa-clock-o"></i>{{m.time}}</span>
+                                <h3 class="timeline-header"><a href="#">{{m.email}}</a>&nbsp;{{m.name}}</h3>
+                                <div class="timeline-body">
+                                    {{m.message}}
+                                </div>
+                                <div class="timeline-footer" ng-if="m.url">
+                                    <a class="btn btn-warning btn-xs">{{m.url}}</a>
+                                </div>
                             </div>
-                            <!-- /.direct-chat-info -->
-                            <br/>
-                            <img class="direct-chat-img" ng-src="https://raw.githubusercontent.com/xpush/io.stalk.admin/master/client/assets/images/face.png">
-                            <div class="direct-chat-text" >
-                                {{m.message}}
-                            </div>
-                            <!-- /.direct-chat-text -->
-                        </div>
+                        </li>
                     </div>
-                </div>
-            </div>
+                </ul>
+            </div>       
         </div>
     <!-- /.row (main row) -->
     </section>

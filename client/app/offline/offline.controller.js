@@ -2,18 +2,31 @@
 
 angular.module('stalkApp')
   .controller('OfflineCtrl', function ($rootScope, $scope, Auth, Offline, Util) {
-    $scope.messages = [];
+    $scope.timelines = [];
 
     Offline.listMessages().then(function (messages) {
 
-      var results = [];
+      var result = {};
+      var beforeDate = "";
       for( var inx = 0 ; inx < messages.length ; inx++ ){
-        var result = messages[inx];
+        var message = messages[inx];
 
-        result.time = Util.timeToString( result.timestamp )[2];
-        results.push( result );
+        var dts = Util.timeToString( message.timestamp );
+        var date = dts[1];
+        message.date = date;
+        message.time = dts[2];
+
+        if( !result[date] ){
+          result[date] = {};
+          result[date].date = date;
+          result[date].messages = [];
+        }
+
+        result[date].messages.push( message );
       }
 
-      $scope.messages = results;
+      console.log( result );
+
+      $scope.timelines = result;
     });
   });
