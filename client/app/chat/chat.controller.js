@@ -76,18 +76,17 @@ angular.module('stalkApp')
         }
 
         if( isMaxWidth && isMaxHeight ){
-          if( w > h ){
-            w = h * ratio;
-          } else {
-            
+          if( obj.naturalWidth > obj.naturalHeight ){
             h = w / ratio;
+          } else {
+            w = h * ratio;
           }
         } else if( isMaxWidth ){
           h = w / ratio;
         } else if ( isMaxHeight ){
           w = h * ratio;
         }
-
+        
         zoomImg.style.width = w+"px";
         zoomImg.style.height = h+"px";
         zoomImg.style.left = ( window.innerWidth - w ) / 2+"px";

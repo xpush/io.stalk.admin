@@ -1,17 +1,34 @@
 'use strict';
 
 var _ = require('lodash');
+var App = require('../app/app.model');
 var Message = require('./message.model');
 
 exports.index = function (req, res) {
 
-  var query = Message.find({"unread": true, "message": { $exists: true } }).select({"_id": 0});
-  query.exec(function (err, messages) {
+  var userId = req.user.uid;
+
+  App.find({"users": userId}, function (err, apps) {
     if (err) {
       return handleError(res, err);
     }
-    return res.send(messages);
+
+    var appkeys = [];
+    for( var jnx = 0 ; jnx < apps.length; jnx++){
+      appkeys.push( apps[jnx].key );
+    }
+
+    var query = Message.find({"appkey": { $in:appkeys }, "unread": true, "message": { $exists: true } }).select({"_id": 0});
+    query.exec(function (err, messages) {
+      if (err) {
+        return handleError(res, err);
+      }
+
+      return res.send(messages);
+    });
   });
+
+
 };
 
 exports.save = function (req, res) {

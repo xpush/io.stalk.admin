@@ -20,10 +20,8 @@
                             <i class="fa fa-envelope bg-blue"></i>
                             <div class="timeline-item">
                                 <span class="time"><i class="fa fa-clock-o"></i>{{m.time}}</span>
-                                <h3 class="timeline-header"><a href="#">{{m.email}}</a>&nbsp;{{m.name}}</h3>
-                                <div class="timeline-body">
-                                    {{m.message}}
-                                </div>
+                                <h3 class="timeline-header"><a href="#">{{m.email}}</a><span class="timeline-name">{{m.name}}</span></h3>
+                                <div class="timeline-body">{{m.message}}</div>
                                 <div class="timeline-footer" ng-if="m.url">
                                     <a class="btn btn-warning btn-xs">{{m.url}}</a>
                                 </div>
