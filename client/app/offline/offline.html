@@ -23,7 +23,8 @@
                                 <h3 class="timeline-header"><a href="#">{{m.email}}</a><span class="timeline-name">{{m.name}}</span></h3>
                                 <div class="timeline-body">{{m.message}}</div>
                                 <div class="timeline-footer" ng-if="m.url">
-                                    <a class="btn btn-warning btn-xs">{{m.url}}</a>
+                                    <a href="{{m.url}}" target="_blank">{{m.url}}</a>
+                                    <a class="btn btn-warning pull-right" ng-click="readMessage(m)">Read<a>
                                 </div>
                             </div>
                         </li>

@@ -18,7 +18,7 @@ exports.index = function (req, res) {
       appkeys.push( apps[jnx].key );
     }
 
-    var query = Message.find({"appkey": { $in:appkeys }, "unread": true, "message": { $exists: true } }).select({"_id": 0});
+    var query = Message.find({"appkey": { $in:appkeys }, "unread": true, "message": { $exists: true } });
     query.exec(function (err, messages) {
       if (err) {
         return handleError(res, err);
@@ -55,6 +55,22 @@ exports.save = function (req, res) {
       _message._id = undefined;
       _message.__v = undefined;
       return res.status(200).json(_message); 
+    }
+  });
+};
+
+exports.update = function (req, res) {
+  var id = req.body.id;
+
+  var reqData = {
+    _id: id,
+  };
+
+  Message.update(reqData, {$set:{unread:false}}, {multi:true}, function (err, _message) {
+    if (err) {
+      return handleError(res, err);
+    } else {
+      return res.status(200).json({'status':'ok'}) ; 
     }
   });
 };

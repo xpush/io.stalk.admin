@@ -2,3 +2,8 @@
 	color: #555;
 	padding-left: 10px;
 }
+
+.pull-right {
+	position: absolute;
+    right: 10px; bottom: 4px
+}

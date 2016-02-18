@@ -21,6 +21,25 @@ angular.module('stalkApp')
           }.bind(this));
 
         return deferred.promise;
+      },
+      readMessage: function(query, callback){
+
+        console.log( "redMessage ");
+        var cb = callback || angular.noop;
+        var deferred = $q.defer();
+        
+        $http.post('/api/messages/update',
+          {id:query.id}).
+          success(function (data) {
+            deferred.resolve(data);
+            return cb();
+          }).
+          error(function (err) {
+            deferred.reject(err);
+            return cb(err);
+          }.bind(this));
+
+        return deferred.promise;
       }
     }
 });

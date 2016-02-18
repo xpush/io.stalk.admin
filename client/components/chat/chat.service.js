@@ -72,7 +72,7 @@ angular.module('stalkApp')
 
             var time = Util.timeToString(data.TS)[0];
             var newMessage = {name: data.UO.NM, time: time, message: data.MG, side: side, opposite: opposite, timestamp:data.TS};
-	    if( data.TP ){
+	          if( data.TP ){
               newMessage.type = data.TP;
             } else {
               newMessage.type = "MG";

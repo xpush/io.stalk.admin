@@ -25,8 +25,14 @@ angular.module('stalkApp')
         result[date].messages.push( message );
       }
 
-      console.log( result );
-
       $scope.timelines = result;
     });
+
+    $scope.readMessage = function( message ){
+
+      Offline.readMessage({ id: message._id })
+        .then(function(result){
+
+      })['catch'](function (err) {});
+    };
   });
