@@ -11,7 +11,7 @@
     <section class="content">
         <div class="row">
             <div class="col-md-12">
-                <ul style="padding-left:10px;height:600px;overflow-y:auto" class="slimScrollDiv" >
+                <ul style="padding-left:10px;max-height:600px;overflow-y:auto" class="slimScrollDiv" >
                     <div class="timeline " data-ng-repeat="tl in timelines">
                         <li class="time-label">
                             <span class="bg-red">{{tl.date}}</span>
@@ -30,6 +30,12 @@
                         </li>
                     </div>
                 </ul>
+                <div class="col-md-6 callout callout-info lead" ng-if="timelineSize == 0 ">
+                  <p>There is no message.</p>
+                </div>
+                <div style="clear:both;position: relative; margin:20px 14px 0px 0px" ng-if=" timelineSize > 0 ">
+                  <a ng-click="readAllMessage()" class="btn btn-primary pull-right">Read All</a>
+                </div>
             </div>       
         </div>
     <!-- /.row (main row) -->

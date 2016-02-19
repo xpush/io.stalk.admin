@@ -59,7 +59,7 @@ exports.save = function (req, res) {
   });
 };
 
-exports.update = function (req, res) {
+exports.read = function (req, res) {
   var id = req.body.id;
 
   var reqData = {
@@ -73,6 +73,37 @@ exports.update = function (req, res) {
       return res.status(200).json({'status':'ok'}) ; 
     }
   });
+};
+
+exports.readAll = function (req, res) {
+  var userId = req.user.uid;
+
+  App.find({"users": userId}, function (err, apps) {
+    if (err) {
+      return handleError(res, err);
+    }
+
+    var appkeys = [];
+    for( var jnx = 0 ; jnx < apps.length; jnx++){
+      appkeys.push( apps[jnx].key );
+    }
+
+    var reqData = {
+      unread: true,
+      appkey: {$in:appkeys}
+    };    
+
+    console.log( reqData );
+
+    Message.update(reqData, {$set:{unread:false}}, {multi:true}, function (err, _message) {
+      if (err) {
+        return handleError(res, err);
+      } else {
+        return res.status(200).json({'status':'ok'}) ;
+      }
+    });
+  });
+
 };
 
 function handleError(res, err) {
