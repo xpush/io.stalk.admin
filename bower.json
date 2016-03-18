@@ -12,7 +12,9 @@
     "angular-bootstrap": "~0.14.3",
     "font-awesome": ">=4.1.0",
     "lodash": "~2.4.1",
-    "angular-ui-router": "~0.2.15"
+    "angular-ui-router": "~0.2.15",
+    "angular-translate": "^2.10.0",
+    "angular-translate-loader-static-files": "^2.10.0"
   },
   "devDependencies": {
     "angular-mocks": ">=1.2.*",

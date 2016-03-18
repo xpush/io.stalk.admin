@@ -7,15 +7,24 @@ angular.module('stalkApp', [
   'ui.router',
   'ui.bootstrap',
   'toaster',
-  'stalk.constants'
+  'stalk.constants',
+  'pascalprecht.translate'
 ])
-  .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
+  .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $translateProvider) {
     //$urlRouterProvider
     //.otherwise('/signupmail');
 
     $locationProvider.html5Mode(true);
     $httpProvider.interceptors.push('authInterceptor');
 
+    $translateProvider
+
+    .useStaticFilesLoader({
+      prefix: 'app/translations/',
+      suffix: '.json'
+    })
+    .preferredLanguage('en')
+    .fallbackLanguage('en');
   })
 
   .factory('authInterceptor', function ($rootScope, $q, $cookieStore, $location) {
