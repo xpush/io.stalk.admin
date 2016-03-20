@@ -1,3 +1,11 @@
 {
-	"forgot.passwd" : "I forgot my password"
+	"text.forgot.passwd": "I forgot my password",
+	"text.intro.rc": "real communication with your customers",
+	"text.intro.stalk": "Sign in to make your customer happy",
+	"text.register.member": "Register a new membership",
+	"button.signin" : "Sign In",
+
+	"valid.input.passwd": "Password must be at least 3 characters.",
+	"valid.input.email": "Doesn't look like a valid email.",
+	"required.input.email": "What's your email address?"
 }

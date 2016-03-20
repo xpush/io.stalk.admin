@@ -1,3 +1,11 @@
 {
-	"forgot.passwd" : "비밀번호를 잊어버리셨나요?"
+	"text.forgot.passwd": "패스워드를 잊어버리셨나요?",
+	"text.intro.rc": "당신의 고객과 함께 실시간 채팅을",
+	"text.intro.stalk": "당싱의 고객을 행복하게 하기 위한 로그인",
+	"text.register.member": "회원 등록",
+	"button.signin" : "로그인",
+
+	"valid.input.passwd": "비밀번호를 3자리 이상 입력하세요.",
+	"valid.input.email": "email을 확인해주세요.",
+	"required.input.email": "email을 입력하세요."
 }
