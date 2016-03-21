@@ -3,9 +3,16 @@
 	"text.intro.rc": "real communication with your customers",
 	"text.intro.stalk": "Sign in to make your customer happy",
 	"text.register.member": "Register a new membership",
+	"text.already.registered": "I am stalker already",
 	"button.signin" : "Sign In",
+	"button.Register" : "Register",
 
-	"valid.input.passwd": "Password must be at least 3 characters.",
-	"valid.input.email": "Doesn't look like a valid email.",
-	"required.input.email": "What's your email address?"
+	"invalid.input.passwd": "Password must be at least 3 characters.",
+	"invalid.input.email": "Doesn't look like a valid email.",
+	"invalid.input.samepassword": "Password must be same.",
+
+	"required.input.email": "What's your email address?",
+	"required.input.name": "A name is required",
+
+	"text.register.stalker":"Register a new stalker"
 }

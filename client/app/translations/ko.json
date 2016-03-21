@@ -1,11 +1,18 @@
 {
 	"text.forgot.passwd": "패스워드를 잊어버리셨나요?",
-	"text.intro.rc": "당신의 고객과 함께 실시간 채팅을",
-	"text.intro.stalk": "당싱의 고객을 행복하게 하기 위한 로그인",
-	"text.register.member": "회원 등록",
+	"text.intro.rc": "당신의 고객과 실시간 채팅을 시작하세요",
+	"text.intro.stalk": "고객을 행복하게 하기 위해 로그인하세요",
+	"text.register.member": "신규회원으로 등록하세요.",
+	"text.already.registered": "이미 가입하셨나요?",
 	"button.signin" : "로그인",
+	"button.Register" : "가입하기",
 
-	"valid.input.passwd": "비밀번호를 3자리 이상 입력하세요.",
-	"valid.input.email": "email을 확인해주세요.",
-	"required.input.email": "email을 입력하세요."
+	"invalid.input.passwd": "비밀번호를 3자리 이상 입력하세요.",
+	"invalid.input.email": "email을 확인해주세요.",
+	"invalid.input.samepassword": "패스워드를 동일하게 입력해주세요.",
+
+	"required.input.email": "email을 입력하세요.",
+	"required.input.name": "이름을 입력하세요.",
+
+	"text.register.stalker":"신규회원으로 가입하기"
 }

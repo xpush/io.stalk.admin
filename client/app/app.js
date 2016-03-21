@@ -23,8 +23,8 @@ angular.module('stalkApp', [
       prefix: 'app/translations/',
       suffix: '.json'
     })
-    .preferredLanguage('en')
-    .fallbackLanguage('en');
+    .preferredLanguage('ko')
+    .fallbackLanguage('ko');
   })
 
   .factory('authInterceptor', function ($rootScope, $q, $cookieStore, $location) {

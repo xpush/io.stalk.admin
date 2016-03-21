@@ -7,10 +7,10 @@
 <div class="register-box">
 
       <div class="login-logo" style="margin-top: 20%;">
-        <p class="login-box-msg">real communication with your customers</p>
+        <p class="login-box-msg">{{'text.intro.rc' | translate}}</p>
       </div>
     <div class="register-box-body">
-        <p class="login-box-msg">Register a new stalker</p>
+        <p class="login-box-msg">{{'text.register.stalker' | translate}}</p>
 
         <form name="form" ng-submit="register(form)" class="form-horizontal" novalidate>
             <div class="form-group has-feedback" ng-class="{ 'has-success': form.name.$valid && submitted,
@@ -20,7 +20,7 @@
                 <span class="glyphicon glyphicon-user form-control-feedback"></span>
 
                 <p class="help-block" ng-show="form.name.$error.required && submitted">
-                    A name is required
+                    {{'required.input.name' | translate}}
                 </p>
             </div>
 
@@ -31,11 +31,11 @@
                 <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
 
                 <p class="help-block" ng-show="form.email.$error.email && submitted">
-                    Doesn't look like a valid email.
+                    {{'invalid.input.email' | translate}}
                 </p>
 
                 <p class="help-block" ng-show="form.email.$error.required && submitted">
-                    What's your email address?
+                    {{'required.input.email' | translate}}
                 </p>
 
                 <p class="help-block" ng-show="form.email.$error.mongoose">
@@ -53,7 +53,7 @@
 
                 <p class="help-block"
                    ng-show="(form.password.$error.minlength || form.password.$error.required) && submitted">
-                    Password must be at least 3 characters.
+                    {{'invalid.input.passwd' | translate}}
                 </p>
 
                 <p class="help-block" ng-show="form.password.$error.mongoose">
@@ -69,7 +69,7 @@
 
                 <p class="help-block"
                    ng-show="form.passwordchk.$error.pwmatch">
-                    Password must be same.
+                    {{'invalid.input.samepassword' | translate}}
                 </p>
             </div>
             <p class="help-block" ng-show="result">
@@ -78,7 +78,7 @@
 
             <div class="row">
                 <div class="col-md-8">
-	                <a href="/login" class="text-center">I am stalker already</a>
+	                <a href="/login" class="text-center">{{'text.already.registered' | translate}}</a>
                     <!--<div class="checkbox icheck">-->
                         <!--<label>-->
                             <!--&lt;!&ndash;<input type="checkbox"> I agree to the <a href="#">terms</a>&ndash;&gt;-->
@@ -89,7 +89,7 @@
                 <!-- /.col -->
                 <div class="col-md-4">
 
-                    <button type="submit" class="btn btn-default btn-block btn-flat">Register</button>
+                    <button type="submit" class="btn btn-default btn-block btn-flat">{{'button.Register' | translate}}</button>
                 </div>
                 <!-- /.col -->
             </div>
