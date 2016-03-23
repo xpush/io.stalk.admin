@@ -14,5 +14,22 @@
 	"required.input.email": "What's your email address?",
 	"required.input.name": "A name is required",
 
-	"text.register.stalker":"Register a new stalker"
+	"text.register.stalker": "Register a new stalker",
+
+	"text.yoursite" : "Your Sites",
+	"text.with.customer" : "that connected with customer",
+	"text.sitename" : "Site Name",
+	"text.siteurl" : "Site Url",
+	"text.appCode" : "App Code",	
+	"text.getscript" : "Get your script",
+	"text.copyscript": "Copy this code",
+	"text.pastescript": "And paste it in your site.",	
+	"button.create": "New Site",
+	"button.delete": "Delete",	
+	"button.update": "Update",
+	"button.close": "Close",
+	"button.addsite": "Add Site",
+	"required.input.sitename": "What's your site name?",	
+	"required.input.siteurl": "What's your site url?",
+	"invalid.input.siteurl": "Doesn't look like a valid url."
 }

@@ -14,5 +14,22 @@
 	"required.input.email": "email을 입력하세요.",
 	"required.input.name": "이름을 입력하세요.",
 
-	"text.register.stalker":"신규회원으로 가입하기"
+	"text.register.stalker": "신규회원으로 가입하기",
+
+	"text.yoursite" : "사이트 관리",
+	"text.with.customer" : "",
+	"text.sitename" : "사이트 네임",
+	"text.siteurl" : "사이트 Url",
+	"text.appCode" : "사이트 코드",	
+	"text.getscript" : "스크립트 생성",
+	"text.copyscript": "아래 스크립트를",
+	"text.pastescript": "당신의 사이트에 붙여넣으세요.",	
+	"button.create": "신규 등록",
+	"button.delete": "삭제",	
+	"button.update": "수정",
+	"button.close": "닫기",
+	"button.addsite": "신규 등록",
+	"required.input.sitename": "사이트 이름이 무엇인가요?",	
+	"required.input.siteurl": "사이트 Url을 입력해주세요",
+	"invalid.input.siteurl": "사이트 Url을 확인해 주세요."
 }
