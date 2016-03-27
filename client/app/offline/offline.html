@@ -2,10 +2,10 @@
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-        <h1>Offline Messages</h1>
+        <h1>{{'text.offlineMessage' | translate}}</h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li class="active">Offline Messages</li>
+            <li class="active">{{'text.offlineMessage' | translate}}</li>
         </ol>
     </section>
     <section class="content">
@@ -24,17 +24,17 @@
                                 <div class="timeline-body">{{m.message}}</div>
                                 <div class="timeline-footer" ng-if="m.url">
                                     <a href="{{m.url}}" target="_blank">{{m.url}}</a>
-                                    <a class="btn btn-warning pull-right" ng-click="readMessage(m)">Read<a>
+                                    <a class="btn btn-warning pull-right" ng-click="readMessage(m)">{{'button.read' | translate}}<a>
                                 </div>
                             </div>
                         </li>
                     </div>
                 </ul>
                 <div class="col-md-6 callout callout-info lead" ng-if="timelineSize == 0 ">
-                  <p>There is no message.</p>
+                  <p>{{'button.offlineMessage' | translate}}</p>
                 </div>
                 <div style="clear:both;position: relative; margin:20px 14px 0px 0px" ng-if=" timelineSize > 0 ">
-                  <a ng-click="readAllMessage()" class="btn btn-primary pull-right">Read All</a>
+                  <a ng-click="readAllMessage()" class="btn btn-primary pull-right">{{'button.readall' | translate}}</a>
                 </div>
             </div>       
         </div>

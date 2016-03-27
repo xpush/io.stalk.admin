@@ -31,5 +31,10 @@
 	"button.addsite": "Add Site",
 	"required.input.sitename": "What's your site name?",	
 	"required.input.siteurl": "What's your site url?",
-	"invalid.input.siteurl": "Doesn't look like a valid url."
+	"invalid.input.siteurl": "Doesn't look like a valid url.",
+
+	"text.offlineMessage": "Offline Messages",
+	"button.read": "Read",
+	"button.readall": "Mark as Read",
+	"message.offlineMessage": "There is no message."
 }

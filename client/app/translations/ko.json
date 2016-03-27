@@ -31,5 +31,10 @@
 	"button.addsite": "신규 등록",
 	"required.input.sitename": "사이트 이름이 무엇인가요?",	
 	"required.input.siteurl": "사이트 Url을 입력해주세요",
-	"invalid.input.siteurl": "사이트 Url을 확인해 주세요."
+	"invalid.input.siteurl": "사이트 Url을 확인해 주세요.",
+
+	"text.offlineMessage": "부재중 메시지",
+	"button.read": "확인",
+	"button.readall": "모두 확인",
+	"message.offlineMessage": "읽지 않은 메시지가 없습니다."
 }
