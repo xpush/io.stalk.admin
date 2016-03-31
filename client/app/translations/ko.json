@@ -36,5 +36,20 @@
 	"text.offlineMessage": "부재중 메시지",
 	"button.read": "확인",
 	"button.readall": "모두 확인",
-	"message.offlineMessage": "읽지 않은 메시지가 없습니다."
+	"message.offlineMessage": "읽지 않은 메시지가 없습니다.",
+
+	
+    "text.currentVisitor" : "현재 방문자수",
+    "text.operators" : "상담원수",
+    "text.chatting":"대화중",
+    "text.waiting":"대기중",
+    "text.visitsg":"방문",
+ 	"text.referraals":"이전 주소",
+  	"text.organic":"링크",
+ 	"text.latestRef":"최근 주소들",
+ 	"text.browserUsage" : "브라우져 사용율" ,
+ 	"text.inventory" : "보관",
+ 	"text.mentions" : "멘션",
+ 	"text.downloads" : "다운로드",
+ 	"text.directMessages" : "직접 전달"
 }

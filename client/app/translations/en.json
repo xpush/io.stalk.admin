@@ -36,5 +36,19 @@
 	"text.offlineMessage": "Offline Messages",
 	"button.read": "Read",
 	"button.readall": "Mark as Read",
-	"message.offlineMessage": "There is no message."
+	"message.offlineMessage": "There is no message.",
+
+    "text.currentVisitor" : "CURRENT VISITOR",
+    "text.operators" : "OPERATORS",
+    "text.chatting":"CHATTING",
+    "text.waiting":"WAITING",
+    "text.visitsg":"VISITS",
+ 	"text.referraals":"REFERRALS",
+ 	"text.organic":"ORGANIC",
+ 	"text.latestRef":"Latest Refferals",
+ 	"text.browserUsage" : "Browser Usage",
+ 	"text.inventory" : "INVENTORY",
+ 	"text.mentions" : "MENTIONS",
+ 	"text.downloads" : "DOWNLOADS",
+ 	"text.directMessages" : "DIRECT MESSAGES"
 }
