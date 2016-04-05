@@ -57,5 +57,13 @@
  	"text.downloads" : "DOWNLOADS",
  	"text.directMessages" : "DIRECT MESSAGES",
 
- 	"button.viewAllRef":"View All Referer"
+ 	"button.viewAllRef":"View All Referer",
+
+ 	"text.custInfo":"Customer Info",
+   	"text.custLocation":"Customer Location",
+	"text.started": "Started",
+ 	"text.messageHolder":"Type Message...",
+ 	"text.readyToChat":"Ready to Chat with visitors",
+
+ 	"button.send":"Send"
 }

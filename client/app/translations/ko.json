@@ -57,5 +57,13 @@
  	"text.downloads" : "다운로드",
  	"text.directMessages" : "직접 전달",
 
- 	"button.viewAllRef":"Referer 보기"
+ 	"button.viewAllRef":"Referer 보기",
+
+ 	"text.custInfo":"고객 정보",
+  	"text.custLocation":"고객 위치",
+	"text.started": "시작 시간",
+ 	"text.messageHolder":"메시지를 입력하세요.",
+ 	"text.readyToChat":"방문자와 채팅을 준비가 되었습니다.",
+
+ 	"button.send":"전송"
 }

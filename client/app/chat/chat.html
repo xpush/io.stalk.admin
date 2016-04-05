@@ -36,7 +36,7 @@
       <div class="col-md-8">
         <div class="box box-solid" ng-if="tabs.length == 0 ">
           <div class="box-header with-border">
-            <h3 class="box-title">Ready to Chat with visitors</h3>
+            <h3 class="box-title">{{'text.readyToChat' | translate}}</h3>
 
             <div class="box-tools pull-right">
               <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
@@ -89,8 +89,8 @@
                   <h3 class="box-title">{{tab.name}}</h3>
 
                   <div class="box-tools pull-right">
-                    <span data-toggle="tooltip" title="3 New Messages"
-                        class="badge bg-light-blue">3</span>
+                    <span data-toggle="tooltip" title="{{ getUnreadCnt(tab.C) }} New Messages"
+                        class="badge bg-light-blue">{{ getUnreadCnt(tab.C) }}</span>
                     <button class="btn btn-box-tool" data-widget="collapse"><i
                         class="fa fa-minus"></i></button>
                     <button class="btn btn-box-tool" data-toggle="tooltip" title="Contacts"
@@ -129,10 +129,10 @@
                   <div class="input-group">
                     <strong class="action-button upload-button" title="Send attachment" id="attachment" style="display: inline;" ng-click="openFile()"></strong>
                     <input type="text" id="inputMessage" name="inputMessage" ng-model="messageText"
-                         placeholder="Type Message ..." class="form-control" style="padding-left:30px;"
+                         placeholder="{{'text.messageHolder' | translate}}" class="form-control" style="padding-left:30px;"
                          ng-enter="sendMessage()">
                     <span class="input-group-btn">
-                      <button type="button" id="send" class="btn btn-primary btn-flat" ng-click="sendMessage()">Send</button>
+                      <button type="button" id="send" class="btn btn-primary btn-flat" ng-click="sendMessage()">{{'button.send' | translate}}</button>
                       <input type="file" id="file" style="display:none"/>
                     </span>
                   </div>
@@ -152,7 +152,7 @@
       <div class="col-md-4">
         <div class="box box-solid">
           <div class="box-header with-border">
-            <h3 class="box-title">Customer Info</h3>
+            <h3 class="box-title">{{'text.custInfo' | translate}}</h3>
 
             <div class="box-tools">
               <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
@@ -160,7 +160,7 @@
           </div>
           <div class="box-body no-padding">
             <ul class="nav nav-pills nav-stacked">
-              <li><a href="#"><i class="fa fa-inbox"></i> Started : {{currentChannel.startTime}}</a></li>
+              <li><a href="#"><i class="fa fa-inbox"></i> {{'text.started' | translate}} : {{currentChannel.startTime}}</a></li>
               <li><a href="#"><i class="fa fa-envelope-o"></i> URL : {{currentChannel.url}}</a></li>
               <li><a href="#"><i class="fa fa-file-text-o"></i> Path : {{currentChannel.origin}}</a></li>
               <li><a href="#"><i class="fa fa-file-text-o"></i> OS : {{currentChannel.os}}</a></li>
@@ -187,7 +187,7 @@
             <i class="fa fa-map-marker"></i>
 
             <h3 class="box-title">
-              Customer Location
+              {{'text.custLocation' | translate}}
             </h3>
           </div>
           <div class="box-body">
