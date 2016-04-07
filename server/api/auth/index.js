@@ -25,7 +25,7 @@ router.post('/:id', controller.update);
 router.patch('/:id', controller.update);
 router.delete('/:id', controller.destroy);
 
-router.post('/geo', controller.getGeoLocation);
+router.get('/geo/:ip', controller.getGeoLocation);
 
 // Session  서버 정보 가져오기!
 router.get('/server', controller.getSessionServerUrl);

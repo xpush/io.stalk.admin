@@ -8,7 +8,6 @@ var UT = require('./../../components/utils');
 var config = require('./../../config/environment');
 var XPUSH = require("./../../xpush-node-client")(config.xpush);
 var request = require('request');
-var satelize = require('satelize');
 
 var EMAIL;
 if (config.auth && config.auth.email) EMAIL = require('./../../components/email');
@@ -122,32 +121,6 @@ exports.create = function (req, res) {
         if (config.auth && config.auth.email) EMAIL.sendVerifyMail(auth.name, auth.email, auth.uid);
 
         return res.status(201).json(auth);
-        // register in XPUSH
-
-        //request.signup(saveData.uid, saveData.uid, utils.encrypto(saveData.PW), "WEB",)
-
-
-        /*
-         request.post(
-         'http://54.178.160.166:8000/user/register',
-         {form: {A: 'stalk', U: saveData.uid, PW: saveData.uid, D: 'web', DT: {NM: saveData.name, I: ''}}},
-         function (error, response, result) {
-         if (!error && response.statusCode == 200) {
-         // user-register success
-         var resData = JSON.parse(result);
-         if ("ok" == resData.status) {
-         return res.status(201).json(auth);
-         } else if ("ERR-INTERNAL" == resData.status && "ERR-USER_EXIST" == resData.message) {
-         return handleError(res, result);
-         } else {
-         return handleError(res, result);
-         }
-         } else {
-         return handleError(res, error);
-         }
-         }
-         );
-         */
       });
     } else if (!auth.active) {
       res.send({status: 'AUTH-DEACTIVE', message: DICT.EMAIL_DEACTIVE});
@@ -317,44 +290,20 @@ exports.destroy = function (req, res) {
   });
 };
 
-exports.getLatLng = function (req, res, next) {
+exports.getGeoLocation = function (req, res) {
+
   var ip = req.params.ip;
-
-  satelize.satelize({ip: ip}, function (err, geoData) {
-    // process err
-
-    // if data is JSON, we may wrap it in js object
-    var obj = {};
-    if (geoData) {
-      obj = JSON.parse(geoData);
-    }
-
-    res.json(obj);
-  });
-};
-
-exports.getGeoLocation = function (req, res, next) {
-  var ip = req.body.ip;
-
-  satelize.satelize({ip: ip}, function (err, geoData) {
-
-    if (err) {
-      return handleError(res, err);
-    }
-    if(!geoData){
-      return handleError(res, 'Not Found');
-    }else {
-      var obj = {};
-      try {
-        obj = JSON.parse(geoData);
-      } catch ( err ){
-        console.log(err);
+  request.get(
+    'http://ip-api.com/json/'+ip,
+    function (error, response, result) {
+      if (!error) {
+        var resData = JSON.parse(result);
+        return res.json(resData);
+      } else {
+        return handleError(res, error);
       }
-      res.json(obj);
     }
-
-
-  });
+  );
 };
 
 exports.getSessionServerUrl = function (req, res, next) {
