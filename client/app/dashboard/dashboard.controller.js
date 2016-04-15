@@ -81,7 +81,7 @@ angular.module('stalkApp')
         });
 
         refers.sort(function (a, b) {
-          return a.count > b.count;
+          return a.count < b.count;
         });
 
         refers.forEach(function (r) {

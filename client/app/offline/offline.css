@@ -3,7 +3,7 @@
 	padding-left: 10px;
 }
 
-.btn.pull-right {
-	position: absolute;
+.btn.pull-right-offline {
+    position: absolute;
     right: 10px; bottom: 4px
 }

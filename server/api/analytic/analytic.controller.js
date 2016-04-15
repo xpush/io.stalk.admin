@@ -80,9 +80,9 @@ exports.todayCustomers = function(req, res){
 }
 
 exports.getReferSites = function(req, res){
-  Activity.aggregate([ { $match: {} },{ $group : { _id : "$REF" ,count: { $sum: 1 }  } } ], function(err, activity){
+  Activity.aggregate([ { $match: {} },{ $group : { _id : "$REF" ,count: { $sum: 1 }  } }]).match( {_id:{$nin:['undefined','null']}} ).sort({count:-1}).limit(10).exec( function(err, activity){
     if(err) { return handleError(res, err); }
-    return res.status(200).json(activity);
+    return res.status(200).json(activity)
   });
 }
 

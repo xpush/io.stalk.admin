@@ -24,7 +24,7 @@
                                 <div class="timeline-body">{{m.message}}</div>
                                 <div class="timeline-footer" ng-if="m.url">
                                     <a href="{{m.url}}" target="_blank">{{m.url}}</a>
-                                    <a class="btn btn-warning pull-right" ng-click="readMessage(m)">{{'button.read' | translate}}<a>
+                                    <a class="btn btn-warning pull-right-offline" ng-click="readMessage(m)">{{'button.read' | translate}}<a>
                                 </div>
                             </div>
                         </li>
@@ -34,7 +34,7 @@
                   <p>{{'button.offlineMessage' | translate}}</p>
                 </div>
                 <div style="clear:both;position: relative; margin:20px 14px 0px 0px" ng-if=" timelineSize > 0 ">
-                  <a ng-click="readAllMessage()" class="btn btn-primary pull-right">{{'button.readall' | translate}}</a>
+                  <a ng-click="readAllMessage()" class="btn btn-primary pull-right-offline">{{'button.readall' | translate}}</a>
                 </div>
             </div>       
         </div>

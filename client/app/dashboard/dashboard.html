@@ -1186,13 +1186,13 @@
                                     <thead>
                                     <tr>
                                         <th>{{'text.refSite' | translate}}</th>
-                                        <th>{{'text.accessTime' | translate}}</th>
+                                        <th style="text-align:center">{{'text.accessTime' | translate}}</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr ng-repeat="refer in referSites">
-                                        <td>{{refer._id}}</td>
-                                        <td>{{refer.count}}</td>
+                                        <td class="td_refer">{{refer._id}}</td>
+                                        <td style="text-align:right;padding-right:20px">{{refer.count}}</td>
                                     </tr>
                                     </tbody>
                                 </table>
