@@ -22,6 +22,11 @@
     <div class="navbar-custom-menu">
       <ul class="nav navbar-nav">
         <!-- Messages: style can be found in dropdown.less-->
+        <li>
+          <a href="###" ng-click="changeLanguage('en')" ng-if=" toogleLangButton( 'en' ) "><img src="assets/images/lang-en.png" style="height:20px;"></a>
+          <a href="###" ng-click="changeLanguage('ko')" ng-if=" toogleLangButton( 'ko' ) "><img src="assets/images/lang-ko.png" style="height:20px;"></a>
+        </li>
+
         <li class="dropdown messages-menu">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <i class="fa fa-envelope-o"></i>

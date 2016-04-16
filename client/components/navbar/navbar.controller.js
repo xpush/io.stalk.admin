@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('stalkApp')
-  .controller('NavbarCtrl', function ($scope, $location, $rootScope, Auth, Chat, toaster) {
+  .controller('NavbarCtrl', function ($scope, $location, $rootScope, Auth, Chat, toaster, $translate) {
     $scope.menu = [{
       'title': 'Home',
       'link': '/'
@@ -66,6 +66,8 @@ angular.module('stalkApp')
     $scope.getCurrentUser = Auth.getCurrentUser;
     $scope.stat = "online";
 
+    $scope.currentLanguage = $translate.proposedLanguage();
+
 
     $scope.logout = function () {
       Auth.logout();
@@ -82,6 +84,19 @@ angular.module('stalkApp')
     $scope.profile = function () {
       $('#profileModal').modal('show');
     };
+
+    $scope.changeLanguage = function (langKey) {
+      $scope.currentLanguage = langKey;
+      $translate.use(langKey);
+    };
+
+    $scope.toogleLangButton = function( langKey ){
+      if ( $scope.currentLanguage == langKey ){
+        return false;
+      } else {
+        return true;
+      }
+    }
 
     $rootScope.updateProfile = function (form) {
       //@TODO Save Site and retireve again
