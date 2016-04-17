@@ -94,6 +94,12 @@ angular.module('stalkApp')
             $cookieStore.put('token', data.token);
 
             currentUser = User.get();
+            if( currentUser.language ){
+              data.language = currentUser.language;   
+            } else {
+              data.language = 'ko';
+            }
+
             deferred.resolve(data);
             return cb();
           }).
@@ -198,10 +204,7 @@ angular.module('stalkApp')
         var cb = callback || angular.noop;
         var deferred = $q.defer();
 
-        $http.put('/api/auths/'+user.uid, {
-          name: user.name,
-          image: user.image,
-        }).
+        $http.put('/api/auths/'+user.uid, user ).
           success(function (data) {
             currentUser = User.get();
             deferred.resolve(data);

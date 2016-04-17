@@ -10,7 +10,8 @@ var AuthSchema = new Schema({
   pass: {type: String, default: undefined},
   active: {type: Boolean, default: false},
   image: {type: String},
-  ts: {type: Date, default: new Date()}
+  ts: {type: Date, default: new Date()},
+  language: {type: String, default: 'en'}
 });
 
 module.exports = mongoose.model('Auth', AuthSchema);

@@ -10,19 +10,6 @@ angular.module('stalkApp')
     $scope.current_chatting = 0;
     $scope.current_waiting = 0;
 
-    /*
-     var dashboard = $interval(function () {
-     $scope.current_visitor += 1;
-     $scope.current_operators += 1;
-     $scope.current_chatting += 2;
-     $scope.current_waiting += 3;
-
-     if ($scope.current_visitor == 80) {
-     $interval.cancel(dashboard);
-     }
-     }, 10);
-     */
-
     var startDashboard = function (key, value) {
       var dashboard = $interval(function () {
         if ($scope[key] == value || value == 0) {
@@ -88,7 +75,11 @@ angular.module('stalkApp')
           totalCnt += r.count;
         });
 
-        $scope.referrals = Math.round((totalCnt / $scope.todayVisitors) * 100);
+        if( $scope.todayVisitors > 0 ){
+          $scope.referrals = Math.round((totalCnt / $scope.todayVisitors) * 100);
+        } else {
+          $scope.referrals = 0;
+        }
         $scope.organic = 100 - $scope.referrals;
 
         $scope.referSites = refers;
@@ -126,8 +117,6 @@ angular.module('stalkApp')
     Site.get({})
       .then(function (data) {
 
-        console.log(data);
-
         if (data && data.length > 0) {
           $scope.siteId = data[0].key;
         }
@@ -149,7 +138,6 @@ angular.module('stalkApp')
 function createPieChart(data) {
   var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
 
-  console.log(data);
   var pieChart = new Chart(pieChartCanvas);
   var PieData = data;
   var pieOptions = {

@@ -24,6 +24,9 @@ angular.module('stalkApp')
               $scope.result = data.message;
             }
 
+            $translate.use(data.language);
+            $rootScope.language = data.language;
+
             //$location.path('/');
           })
           .catch(function (err) {

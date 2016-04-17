@@ -11,7 +11,6 @@ angular.module('stalkApp')
     $scope.unreadMessage = [];
     $rootScope.currentUser;
 
-
     $rootScope.profileInfo = {};
 
     Auth.getCurrentUser().$promise.then(function (user) {
@@ -66,7 +65,11 @@ angular.module('stalkApp')
     $scope.getCurrentUser = Auth.getCurrentUser;
     $scope.stat = "online";
 
-    $scope.currentLanguage = $translate.proposedLanguage();
+    if( $rootScope.language ){
+      $scope.currentLanguage = $rootScope.language;
+    } else {
+      $scope.currentLanguage = $translate.proposedLanguage();
+    }
 
 
     $scope.logout = function () {
@@ -87,7 +90,19 @@ angular.module('stalkApp')
 
     $scope.changeLanguage = function (langKey) {
       $scope.currentLanguage = langKey;
+      $rootScope.language = langKey;
       $translate.use(langKey);
+
+      Auth.updateUser({
+        uid: $rootScope.currentUser.uid,
+        language: langKey
+      })
+        .then(function (data) {
+
+        })
+        .catch(function (err) {
+          err = err.data;
+        });
     };
 
     $scope.toogleLangButton = function( langKey ){

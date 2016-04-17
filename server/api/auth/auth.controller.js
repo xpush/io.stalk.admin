@@ -254,7 +254,6 @@ exports.update = function (req, res) {
 
   Auth.findOne(saveData, function (err, auth) {
 
-    console.log(req.params.id);
     if (err) {
       console.log(err);
       return handleError(res, err);
