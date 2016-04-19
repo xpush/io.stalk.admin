@@ -6,8 +6,6 @@ var Channel = require('./channel.model');
 exports.index = function (req, res) {
   var uid = req.user.uid;
 
-  console.log( uid );
-
   Channel.find({"uid": uid}, function (err, apps) {
     if (err) {
       return handleError(res, err);
@@ -18,15 +16,19 @@ exports.index = function (req, res) {
 
 exports.search = function (req, res) {
   var origin = req.body.origin;
-  var uid = req.body.uid;
-  var active = req.body.active;
+  var uid = req.user.uid;
+  var activeYN = req.body.activeYN;
 
   var query = {
     uid: uid
   };
 
-  if( active ){
-    query.active = active;
+  if( activeYN ){
+    if( activeYN == "N" ){
+      query.active = false;
+    } else {
+      query.active = true;
+    }
   }
 
   if( origin ){
@@ -47,9 +49,11 @@ exports.save = function (req, res) {
   var startTime = req.body.startTimestamp;
   var origin = req.body.origin;
   var data = req.body.data;
+  var uid = req.body.uid;
 
   var saveData = {
-    channel: channel
+    channel: channel,
+    uid: uid
   };
 
   Channel.findOne(saveData, function (err, channel) {
@@ -62,8 +66,6 @@ exports.save = function (req, res) {
       saveData.name = name;
       saveData.startTime = startTime;
       saveData.data = data;
-
-      console.log( saveData );
 
       Channel.create(saveData, function (err, _channel) {
         if (err) {

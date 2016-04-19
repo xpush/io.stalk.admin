@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('stalkApp')
-  .controller('ChatCtrl', function ($rootScope, $scope, Auth, Chat, Util) {
+  .controller('ChatCtrl', function ($rootScope, $scope, Auth, Chat, Util, Channel) {
     $scope.tabs = [];
     $scope.sites = [];
+    $scope.pastChannels = [];
 
     $scope.currentChannel = {};
     $scope.messageText = "";
@@ -192,6 +193,7 @@ angular.module('stalkApp')
         $scope.$apply();
         $scope.$broadcast('items_changed');
       } else {
+
       }
     });
 
@@ -210,6 +212,7 @@ angular.module('stalkApp')
 
       var ip = ch.ip;
       Chat.getGeoLocation(ip).then(function (geo) {
+
         var lng = geo.longitude;
         var lat = geo.latitude;
         var name = geo.country;
@@ -226,7 +229,12 @@ angular.module('stalkApp')
 
 
     // Init Site List
-    $scope.setSites();    
+    $scope.setSites();
+
+    // get Old channels
+    Channel.search({'activeYN':"Y"}).then( function(channels) {
+      $scope.pastChannels = channels;
+    });
   });
 
 function setWorldMap(lat, lng, name) {
@@ -245,7 +253,6 @@ function setWorldMap(lat, lng, name) {
     backgroundColor: 'transparent',
     markers: [
       {latLng: [lat, lng], name: name},
-
     ]
   });
 }

@@ -8,14 +8,23 @@
       <ul class="sidebar-menu" ng-repeat="site in siteArray">
         <li class="header" style="color:#FFFFFF" >{{site.origin}}</li>
         <li ng-repeat="channel in site.channels track by channel.C">
-        <a href="#" ng-click="gotoChat(channel)">
-          <div  style="width:177px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;"><i class="fa fa-circle-o text-red"></i> <span>{{channel.name}}</span></div>
-          <span ng-if="getUnreadCnt(channel.C) > 0" class="label label-primary pull-right">{{ getUnreadCnt(channel.C) }}</span>
-        </a>
+          <a href="#" ng-click="gotoChat(channel)">
+            <div  style="width:177px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;"><i class="fa fa-circle-o text-red"></i> <span>{{channel.name}}</span></div>
+            <span ng-if="getUnreadCnt(channel.C) > 0" class="label label-primary pull-right">{{ getUnreadCnt(channel.C) }}</span>
+          </a>
+        </li>
+      </ul>
+
+      <ul class="sidebar-menu" ng-if="pastChannels.length > 0">
+        <li class="header" style="color:#FFFFFF" >Old Chats</li>
+        <li ng-repeat="ch in pastChannels">
+          <a href="#" ng-click="gotoOldChat(ch)">
+            <div  style="width:177px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;"><i class="fa fa-circle-o text-red"></i> <span>{{ch.name}}</span></div>
+          </a>
         </li>
       </ul>
   </section>
-  <!-- /.sidebar -->
+
 </aside>
 
 <!-- Content Wrapper. Contains page content -->
