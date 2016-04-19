@@ -227,10 +227,8 @@ angular.module('stalkApp')
       getGeoLocation: function (ip, callback) {
         var cb = callback || angular.noop;
         var deferred = $q.defer();
-
-        $http.post('/api/auths/geo/', {
-          ip: ip
-        }).
+        
+        $http.get('/api/auths/geo/'+ip).
           success(function (data) {
             deferred.resolve(data);
             return cb();

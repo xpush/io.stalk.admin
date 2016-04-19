@@ -222,6 +222,34 @@ angular.module('stalkApp')
 
     };
 
+    $scope.gotoPastChat = function (ch) {
+
+      console.log( ch );
+      ch.C = ch.channel;
+
+      $scope.currentChannel = ch;
+      $scope.tabs.length = 0;
+      $scope.tabs = [];
+      $scope.tabs.push(ch);
+
+      // TODO : implement this
+      //$scope.messages = Chat.getMessages(ch.C);
+
+      var tab = document.getElementById("tab_" + ch.C);
+      angular.element(tab).parent().addClass("active");
+
+      var ip = ch.data.ip;
+      Chat.getGeoLocation(ip).then(function (geo) {
+
+        var lng = geo.lon;
+        var lat = geo.lat;
+        var name = geo.country;
+
+        setWorldMap(lat, lng, name);
+      });
+
+    };
+
     $scope.timeToString = function (timestamp) {
 
       return Util.timeToString(timestamp);

@@ -57,7 +57,6 @@ exports.save = function (req, res) {
   };
 
   Channel.findOne(saveData, function (err, channel) {
-
     if (err) {
       console.log( err );
       return handleError(res, err);

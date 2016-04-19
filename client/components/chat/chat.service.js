@@ -42,10 +42,10 @@ angular.module('stalkApp')
               info.startTime = new Date( info.TS ).toLocaleTimeString();
               info.startTimestamp = info.TS;
               sites[origin].push( info );
- 
+
               info.uid = currentUser.uid;
               Channel.save( info ).then( function(result){
-                console.log( result );
+                //console.log( result );
               })
               .catch(function(err) {
                 console.log( err );

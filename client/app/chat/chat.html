@@ -18,7 +18,7 @@
       <ul class="sidebar-menu" ng-if="pastChannels.length > 0">
         <li class="header" style="color:#FFFFFF" >Old Chats</li>
         <li ng-repeat="ch in pastChannels">
-          <a href="#" ng-click="gotoOldChat(ch)">
+          <a href="#" ng-click="gotoPastChat(ch)">
             <div  style="width:177px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;"><i class="fa fa-circle-o text-red"></i> <span>{{ch.name}}</span></div>
           </a>
         </li>

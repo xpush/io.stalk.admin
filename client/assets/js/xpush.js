@@ -841,31 +841,6 @@
     };
 
     /**
-     * server에서 사용자 list를 조회한다.
-     * @name getUserList
-     * @memberof Xpush
-     * @function
-     * @param {Object} [params] - param for search user.
-     * @param {function} cb - 조회 후 수행할 callback function
-     * @example
-     * xpush.getUserList( {'page':{'num':1,'size':10} },function(err, users){
-     *   console.log( users );
-     * });
-     */
-    XPush.prototype.getUserList = function(params,  cb){
-      if(typeof(params) == 'function'){
-        cb = params;
-        params = {};
-      }
-      params = params == undefined ? {}: params;
-      var self = this;
-      debug("xpush : getUsertList ",params);
-      self.sEmit('user-list' , params, function(err, result){
-        if(cb) cb(err, result.users, result.count);
-      });
-    };
-
-    /**
      * server에서 사용자 list를 조회한다. pageing 처리가 가능하다.
      * @name queryUser
      * @memberof Xpush
@@ -950,7 +925,7 @@
             result.sort(UTILS.messageTimeSort);
           }
           self.isExistUnread = false;
-          self.sEmit('message-received');
+          self.sEmit('message.received');
           cb(err, result);
         });
       }
@@ -1358,14 +1333,6 @@
       if( self._globalConnection ){
         self._globalConnection.attchOnEvent( event );
       }
-
-      /*
-      for ( var key in self._channels ){
-        console.log("************************ 2");
-        self._channels[key].attchOnEvent( event );
-      }
-      */
-
     };
 
     /**
@@ -1660,13 +1627,14 @@
      */
     Connection.prototype.getUnreadMessage = function(cb){
       var self = this;
-      if(self._socket.connected){
-        self._socket.emit('message-unread',function(result){
+      var data = {'C':self.chNm,'A':self._xpush.appId};
+      if(self._socket.connected){        
+        self._socket.emit('message.unread',function(data,result){
           cb(result.status, result.result);
         });
       }else{
         var func = function(){
-          self._socket.emit('message-unread',function(result){
+          self._socket.emit('message.unread',function(data,result){
             cb(result.status, result.result);
           });
           self.off('connected',func);
