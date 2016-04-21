@@ -211,20 +211,22 @@ angular.module('stalkApp')
       angular.element(tab).parent().addClass("active");
 
       var ip = ch.ip;
-      Chat.getGeoLocation(ip).then(function (geo) {
+      if( ch.data && ch.data.lat && ch.data.lon && ch.data.country ){
+        setWorldMap(ch.data.lat, ch.data.lng, ch.data.country);
+      } else {
+        Chat.getGeoLocation(ip).then(function (geo) {
 
-        var lng = geo.longitude;
-        var lat = geo.latitude;
-        var name = geo.country;
+          var lng = geo.lon;
+          var lat = geo.lat;
+          var country = geo.country;
 
-        setWorldMap(lat, lng, name);
-      });
-
+          setWorldMap(lat, lng, country);
+        });
+      }
     };
 
     $scope.gotoPastChat = function (ch) {
 
-      console.log( ch );
       ch.C = ch.channel;
 
       $scope.currentChannel = ch;
@@ -239,15 +241,18 @@ angular.module('stalkApp')
       angular.element(tab).parent().addClass("active");
 
       var ip = ch.data.ip;
-      Chat.getGeoLocation(ip).then(function (geo) {
+      if( ch.data && ch.data.lat && ch.data.lon && ch.data.country ){
+        setWorldMap(ch.data.lat, ch.data.lng, ch.data.country);
+      } else {
+        Chat.getGeoLocation(ip).then(function (geo) {
 
-        var lng = geo.lon;
-        var lat = geo.lat;
-        var name = geo.country;
+          var lng = geo.lon;
+          var lat = geo.lat;
+          var country = geo.country;
 
-        setWorldMap(lat, lng, name);
-      });
-
+          setWorldMap(lat, lng, country);
+        });
+      }
     };
 
     $scope.timeToString = function (timestamp) {
