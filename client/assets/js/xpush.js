@@ -906,29 +906,18 @@
      */
     XPush.prototype.getUnreadMessage = function(channel, cb){
       var self = this;
-      if( channel && cb ){
-        self.getChannelAsync(channel, function (err, ch){
-          ch.getUnreadMessage( function( err, result ){
-            if(result && result.length > 0){
-              result.sort(UTILS.messageTimeSort);
-            }
-            cb( err, result );
-          });
-        });
-      } else if( typeof( channel ) == 'function' ){
-        cb = channel;
-        debug("xpush : getUnreadMessage ",self.userId);
-        self.sEmit('message.unread',function(err, result){
-          //app, channel, created
-          debug("xpush : getUnreadMessage end ", result);
-          if(result && result.length > 0){
-            result.sort(UTILS.messageTimeSort);
-          }
-          self.isExistUnread = false;
-          self.sEmit('message.received');
-          cb(err, result);
-        });
-      }
+      debug("xpush : getUnreadMessage ",self.userId);
+      self.sEmit('message.unread', {C:channel}, function(err, result){
+        //app, channel, created
+        debug("xpush : getUnreadMessage end ", result);
+        if(result && result.length > 0){
+          result.sort(UTILS.messageTimeSort);
+        }
+        self.isExistUnread = false;
+        //TODO : fix this
+        //self.sEmit('message.received');
+        cb(err, result);
+      });
     };
 
     /**

@@ -13,6 +13,7 @@ angular.module('stalkApp')
     $scope.siteIds = {};
     $scope.messages = [];
     $rootScope.isLogin = false;
+    $scope.mapInit = false;
 
     var fileObj;
 
@@ -212,7 +213,10 @@ angular.module('stalkApp')
 
       var ip = ch.ip;
       if( ch.data && ch.data.lat && ch.data.lon && ch.data.country ){
-        setWorldMap(ch.data.lat, ch.data.lng, ch.data.country);
+        if( !$scope.mapInit ){
+          setWorldMap(ch.data.lat, ch.data.lng, ch.data.country);
+          $scope.mapInit = true;
+        }
       } else {
         Chat.getGeoLocation(ip).then(function (geo) {
 
@@ -220,7 +224,10 @@ angular.module('stalkApp')
           var lat = geo.lat;
           var country = geo.country;
 
-          setWorldMap(lat, lng, country);
+          if( !$scope.mapInit ){
+            setWorldMap(lat, lng, country);
+            $scope.mapInit = true;
+          }
         });
       }
     };
@@ -242,7 +249,10 @@ angular.module('stalkApp')
 
       var ip = ch.data.ip;
       if( ch.data && ch.data.lat && ch.data.lon && ch.data.country ){
-        setWorldMap(ch.data.lat, ch.data.lng, ch.data.country);
+        if( !$scope.mapInit ){
+          setWorldMap(ch.data.lat, ch.data.lng, ch.data.country);
+          $scope.mapInit = true;
+        }
       } else {
         Chat.getGeoLocation(ip).then(function (geo) {
 
@@ -250,9 +260,50 @@ angular.module('stalkApp')
           var lat = geo.lat;
           var country = geo.country;
 
-          setWorldMap(lat, lng, country);
+          if( !$scope.mapInit ){
+            setWorldMap(lat, lng, country);
+            $scope.mapInit = true;
+          }
         });
       }
+
+      //$rootScope.xpush.enableDebug();
+      $rootScope.xpush.getUnreadMessage( ch.C, function( err, messages ){
+
+        var tmpMessages = [];
+        for( var inx = 0; inx < messages.length ;inx++ ){
+          if( messages[inx].NM != 'message' ){
+            continue;
+          }
+
+          var data = JSON.parse( messages[inx].DT );
+
+          var side = "left";
+          var opposite = "right";
+          if (data.UO.U == $rootScope.currentUser.uid) {
+            side = "right";
+            opposite = "left";
+          }
+
+          var time = Util.timeToString(data.TS)[0];
+          var newMessage = {name: data.UO.NM, time: time, message: data.MG, side: side, opposite: opposite, timestamp:data.TS};
+          if( data.TP ){
+            newMessage.type = data.TP;
+          } else {
+            newMessage.type = "MG";
+          }
+
+          if( data.UO.I ){
+            newMessage.image = data.UO.I;
+          } else {
+            newMessage.image = 'https://raw.githubusercontent.com/xpush/io.stalk.admin/master/client/assets/images/face.png';
+          }
+
+          tmpMessages.push( newMessage );
+        }
+
+        $scope.messages = tmpMessages;
+      });
     };
 
     $scope.timeToString = function (timestamp) {
@@ -271,6 +322,7 @@ angular.module('stalkApp')
   });
 
 function setWorldMap(lat, lng, name) {
+
   $('#world-map').vectorMap({
     map: 'world_mill_en',
     scaleColors: ['#C8EEFF', '#0071A4'],

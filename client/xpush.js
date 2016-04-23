@@ -1,6 +1,6 @@
-(function () {
+(function(){
 
-  var XPush = (function () {
+  var XPush = (function() {
     if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
       http = require('http');
       io = require('socket.io-client');
@@ -9,21 +9,19 @@
     var GLOBAL = 'global';
     var CHANNEL = 'channel';
 
-    var ST = {
-      A: 'app', C: 'channel', U: 'userId', US: 'users', D: 'deviceId', N: 'notiId', S: 'server'
-      , MG: 'message', NM: 'name', PW: 'password', GR: 'groups', DT: 'datas', MD: 'mode', TS: 'timestamp'
-      , SS: 'socketId', CD: 'createDate', UD: 'updateDate'
-    };
+    var ST = {A:'app',C:'channel',U:'userId',US:'users',D:'deviceId',N:'notiId',S:'server'
+    ,MG:'message',NM:'name',PW:'password',GR:'groups',DT:'datas',MD:'mode',TS:'timestamp'
+    ,SS:'socketId',CD:'createDate',UD:'updateDate'};
 
-    var socketOptions = {
-      transports: ['websocket'],
-      'force new connection': true
+    var socketOptions ={
+      transports: ['websocket']
+      ,'force new connection': true
     };
 
     var oldDebug;
-    var debug = function () {
+    var debug = function() {
     };
-
+    
     /**
      * Xpush의 생성자
      * @module Xpush
@@ -42,15 +40,9 @@
      *   console.log( " data : ", data );
      * });
      */
-    var XPush = function (host, appId, eventHandler, autoInitFlag) {
-      if (!host) {
-        alert('params(1) must have hostname');
-        return;
-      }
-      if (!appId) {
-        alert('params(2) must have appId');
-        return;
-      }
+    var XPush = function(host, appId, eventHandler, autoInitFlag){
+      if(!host){alert('params(1) must have hostname'); return;}
+      if(!appId){alert('params(2) must have appId'); return;}
       var self = this;
       self.appId = appId;       // applicationKey
       self._channels = {};      // channel List
@@ -68,15 +60,15 @@
       self.autoInitFlag = true;
       self._userEventNames = [];
 
-      if (autoInitFlag != undefined) {
+      if( autoInitFlag !=undefined ){
         self.autoInitFlag = autoInitFlag;
       }
 
-      self.on('newChannel', function (data) {
-        self.channelNameList.push(data.chNm);
+      self.on('newChannel',function(data){
+        self.channelNameList.push( data.chNm );
       }, true);
 
-      if (eventHandler) {
+      if(eventHandler){
         self._isEventHandler = true;
         self.on('___global_event', eventHandler);
       }
@@ -85,12 +77,12 @@
     };
 
     XPush.Context = {
-      SIGNUP: '/user/register',
-      LOGIN: '/auth',
-      Channel: '/channel',
-      Signout: '/signout',
-      Message: '/msg',
-      NODE: '/node'
+      SIGNUP : '/user/register',
+      LOGIN : '/auth',
+      Channel : '/channel',
+      Signout : '/signout',
+      Message : '/msg',
+      NODE : '/node'
     };
 
     /**
@@ -102,8 +94,8 @@
      * // enable debug
      * xpush.enableDebug();
      */
-    XPush.prototype.enableDebug = function () {
-      if (oldDebug) {
+    XPush.prototype.enableDebug = function(){
+      if( oldDebug ){
         return;
       }
 
@@ -114,7 +106,7 @@
           if (Function.prototype.bind) {
             debug = Function.prototype.bind.call(console.log, console);
           } else {
-            debug = function () {
+            debug = function() {
               Function.prototype.apply.call(console.log, console, arguments);
             };
           }
@@ -131,9 +123,9 @@
      * // disable debug
      * xpush.disableDebug();
      */
-    XPush.prototype.disableDebug = function () {
+    XPush.prototype.disableDebug = function(){
       // Init debug funciton
-      debug = function () {
+      debug = function(){
       };
 
       oldDebug = undefined;
@@ -152,18 +144,18 @@
      * // Add new user
      * xpush.signup( 'james', '1234', function(err,data){
      *   console.log('register success : ' + data);
-     * });
+     * }); 
      */
-    XPush.prototype.signup = function (userId, password, deviceId, cb) {
+    XPush.prototype.signup = function(userId, password, deviceId, cb){
       var self = this;
 
-      if (typeof(deviceId) == 'function' && !cb) {
+      if(typeof(deviceId) == 'function' && !cb){
         cb = deviceId;
         deviceId = 'WEB';
       }
 
-      var sendData = {A: self.appId, U: userId, PW: password, D: deviceId};
-      self.ajax(XPush.Context.SIGNUP, 'POST', sendData, cb);
+      var sendData = {A:self.appId , U: userId, PW: password, D: deviceId};
+      self.ajax( XPush.Context.SIGNUP , 'POST', sendData, cb);
     };
 
     /**
@@ -177,7 +169,7 @@
      * @param {string} [mode] - mode
      * @param {callback} cb - 로그인 후 수행할 callback function
      * @example
-     *
+     * 
      * xpush.login( 'james', '1234', function(err,data){
      *   console.log('register success : ', data);
      * });
@@ -187,64 +179,49 @@
      *   console.log('login success : ', data);
      * });
      */
-    XPush.prototype.login = function (userId, password, deviceId, mode, cb) {
-
+    XPush.prototype.login = function(userId, password, deviceId, mode, cb){
       var self = this;
 
-      if (typeof(deviceId) == 'function' && !mode && !cb) {
+      if(typeof(deviceId) == 'function' && !mode && !cb){
         cb = deviceId;
         deviceId = 'WEB';
       }
 
-      if (typeof(mode) == 'function' && !cb) {
+      if(typeof(mode) == 'function' && !cb){
         cb = mode;
         mode = undefined;
-      }
-
-      if (self._globalConnection) {
-        console.log("already connected");
-        cb(null, null);
-        return;
       }
 
       self.userId = userId;
       self.deviceId = deviceId;
       var sendData = {A: self.appId, U: userId, PW: password, D: deviceId};
-      if (mode) sendData.MD = mode;
+      if(mode) sendData.MD = mode;
 
-      self.ajax(XPush.Context.LOGIN, 'POST', sendData, function (err, result) {
+      self.ajax( XPush.Context.LOGIN , 'POST', sendData, function(err, result){
 
-        if (err) {
-          if (cb) cb(err, result);
+        if(err){
+          if(cb) cb(err, result);
           return;
         }
 
-        if (result.status == 'ok') {
-
-          if (!result.result.server) {
-            if (cb) cb('ERR-SRV_NOT_EXISTED');
-          }
-          debug("xpush : login success", result);
-
+        if(result.status == 'ok'){
           // result.result = {"token":"HS6pNwzBoK","server":"215","serverUrl":"http://www.notdol.com:9990"};
           var c = self._globalConnection = new Connection(self, GLOBAL, result.result);
-          c.connect(function () {
+          c.connect(function(){
             debug("xpush : login end", self.userId);
-            self._initSessionSocket(self._globalConnection._socket, function () {
-              if (cb) cb(result.message, result.result); // @ TODO from yohan.
+            self._initSessionSocket(self._globalConnection._socket, function(){
+              if(cb) cb(result.message, result.result); // @ TODO from yohan.
             });
           });
-        } else {
-          debug("xpush : login error", result);
-
-          if (cb) cb('ERR-SRV_CONNECT_FAILED');
-
+        }else{
+          if(cb) cb(result.message);
+          alert('xpush : login error'+ result.message);
         }
       });
     };
 
     /**
-     * 현재 xpush 객체에 userId와 deviceId를 세팅한다. global socket이 이미 연결되어 있는 경우만
+     * 현재 xpush 객체에 userId와 deviceId를 세팅한다. global socket이 이미 연결되어 있는 경우만 
      * @name setSessionInfo
      * @memberof Xpush
      * @function
@@ -258,10 +235,10 @@
      * // Set global info with deviceId
      * xpush.setSessionInfo( 'james', 'WEB', function(){} );
      */
-    XPush.prototype.setSessionInfo = function (userId, deviceId, cb) {
+    XPush.prototype.setSessionInfo = function(userId, deviceId, cb){
       var self = this;
 
-      if (typeof(deviceId) == 'function' && !cb) {
+      if(typeof(deviceId) == 'function' && !cb){
         cb = deviceId;
         deviceId = 'WEB';
       }
@@ -281,24 +258,24 @@
      * // logout
      * xpush.logout();
      */
-    XPush.prototype.logout = function () {
+    XPush.prototype.logout = function(){
       var self = this;
-      if (self != undefined) {
+      if( self != undefined ) {
 
         // Disconnect global connection
-        if (self._globalConnection != undefined) {
+        if( self._globalConnection != undefined  ){
           self._globalConnection.disconnect();
         }
 
         // Disconnect channel connections
-        if (self._channels != undefined) {
-          for (var key in self._channels) {
-            if (self._channels[key]._connected) {
+        if( self._channels != undefined  ){
+          for( var key in self._channels ){
+            if( self._channels[key]._connected ){
               self._channels[key].disconnect();
             }
           }
         }
-      }
+      }      
     };
 
     /**
@@ -326,58 +303,56 @@
      *   console.log( 'create channel success : ', data);
      * });
      */
-    XPush.prototype.createChannel = function (users, channel, datas, cb) {
+    XPush.prototype.createChannel = function(users, channel, datas, cb){
       var self = this;
       var channels = self._channels;
 
-      if (arguments.length === 3) {
+      if( arguments.length === 3 ){
         // users, channel, cb
-        if (typeof(arguments[1]) == 'string' && typeof(arguments[2]) == 'function') {
+        if( typeof(arguments[1]) == 'string' && typeof(arguments[2]) == 'function' ){
           cb = datas;
           datas = {};
-        } else if (typeof(arguments[1]) == 'object' && typeof(arguments[2]) == 'function') {
+        } else if ( typeof(arguments[1]) == 'object' && typeof(arguments[2]) == 'function' ){
           cb = datas;
           datas = channel;
           channel = undefined;
         }
-      } else if (typeof(channel) == 'function' && !datas && !cb) {
-        cb = channel;
-        channel = undefined;
-        datas = {};
+      } else if(typeof(channel) == 'function' && !datas && !cb){
+        cb = channel; channel = undefined; datas = {};
       }
 
       var newChannel;
       var channelNm = channel;
 
       //Add logined user if not in users
-      if (users.indexOf(self.userId) < 0) {
+      if( users.indexOf(self.userId) < 0 ){
         users.push(self.userId);
       }
 
-      self.sEmit('channel.create', {C: channel, U: users, DT: datas}, function (err, result) {
+      self.sEmit('channel.create',{C: channel, U: users, DT:datas},function(err, result){
         //_id: "53b039e6a2f41316d7046732"
         //app: "stalk-io"
         //channel: "b14qQ6wI"
         //created: "2014-06-29T16:08:06.684Z"
-        if (err && err != 'WARN-EXISTED') {
-          if (cb) {
+        if(err && err != 'WARN-EXISTED') {
+          if(cb){
             cb(err, result);
           }
         }
         channelNm = result.C || channelNm;
-        self._getChannelInfo(channelNm, function (err, data) {
+        self._getChannelInfo(channelNm,function(err,data){
           //channel , seq, server.channel,name,url
 
-          if (err) {
-            debug(" == node channel ", err);
-          } else if (data.status == 'ok') {
+          if(err){
+            debug(" == node channel " ,err);
+          }else if ( data.status == 'ok'){
             newChannel.setServerInfo(data.result);
             //newChannel.chNm = channelNm;
             channels[channelNm] = newChannel;
             //if(oldChNm){
             //  delete channels[oldChNm];
             //}
-            if (cb)cb(null, channelNm);
+            if(cb)cb(null, channelNm);
           }
         });
       });
@@ -404,35 +379,34 @@
      *   console.log( 'create simple channel success' );
      * });
      */
-    XPush.prototype.createSimpleChannel = function (channel, userObj, cb) {
+    XPush.prototype.createSimpleChannel = function(channel, userObj, cb){
       var self = this;
 
       var ch = self._makeChannel(channel);
-      self._getChannelInfo(channel, function (err, data) {
-        if (err) {
-          debug(" == node channel ", err);
-          if (cb) cb(err);
-        } else if (data.status == 'ok') {
+      self._getChannelInfo(channel,function(err,data){
+        if(err){
+          debug(" == node channel " ,err);
+          if(cb) cb(err);
+        }else if ( data.status == 'ok'){
 
-          if (typeof(userObj) == 'function' && !cb) {
-            cb = userObj;
-            userObj = undefined;
+          if( typeof(userObj) == 'function' && !cb ){
+            cb = userObj; userObj = undefined;
           }
 
-          if (userObj) {
+          if(userObj){
             self.userId = userObj.U || 'someone';
             self.deviceId = userObj.D || 'WEB';
-          } else {
+          }else {
             self.userId = 'someone';
             self.deviceId = 'WEB';
           }
 
           ch.info = data.result;
-          ch._server = {serverUrl: data.result.server.url};
+          ch._server = {serverUrl : data.result.server.url};
           ch.chNm = data.result.channel;
 
-          ch.connect(function () {
-            if (cb) cb();
+          ch.connect(function(){
+            if(cb) cb();
           }, 'CHANNEL_ONLY');
         }
       });
@@ -451,23 +425,23 @@
      *   console.log( 'channels : ' + datas );
      * });
      */
-    XPush.prototype.getChannels = function (cb) {
+    XPush.prototype.getChannels = function(cb){
       var self = this;
-      debug("xpush : getChannels ", self.userId);
-      self.sEmit('channel.list', function (err, result) {
+      debug("xpush : getChannels ",self.userId);
+      self.sEmit('channel.list',function(err, result){
         //app(A), channel(C), created(CD) , users(US)
-        debug("xpush : getChannels end ", result);
-        ['A', 'C', 'CD', 'US'].forEach(function (item) {
-          UTILS.changeKey(result, item);
+        debug("xpush : getChannels end ",result);
+        ['A','C','CD','US'].forEach(function(item){
+          UTILS.changeKey(result,item);
         });
-        if (result.length > 0) {
-          result.forEach(function (r) {
-            ['D', 'N', 'U'].forEach(function (item) {
-              UTILS.changeKey(r.users, item);
+        if(result.length > 0){
+          result.forEach(function(r){
+            ['D','N','U'].forEach(function(item){
+              UTILS.changeKey(r.users,item);
             });
           });
         }
-        cb(err, result);
+        cb(err,result);
       });
     };
 
@@ -485,13 +459,13 @@
      *   console.log( 'result : ', result );
      * });
      */
-    XPush.prototype.updateChannel = function (channel, query, cb) {
+    XPush.prototype.updateChannel = function(channel, query, cb){
       var self = this;
-      var param = {'A': self.appId, 'C': channel, 'Q': query};
-      self.sEmit('channel.update', param, function (err, result) {
+      var param = { 'A': self.appId, 'C': channel, 'Q' : query };
+      self.sEmit('channel.update', param, function(err, result){
         //app(A), channel(C), created(CD) , users(US)
-        debug("xpush : channel.update end ", result);
-        cb(err, result);
+        debug("xpush : channel.update end ",result);
+        cb(err,result);
       });
     };
 
@@ -508,9 +482,9 @@
      *   console.log( 'results : ', results );
      * });
      */
-    XPush.prototype.getChannelsActive = function (data, cb) { //data.key(option)
+    XPush.prototype.getChannelsActive = function(data, cb){ //data.key(option)
       var self = this;
-      self.sEmit('channel.list.active', data, function (err, result) {
+      self.sEmit('channel.list.active',data, function(err, result){
         //app, channel, created
         cb(err, result);
       });
@@ -526,11 +500,11 @@
      * @example
      * var channel01 = xpush.getChannel('channel01');
      */
-    XPush.prototype.getChannel = function (channel) {
+    XPush.prototype.getChannel = function(channel){
       var self = this;
       var channels = self._channels;
-      for (var k in channels) {
-        if (k == channel) return channels[k];
+      for(var k in channels){
+        if(k == channel) return channels[k];
       }
 
       return undefined;
@@ -548,10 +522,10 @@
      *   console.log( 'retrieve channel success : ', data);
      * });
      */
-    XPush.prototype.getChannelData = function (channel, cb) {
+    XPush.prototype.getChannelData = function(channel, cb){
       var self = this;
-      self.sEmit('channel.get', {C: channel, U: /*userId*/{}}, function (err, result) {
-        if (cb) cb(err, result);
+      self.sEmit('channel.get', {C: channel, U: /*userId*/{} }, function(err, result){
+        if(cb) cb(err,result);
       });
     };
 
@@ -568,11 +542,11 @@
      *   console.log( 'result : ', result);
      * });
      */
-    XPush.prototype.joinChannel = function (channel, param, cb) {
+    XPush.prototype.joinChannel = function(channel, param, cb){
       var self = this;
-      self.getChannelAsync(channel, function (err, ch) {
-        ch.joinChannel(param, function (data) {
-          cb(data);
+      self.getChannelAsync(channel, function (err, ch){
+        ch.joinChannel( param, function( data ){
+          cb( data );
         });
       });
     };
@@ -589,10 +563,10 @@
      *   console.log( 'result : ', result);
      * });
      */
-    XPush.prototype.exitChannel = function (channel, cb) {
+    XPush.prototype.exitChannel = function(channel, cb){
       var self = this;
-      self.sEmit('channel.exit', {C: channel}, function (err, result) {
-        if (cb) cb(err, result);
+      self.sEmit('channel.exit', {C: channel}, function(err, result){
+        if(cb) cb(err,result);
       });
     };
 
@@ -607,23 +581,23 @@
      *   console.log( 'result : ', result);
      * });
      */
-    XPush.prototype.getChannelAsync = function (channel, cb) {
+    XPush.prototype.getChannelAsync = function(channel, cb){
       var self = this;
       var ch = self.getChannel(channel);
-      if (!ch) {
+      if(!ch){
         self._channels[channel] = ch;
         ch = self._makeChannel(channel);
-        self._getChannelInfo(channel, function (err, data) {
-          if (err) {
-            debug(" == node channel ", err);
+        self._getChannelInfo(channel,function(err,data){
+          if(err){
+            debug(" == node channel " ,err);
             cb(err);
-          } else if (data.status == 'ok') {
-            ch.setServerInfo(data.result, function () {
+          }else if ( data.status == 'ok'){
+            ch.setServerInfo(data.result, function(){
               cb(false, ch);
             });
           }
         });
-      } else {
+      }else{
         cb(false, ch);
       }
     };
@@ -647,40 +621,40 @@
      *   console.log( 'upload result : ' + data );
      * });
      */
-    XPush.prototype.uploadStream = function (channel, inputObj, fnPrg, fnCallback) {
+    XPush.prototype.uploadStream = function(channel, inputObj, fnPrg, fnCallback){
       var self = this;
 
-      self.getChannelAsync(channel, function (err, ch) {
+      self.getChannelAsync(channel, function (err, ch){
 
-        var blobs = [];
+        var blobs   = [];
         var streams = [];
 
-        for (var i = 0; i < inputObj.file.files.length; i++) {
-          var file = inputObj.file.files[i];
+        for(var i=0; i<inputObj.file.files.length; i++){
+          var file   = inputObj.file.files[i];
           var bufferSize = 128;
 
           // larger than 1M
-          if (file.size > ( 1024 * 1024 )) {
+          if( file.size > ( 1024 * 1024 ) ){
             bufferSize = 256;
-          } else if (file.size > ( 4 * 1024 * 1024 )) {
+          } else if ( file.size > ( 4 * 1024 * 1024 ) ){
             bufferSize = 512;
           }
-
-          var size = 0;
+          
+          var size   = 0;
           streams[i] = ss.createStream({highWaterMark: bufferSize * 1024});
-          blobs[i] = ss.createBlobReadStream(file, {highWaterMark: bufferSize * 1024});
+          blobs[i]   = ss.createBlobReadStream(file, {highWaterMark: bufferSize * 1024});
 
-          blobs[i].on('data', function (chunk) {
+          blobs[i].on('data', function(chunk) {
             size += chunk.length;
             fnPrg(Math.floor(size / file.size * 100), i);
           });
 
           var _data = {};
           _data.orgName = file.name;
-          if (inputObj.overwrite) _data.name = file.name;
-          if (inputObj.type)      _data.type = inputObj.type;
+          if(inputObj.overwrite) _data.name = file.name;
+          if(inputObj.type)      _data.type = inputObj.type;
 
-          ch.upload(streams[i], _data, function (result) {
+          ch.upload(streams[i], _data, function(result){
             fnCallback(result, i);
           });
           blobs[i].pipe(streams[i]);
@@ -698,7 +672,7 @@
      * @param {string} fileUri - 업로드할 fileUri
      * @param {Object} inputObj - JSON Objec( 'type' : '', 'name' : Original File name )
      * @param {function} fnPrg - 업로도 진행 상황을 보여주기 위한 function
-     * @param {callback} fnCallback - 업로드 완료 후 수행할 callback function
+     * @param {callback} fnCallback - 업로드 완료 후 수행할 callback function 
      * @example
      * xpush.uploadFile('channelId', 'content://media/external/images/media/636',
      * {type : 'image', name:'image.png' },
@@ -709,66 +683,54 @@
      *   console.log( data.response );
      * });
      */
-    XPush.prototype.uploadFile = function (channel, fileUri, inputObj, fnPrg, fnCallback) {
+    XPush.prototype.uploadFile = function(channel, fileUri, inputObj, fnPrg, fnCallback){
       var self = this;
 
-      self.getChannelAsync(channel, function (err, ch) {
+      self.getChannelAsync(channel, function(err, ch){
 
-        var headers = {
-          'XP-A': self.appId,
-          'XP-C': channel,
-          'XP-U': JSON.stringify({
-            U: self.userId,
-            D: self.deviceId
-          }) //[U]^[D]^[TK] @ TODO add user token
-        };
+        if(window.FileTransfer && window.FileUploadOptions){
 
-        headers['XP-FU-org'] = inputObj.name;
-        if (inputObj.overwrite) headers['XP-FU-nm'] = inputObj.name;
-        if (inputObj.type) headers['XP-FU-tp'] = inputObj.type;
+          var url = ch._server.serverUrl+'/upload';
 
-        var url = ch._server.serverUrl + '/upload';
-
-        if (window.FileTransfer && window.FileUploadOptions) {
           var options = new FileUploadOptions();
-          options.fileKey = "post";
+          options.fileKey="post";
           options.chunkedMode = false;
           options.params = {
             'key1': 'VAL1',
             'key2': 'VAL2'
           };
-          options.headers = headers;
+          options.headers = {
+            'XP-A': self.appId,
+            'XP-C': channel,
+            'XP-U': JSON.stringify({
+              U: self.userId,
+              D: self.deviceId
+            }) //[U]^[D]^[TK] @ TODO add user token
+          };
+          options.headers['XP-FU-org'] = inputObj.name;
+          if(inputObj.overwrite) options.headers['XP-FU-nm'] = inputObj.name;
+          if(inputObj.type)      options.headers['XP-FU-tp'] = inputObj.type;
 
           var ft = new FileTransfer();
-          if (fnPrg != undefined) {
-            ft.onprogress = function (progressEvent) {
+          if( fnPrg != undefined ){
+            ft.onprogress = function(progressEvent) {
               if (progressEvent.lengthComputable) {
                 var perc = Math.floor(progressEvent.loaded / progressEvent.total * 100);
-                fnPrg(perc);
+                fnPrg( perc);
               }
             };
           }
 
-          ft.upload(fileUri, encodeURI(url), function (data) {
+          ft.upload(fileUri, encodeURI(url), function(data){
             fnCallback(data);
             //$scope.picData = FILE_URI;
             //$scope.$apply();
-          }, function (e) {
-            debug("On fail " + e);
+          }, function(e) {
+              debug("On fail " + e);
           }, options);
 
-        } else if( typeof FormData !='undefined' ){
-          // 일반 REST FILE UPLOAD
-          var formData = new FormData();
-          formData.append("file", inputObj.files[0] );
-          self.ajax( "/upload", "POST", formData, headers, function(err, result){
-            if (result.status == 'ok') {
-              fnCallback(null, result.result);
-            } else {
-              fnCallback(result.status,result.message);
-            }
-          });
         }
+
       });
     };
 
@@ -783,7 +745,7 @@
      * @example
      * var url = xpush.getFileUrl( 'channel03', data.result.name )
      */
-    XPush.prototype.getFileUrl = function (channel, fileName) {
+    XPush.prototype.getFileUrl = function(channel, fileName){
 
       var self = this;
       var ch = self.getChannel(channel);
@@ -791,10 +753,10 @@
       var result = ch.info.server.url +
         '/download/' +
         ch._xpush.appId +
-        '/' + ch.info.channel +
-        '/' + ch._xpush.userId +
-        '/' + ch._socket.io.engine.id +
-        '/' + fileName;
+        '/'+ch.info.channel +
+        '/'+ch._xpush.userId +
+        '/'+ch._socket.io.engine.id +
+        '/'+fileName;
 
       return result;
     };
@@ -806,39 +768,39 @@
      * @param {string} channel - Channel Id
      * @return {Connection} Connect Object
      */
-    XPush.prototype._makeChannel = function (channel) {
+    XPush.prototype._makeChannel = function(channel){
       var self = this;
-      debug('xpush : connection _makeChannel ', channel);
-      for (var key in self._channels) {
-        if (key == channel && self._channels[key] != undefined && self._channels[key]._connected) {
+      debug('xpush : connection _makeChannel ',channel);
+      for( var key in self._channels ){
+        if( key == channel && self._channels[key] != undefined && self._channels[key]._connected ){
           return self._channels[key];
         }
       }
 
-      var ch = new Connection(self, CHANNEL);
-      if (channel) {
+      var ch = new Connection(self,CHANNEL);
+      if(channel) {
         ch.channel = channel;
         self._channels[channel] = ch;
       }
       return ch;
     };
 
-    XPush.prototype.calcChannel = function (ch) {
+    XPush.prototype.calcChannel = function(ch){
       var self = this;
-      if (self._channels.length >= self.maxConnection) {
-        self._deleteChannel(self._channels[self._channels.length - 1]);
+      if(self._channels.length >= self.maxConnection){
+        self._deleteChannel(self._channels[self._channels.length-1]);
       }
       /*
-       if(ch){
-       if(self._channels[0] != ch){
-       for(var i  = 1 ; i < self._channels.length ; i++){
-       if( self._channels[i] == ch){
-       self._channels.unshift( self._channels.splice(i,1));
-       }
-       }
-       }
-       }
-       */
+      if(ch){
+        if(self._channels[0] != ch){
+          for(var i  = 1 ; i < self._channels.length ; i++){
+            if( self._channels[i] == ch){
+              self._channels.unshift( self._channels.splice(i,1));
+            }
+          }
+        }
+      }
+      */
     };
 
     /**
@@ -847,10 +809,10 @@
      * @function
      * @param {Object} channel - Channel Id
      */
-    XPush.prototype._deleteChannel = function (channelObject) {
+    XPush.prototype._deleteChannel = function(channelObject){
       var self = this;
-      for (var k in self._channels) {
-        if (self._channels[k] == channelObject) {
+      for(var k in self._channels){
+        if(self._channels[k] == channelObject){
           self._channels[k].disconnect();
           delete self._channels[k];
           break;
@@ -868,39 +830,14 @@
      * @example
      * var isExist = xpush.isExistChannel('channel03');
      */
-    XPush.prototype.isExistChannel = function (channel) {
+    XPush.prototype.isExistChannel = function(channel){
       var self = this;
-      for (var i = 0; i < self.channelNameList.length; i++) {
-        if (self.channelNameList[i] == channel) {
+      for(var i = 0 ; i < self.channelNameList.length ; i++){
+        if(self.channelNameList[i] == channel){
           return true;
         }
       }
       return false;
-    };
-
-    /**
-     * server에서 사용자 list를 조회한다.
-     * @name getUserList
-     * @memberof Xpush
-     * @function
-     * @param {Object} [params] - param for search user.
-     * @param {function} cb - 조회 후 수행할 callback function
-     * @example
-     * xpush.getUserList( {'page':{'num':1,'size':10} },function(err, users){
-     *   console.log( users );
-     * });
-     */
-    XPush.prototype.getUserList = function (params, cb) {
-      if (typeof(params) == 'function') {
-        cb = params;
-        params = {};
-      }
-      params = params == undefined ? {} : params;
-      var self = this;
-      debug("xpush : getUsertList ", params);
-      self.sEmit('user-list', params, function (err, result) {
-        if (cb) cb(err, result.users, result.count);
-      });
     };
 
     /**
@@ -916,30 +853,24 @@
      *   console.log( userArray );
      * });
      */
-    XPush.prototype.queryUser = function (_params, cb) {
+    XPush.prototype.queryUser = function(_params,  cb){
 
       var self = this;
 
       var params = {
-        'K': _params.query,
-        'A': self.appId
+        'K' : _params.query,
+        'A' : self.appId
       };
 
-      if (_params.options) {
+      if(_params.options) {
         params['options'] = _params.options;
       } else {
         params['options'] = {};
       }
 
-      debug("xpush : queryUser ", params);
+      debug("xpush : queryUser ",params);
 
-      self.ajax('/user/search', 'POST', params, function (err, response, count) {
-        if (response.status == 'ok') {
-          cb(null, response.result.users, response.result.users.length);
-        } else {
-          cb(response.status, response.message, 0);
-        }
-      });
+      self.ajax( '/user/search' , 'POST', params, cb);
     };
 
     /**
@@ -953,11 +884,11 @@
      * @example
      * xpush.send( 'ch01', 'message', {'MG':'Hello world'} );
      */
-    XPush.prototype.send = function (channel, name, data) {
+    XPush.prototype.send = function(channel, name, data){
       var self = this;
 
-      self.getChannelAsync(channel, function (err, ch) {
-        ch.send(name, data);
+      self.getChannelAsync(channel, function (err, ch){
+        ch.send(name,data);
       });
     };
 
@@ -973,31 +904,20 @@
      *   console.log( result );
      * });
      */
-    XPush.prototype.getUnreadMessage = function (channel, cb) {
+    XPush.prototype.getUnreadMessage = function(channel, cb){
       var self = this;
-      if (channel && cb) {
-        self.getChannelAsync(channel, function (err, ch) {
-          ch.getUnreadMessage(function (err, result) {
-            if (result && result.length > 0) {
-              result.sort(UTILS.messageTimeSort);
-            }
-            cb(err, result);
-          });
-        });
-      } else if (typeof( channel ) == 'function') {
-        cb = channel;
-        debug("xpush : getUnreadMessage ", self.userId);
-        self.sEmit('message.unread', function (err, result) {
-          //app, channel, created
-          debug("xpush : getUnreadMessage end ", result);
-          if (result && result.length > 0) {
-            result.sort(UTILS.messageTimeSort);
-          }
-          self.isExistUnread = false;
-          self.sEmit('message-received');
-          cb(err, result);
-        });
-      }
+      debug("xpush : getUnreadMessage ",self.userId);
+      self.sEmit('message.unread', {C:channel}, function(err, result){
+        //app, channel, created
+        debug("xpush : getUnreadMessage end ", result);
+        if(result && result.length > 0){
+          result.sort(UTILS.messageTimeSort);
+        }
+        self.isExistUnread = false;
+        //TODO : fix this
+        //self.sEmit('message.received');
+        cb(err, result);
+      });
     };
 
     /**
@@ -1007,10 +927,10 @@
      * @param {string} channel - Channel Id
      * @param {callback} cb - 획득 후 수행할 callback function
      */
-    XPush.prototype._getChannelInfo = function (channel, cb) {
+    XPush.prototype._getChannelInfo = function(channel, cb){
       var self = this;
-      debug("xpush : _getChannelInfo ", channel);
-      self.ajax(XPush.Context.NODE + '/' + self.appId + '/' + channel, 'GET', {}, cb);
+      debug("xpush : _getChannelInfo ",channel);
+      self.ajax( XPush.Context.NODE+'/'+self.appId+'/'+channel , 'GET', {}, cb);
     };
 
     /**
@@ -1025,15 +945,12 @@
      *   console.log( users );
      * )};
      */
-    XPush.prototype.getGroupUsers = function (groupId, cb) {
+    XPush.prototype.getGroupUsers = function(groupId,cb){
       var self = this;
-      if (typeof(arguments[0]) == 'function') {
-        cb = arguments[0];
-        groupId = undefined;
-      }
+    if(typeof(arguments[0]) == 'function') {cb = arguments[0]; groupId = undefined;}
       groupId = groupId ? groupId : self.userId;
-      self.sEmit('group.list', {'GR': groupId}, function (err, result) {
-        cb(err, result);
+      self.sEmit('group.list',{'GR': groupId}, function(err,result){
+        cb(err,result);
       });
     };
 
@@ -1050,18 +967,14 @@
      *   console.log( result );
      * )};
      */
-    XPush.prototype.addUserToGroup = function (groupId, userIds, cb) {
+    XPush.prototype.addUserToGroup = function(groupId, userIds, cb){
       var self = this;
-      if (typeof(arguments[1]) == 'function') {
-        cb = arguments[1];
-        userIds = groupId;
-        groupId = undefined;
-      }
+      if(typeof(arguments[1]) == 'function') {cb = arguments[1]; userIds = groupId; groupId = undefined;}
       groupId = groupId ? groupId : self.userId;
       userIds = userIds ? userIds : [];
-      self.sEmit('group.add', {'GR': groupId, 'U': userIds}, function (err, result) {
+      self.sEmit('group.add',{'GR': groupId, 'U': userIds}, function(err,result){
         //app, channel, created
-        cb(err, result);
+        cb(err,result);
       });
     };
 
@@ -1078,32 +991,28 @@
      *   console.log( result );
      * )};
      */
-    XPush.prototype.removeUserFromGroup = function (groupId, userId, cb) {
+    XPush.prototype.removeUserFromGroup = function(groupId, userId, cb){
       var self = this;
-      if (typeof(arguments[1]) == 'function') {
-        cb = arguments[1];
-        userId = groupId;
-        groupId = undefined;
-      }
+      if(typeof(arguments[1]) == 'function') {cb = arguments[1]; userId = groupId; groupId = undefined;}
       groupId = groupId ? groupId : self.userId;
 
-      self.sEmit('group.remove', {'GR': groupId, 'U': userId}, function (err, result) {
-        cb(err, result);
+      self.sEmit('group.remove',{'GR': groupId, 'U': userId}, function(err, result){
+        cb(err,result);
       });
     };
 
     /**
-     XPush.prototype.getGroups = function(){
+    XPush.prototype.getGroups = function(){
       // not defined yet
     };
 
-     XPush.prototype.signout = function(cb){
+    XPush.prototype.signout = function(cb){
       //global end
       var self = this;
       var sendData = { };
       self.ajax( XPush.Context.Signout , 'POST', sendData, cb);
     };
-     */
+    */
 
     /**
      * global socket을 초기화 후에 event를 추가한다. `autoInitFlag`가 true면 channel 정보 및 읽지 않은 message를 조회한다.
@@ -1112,244 +1021,231 @@
      * @param {Object} socket.io
      * @param {callback} cb - 초기화 후 수행할 callback function
      */
-    XPush.prototype._initSessionSocket = function (socket, cb) {
+    XPush.prototype._initSessionSocket = function(socket,cb){
       var self = this;
 
-      socket.on('_event', function (data) {
-        debug('xpush : global receive ', data.event, data.C, data.NM, data.DT, self.userId);
+      socket.on('_event',function(data){
+        debug('xpush : global receive ', data.event, data.C,data.NM,data.DT, self.userId);
         // data.event = NOTIFICATION
         // channel,name, timestamp, data= {}
-        switch (data.event) {
+        switch(data.event){
           case 'NOTIFICATION':
             var ch = self.getChannel(data.C);
 
             // if `autoInitFlag` is true, make channel automatically
-            if (self.autoInitFlag) {
-              if (!ch) {
-                ch = self._makeChannel(data.C);
+            if( self.autoInitFlag ){
+              if(!ch){
+                ch = self._makeChannel(data.C);            
 
-                self._getChannelInfo(data.C, function (err, data) {
+                self._getChannelInfo(data.C,function(err,data){
 
-                  if (err) {
-                    debug(" == node channel ", err);
-                  } else if (data.status == 'ok') {
+                  if(err){
+                    debug(" == node channel " ,err);
+                  }else if ( data.status == 'ok'){
                     ch.setServerInfo(data.result);
                   }
                 });
                 //self.emit('channel.created', {ch: ch, chNm: data.channel});
-                if (!self.isExistChannel(data.channel)) {
+                if(!self.isExistChannel(data.channel)) {
                   self.emit('newChannel', ch);
                 }
               }
-              ch.emit(data.NM, data.DT);
-            }
+              ch.emit(data.NM , data.DT);
+            }          
             self.emit(data.NM, data.C, data.NM, data.DT);
-            break;
+          break;
 
           case 'CONNECT' :
             self.emit('___global_event', 'GLOBAL', data);
-            break;
+          break;
 
           case 'DISCONNECT' :
             self.emit('___global_event', 'GLOBAL', data);
-            break;
+          break;
 
           case 'LOGOUT' :
             self.emit('___global_event', 'LOGOUT', data);
-            break;
+          break;
         }
 
       });
 
-      socket.on('channel', function (data) {
+      socket.on('channel',function(data){
         debug('xpush : global receive ', 'channel', data, self.userId);
 
-        switch (data.event) {
+        switch(data.event){
           case 'UPDATE':
-            // event: update , app,channel,server,count
-            break;
+        // event: update , app,channel,server,count
+          break;
 
           case 'REMOVE' :
-            // event: remove , app,channel
-            break;
+        // event: remove , app,channel
+          break;
         }
       });
 
-      socket.on('connected', function () {
+      socket.on('connected',function(){
         debug('xpush : global receive ', CHANNEL, arguments, self.userId);
       });
 
       // if `autoInitFlag` is true, get channels
-      if (self.autoInitFlag) {
-        self.getChannels(function (err, data) {
+      if( self.autoInitFlag ){
+        self.getChannels(function(err,data){
           self.channelNameList = data;
 
-          self.getUnreadMessage(function (err, data) {
-            if (data && data.length > 0) {
-              for (var i = data.length - 1; i >= 0; i--) {
+          self.getUnreadMessage(function(err, data){
+            if(data && data.length > 0 ){
+              for(var i = data.length-1 ; i >= 0; i--){
 
-                data[i].DT = JSON.parse(data[i].DT);
-                self.receiveMessageStack.unshift([data[i].NM, data[i].DT.C, data[i].NM, data[i].DT]);
+                data[i].MG.DT = JSON.parse(data[i].MG.DT);
+                self.receiveMessageStack.unshift([data[i].NM,  data[i].MG.DT.C, data[i].NM,  data[i].MG.DT]);
               }
               self.isExistUnread = false;
-              while (self.receiveMessageStack.length > 0) {
+              while(self.receiveMessageStack.length > 0 ){
                 var t = self.receiveMessageStack.shift();
-                self.emit.apply(self, t);
+                self.emit.apply(self, t );
               }
-              if (cb) cb();
-            } else {
-              if (cb) cb();
+              if(cb) cb();
+            }else{
+              if(cb) cb();
             }
           });
         });
       } else {
-        if (cb) cb();
+        if(cb) cb();
       }
 
-      socket.on('disconnect', function () {
+      socket.on('disconnect',function(){
         self.isExistUnread = true;
       });
     };
 
-    var _rest = function (context, method, data, headers, cb) {
+    var _rest = function( context, method, data, headers, cb){
       var self = this;
 
-      if (typeof(headers) == 'function' && !cb) {
+      if(typeof(headers) == 'function' && !cb){
         cb = headers;
         headers = undefined;
       }
 
-      var hostname = self.hostname.replace("http://", "");
-      if (hostname.indexOf(":") > 0) hostname = hostname.split(":")[0];
+      var hostname = self.hostname.replace( "http://", "" );
+      if( hostname.indexOf( ":" ) > 0 ) hostname = hostname.split(":")[0];
 
       var options = {
         host: hostname,
-        port: 8000,
+        port:8000,
         path: context,
         method: method
       };
 
-      if (headers) {
+      if( headers ){
         options.headers = headers;
       } else {
-        options.headers = {};
+         options.headers = {};
       }
 
-      options.headers['Content-Type'] = 'application/json';
+      options.headers['Content-Type'] = 'application/json';      
 
       var result = '';
-      var request = http.request(options, function (res) {
+      var request = http.request( options, function(res) {
 
         res.setEncoding('utf8');
-        res.on("data", function (chunk) {
-          result = result + chunk;
+        res.on("data", function(chunk) {    
+          result = result + chunk;      
         });
 
-        res.on("end", function () {
+        res.on("end", function() {
           var r = JSON.parse(result);
-          if (r.status != 'ok') {
-            cb(r.status, r.message);
-          } else {
-            cb(null, r);
-          }
+          if(r.status != 'ok'){
+            cb(r.status,r.message);
+          }else{
+            cb(null,r);
+          }  
         });
 
-      }).on('error', function (e) {
+      }).on('error', function(e) {
         debug("ajax error: " + e.message);
-        cb('', result);
+        cb('',result);
       });
-
-      if (method.toLowerCase() !== 'GET'.toLowerCase()) {
+      
+      if( method.toLowerCase() !== 'GET'.toLowerCase() ){
         request.write(JSON.stringify(data));
       }
       request.end();
     }
 
-    var _ajax = function (context, method, data, headers, cb) {
+    var _ajax = function( context, method, data, headers, cb){
       var self = this;
 
-      if (typeof(headers) == 'function' && !cb) {
+      if(typeof(headers) == 'function' && !cb){
         cb = headers;
         headers = false;
       }
 
       var xhr;
-      try {
+      try{
         xhr = new XMLHttpRequest();
-      } catch (e) {
-        try {
+      }catch (e){
+        try{
           xhr = new XDomainRequest();
-        } catch (e) {
-          try {
+        } catch (e){
+          try{
             xhr = new ActiveXObject('Msxml2.XMLHTTP');
-          } catch (e) {
-            try {
+          }catch (e){
+            try{
               xhr = new ActiveXObject('Microsoft.XMLHTTP');
-            } catch (e) {
+            }catch (e){
               console.error('\nYour browser is not compatible with XPUSH AJAX');
             }
           }
         }
       }
 
-      var _url;
-      if( context.indexOf( "http://" ) > -1 || context.indexOf( "https://" ) > -1  ){
-        _url = context;
-      } else {
-        _url = self.hostname + context;
-      }
-      method = (method.toLowerCase() == "get") ? "GET" : "POST";
+      var _url = self.hostname+context;
 
-      var param;
-      if ( data instanceof FormData ){
-        param = data;
-      } else {
-        param = Object.keys(data).map(function (k) {
-          return encodeURIComponent(k) + '=' + encodeURIComponent(data[k]);
-        }).join('&');
+      var param = Object.keys(data).map(function(k) {
+        return encodeURIComponent(k) + '=' + encodeURIComponent(data[k]);
+      }).join('&');
 
-        param = (param == null || param == "") ? null : param;
-        if (method == "GET" && param != null) {
-          _url = _url + "?" + param;
-        }         
+      method = (method.toLowerCase() == "get") ? "GET":"POST";
+      param  = (param == null || param == "") ? null : param;
+      if(method == "GET" && param != null){
+        _url = _url + "?" + param;
       }
 
       xhr.open(method, _url, true);
-      xhr.onreadystatechange = function () {
+      xhr.onreadystatechange = function() {
 
-        if (xhr.readyState < 4) {
+        if(xhr.readyState < 4) {
           return;
         }
 
-        if (xhr.status !== 200) {
-          debug("xpush : ajax error", self.hostname + context, param);
-          cb(xhr.status, {});
+        if(xhr.status !== 200) {
+          debug("xpush : ajax error", self.hostname+context,param);
+          cb(xhr.status,{});
         }
 
-        if (xhr.readyState === 4) {
+        if(xhr.readyState === 4) {
           var r = JSON.parse(xhr.responseText);
-          if (r.status != 'ok') {
-            cb(r.status, r.message);
-          } else {
-            cb(null, r);
+          if(r.status != 'ok'){
+            cb(r.status,r.message);
+          }else{
+            cb(null,r);
           }
         }
       };
 
-      debug("xpush : ajax ", self.hostname + context, method, param);
+      debug("xpush : ajax ", self.hostname+context,method,param);
 
-      if (headers) {
+      if(headers) {
         for (var key in headers) {
           if (headers.hasOwnProperty(key)) {
             xhr.setRequestHeader(key, headers[key]);
           }
         }
       }
-      
-      if ( !(param instanceof FormData) ){
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-      }
-      xhr.send((method == "POST") ? param : null);
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      xhr.send( (method == "POST") ? param : null);
 
       return;
     };
@@ -1368,27 +1264,26 @@
      * @param {Object} [params] - object to send
      * @param {callback} cb - event 발생 후 수행할 callback function
      */
-    XPush.prototype.sEmit = function (key, params, cb) {
+    XPush.prototype.sEmit = function(key, params, cb){
       var self = this;
+      var returnFunction = function(result){
 
-      var returnFunction = function (result) {
-
-        if (result.status == 'ok') {
+        if(result.status == 'ok'){
           cb(null, result.result);
-        } else {
-          if (result.status.indexOf('WARN') == 0) {
+        }else{
+          if(result.status.indexOf('WARN') == 0){
             debug("xpush : ", key, result.status, result.message);
-          } else {
+          }else{
             debug("xpush : ", key, result.status, result.message);
           }
           cb(result.status, result.message);
         }
       };
 
-      if (typeof(arguments[1]) == 'function') {
+      if( typeof(arguments[1]) == 'function' ){
         cb = params;
         self._globalConnection._socket.emit(key, returnFunction);
-      } else {
+      }else{
         self._globalConnection._socket.emit(key, params, returnFunction);
       }
       return;
@@ -1406,26 +1301,25 @@
      *   console.log( channel, name, data );
      * });
      */
-    XPush.prototype.on = function (event, fct, systemFlag) {
+    XPush.prototype.on = function(event, fct, systemFlag){
       var self = this;
 
-      if (!systemFlag) {
+      if( !systemFlag ){
         var isExistEvent = false;
-        for (var idx in self._userEventNames) {
-          if (self._userEventNames[idx] == event) {
-            isExistEvent = true;
-            break;
+        for(var idx in self._userEventNames){ 
+          if(self._userEventNames[idx] == event){
+            isExistEvent = true; break;
           }
         }
-        if (!isExistEvent) self._userEventNames.push(event);
+        if(!isExistEvent) self._userEventNames.push( event );
       }
 
       self._events = self._events || {};
       self._events[event] = self._events[event] || [];
       self._events[event].push(fct);
 
-      if (self._globalConnection) {
-        self._globalConnection.attchOnEvent(event);
+      if( self._globalConnection ){
+        self._globalConnection.attchOnEvent( event );
       }
     };
 
@@ -1441,10 +1335,10 @@
      *   console.log( channel, name, data );
      * });
      */
-    XPush.prototype.off = function (event, fct) {
+    XPush.prototype.off = function(event, fct){
       var self = this;
       self._events = self._events || {};
-      if (event in self._events === false)  return;
+      if( event in self._events === false  )  return;
       self._events[event].splice(self._events[event].indexOf(fct), 1);
     };
 
@@ -1458,16 +1352,12 @@
      * @example
      * xpush.clearEvent();
      */
-    XPush.prototype.clearEvent = function () {
+    XPush.prototype.clearEvent = function(){
       var self = this;
       var globalEvent = self._events['___global_event'];
       self._events = {};
       self._events['___global_event'] = globalEvent;
       self._userEventNames = [];
-    };
-
-    XPush.prototype.getServerAddress = function () {
-      return this.hostname;
     };
 
     /**
@@ -1478,17 +1368,17 @@
      * @function
      * @param {string} event key
      */
-    XPush.prototype.emit = function (event) {
+    XPush.prototype.emit = function(event){
       var self = this;
       self.isExistUnread = false;
-      if (self.isExistUnread) {
+      if(self.isExistUnread) {
         self.receiveMessageStack.push(arguments);
-      } else {
+      }else{
         self._events = self._events || {};
 
-        if (event in self._events === false)  return;
-        for (var i = 0; i < self._events[event].length; i++) {
-          debug("xpush : test ", arguments);
+        if( event in self._events === false  )  return;
+        for(var i = 0; i < self._events[event].length; i++){
+          debug("xpush : test ",arguments);
           self._events[event][i].apply(this, Array.prototype.slice.call(arguments, 1));
         }
       }
@@ -1502,12 +1392,12 @@
      * @param {string} type - 'global' or channel'
      * @param {string} server - Server Url to connect
      */
-    var Connection = function (xpush, type, server) {
+    var Connection = function(xpush , type, server){
 
       this._xpush = xpush;
       this._server = server;
       this._type = type;
-      if (this._type == GLOBAL) {
+      if(this._type == GLOBAL){
         this.chNm = GLOBAL;
       }
       this._socketStatus; // disconnected, connected
@@ -1520,7 +1410,7 @@
       this.timeout = 30000;
 
       //self.on('received', function(data){
-      //self._xpush.calcChannel(self);
+        //self._xpush.calcChannel(self);
       //});
       return this;
     };
@@ -1532,12 +1422,12 @@
      * @function
      * @param {string} b - Server Url to connect
      */
-    Connection.prototype.checkConnectionTimeout = function (b) {
+    Connection.prototype.checkConnectionTimeout = function(b){
       var self = this;
-      if (self.checkTimer) clearTimeout(self.checkTimer);
+      if(self.checkTimer) clearTimeout(self.checkTimer);
 
-      if (b) {
-        self.checkTimer = setTimeout(function () {
+      if(b){
+        self.checkTimer = setTimeout(function(){
           self._socket.disconnect();
         }, self.timeout);
       }
@@ -1551,16 +1441,16 @@
      * @param {Object} info - Server Url to connect
      * @param {callback} cb - setServerInfoCallback
      */
-    Connection.prototype.setServerInfo = function (info, cb) {
+    Connection.prototype.setServerInfo = function(info,cb){
       debug("xpush : setServerInfo ", info);
       var self = this;
       self.info = info;
-      self._server = {serverUrl: info.server.url};
+      self._server = {serverUrl : info.server.url};
       self.chNm = info.channel;
-      self.connect(function () {
-        debug("xpush : setServerInfo end ", arguments, self._xpush.userId, self.chNm);
+      self.connect(function(){
+        debug("xpush : setServerInfo end ", arguments,self._xpush.userId, self.chNm);
         //self.connectionCallback();
-        if (cb) cb();
+        if(cb) cb();
         self.emit("connected");
       });
     };
@@ -1573,47 +1463,48 @@
      * @param {callback} cb - connectCallback
      * @param {string} mode - Optional. `CHANANEL_ONLY`
      */
-    Connection.prototype.connect = function (cb, mode) {
+    Connection.prototype.connect = function(cb, mode){
+
       var self = this;
-      var query =
-        'A=' + self._xpush.appId + '&' +
-        'U=' + encodeURIComponent(self._xpush.userId) + '&' +
-        'D=' + self._xpush.deviceId;
-      //'mode=CHANNEL_ONLY';
+        var query =
+          'A='+self._xpush.appId+'&'+
+          'U='+self._xpush.userId+'&'+
+          'D='+self._xpush.deviceId;
+          //'mode=CHANNEL_ONLY';
 
-      if (self._type == CHANNEL) {
+      if(self._type == CHANNEL){
         query =
-          'A=' + self._xpush.appId + '&' +
-          'C=' + self.chNm + '&' +
-          'U=' + encodeURIComponent(self._xpush.userId) + '&' +
-          'D=' + self._xpush.deviceId + '&' +
-          'S=' + self.info.server.name;
+          'A='+self._xpush.appId+'&'+
+          'C='+self.chNm+'&'+
+          'U='+self._xpush.userId+'&'+
+          'D='+self._xpush.deviceId+'&'+
+          'S='+self.info.server.name;
 
-        if (mode) {
-          if (mode == 'CHANNEL_ONLY') {
+        if(mode){
+          if(mode == 'CHANNEL_ONLY'){
             self._xpush.isExistUnread = false;
           }
-          query = query + '&MD=' + mode;
+          query = query +'&MD='+ mode;
         }
       }
 
-      self._socket = io.connect(self._server.serverUrl + '/' + self._type + '?' + query, socketOptions);
+      self._socket = io.connect(self._server.serverUrl+'/'+self._type+'?'+query, socketOptions);
 
-      debug('xpush : socketconnect', self._server.serverUrl + '/' + self._type + '?' + query);
-      self._socket.on('connect', function () {
-        debug('channel connection completed');
-        while (self.messageStack.length > 0) {
+      debug( 'xpush : socketconnect', self._server.serverUrl+'/'+self._type+'?'+query);
+      self._socket.on('connect', function(){
+        debug( 'channel connection completed' );
+        while(self.messageStack.length > 0 ){
           var t = self.messageStack.shift();
           //.self.send(t.NM, t.DT);
-          self._socket.emit('send', {NM: t.NM, DT: t.DT});
+          self._socket.emit('send', {NM: t.NM , DT: t.DT});
         }
         self._connected = true;
-        if (!self.isFirtConnect) return;
+        if(!self.isFirtConnect) return;
         self.isFirtConnect = false;
         self.connectionCallback(cb);
       });
 
-      self._socket.on('disconnect', function () {
+      self._socket.on('disconnect',function(){
         self._connected = false;
       });
     };
@@ -1625,31 +1516,31 @@
      * @function
      * @param {callback} cb - connectionCallback
      */
-    Connection.prototype.connectionCallback = function (cb) {
+    Connection.prototype.connectionCallback = function(cb){
       var self = this;
-      debug("xpush : connection ", 'connectionCallback', self._type, self._xpush.userId, self.chNm);
+      debug("xpush : connection ",'connectionCallback',self._type, self._xpush.userId,self.chNm);
 
-      for (var inx = 0; inx < self._xpush._userEventNames.length; inx++) {
-        self.attchOnEvent(self._xpush._userEventNames[inx]);
+      for( var key in self._xpush._userEventNames ){
+        self.attchOnEvent( self._xpush._userEventNames[key] );
       }
 
-      if (self._xpush._isEventHandler) {
+      if(self._xpush._isEventHandler) {
 
-        self._socket.on('_event', function (data) {
+        self._socket.on('_event',function(data){
 
-          switch (data.event) {
+          switch(data.event){
             case 'CONNECTION' :
               self._xpush.emit('___global_event', 'CHANNEL', data);
-              break;
+            break;
             case 'DISCONNECT' :
               self._xpush.emit('___global_event', 'CHANNEL', data);
-              break;
+            break;
           }
 
         });
       }
 
-      if (cb)cb();
+      if(cb)cb();
     };
 
     /**
@@ -1658,7 +1549,7 @@
      * @memberof Connection
      * @function
      */
-    Connection.prototype.disconnect = function () {
+    Connection.prototype.disconnect = function(){
       debug("xpush : socketdisconnect ", this.chNm, this._xpush.userId);
       this._socket.disconnect();
     };
@@ -1672,11 +1563,11 @@
      * @param {callback} cb - sendCallback
      * @function
      */
-    Connection.prototype.send = function (name, data, cb) {
+    Connection.prototype.send = function(name, data, cb){
       var self = this;
-      if (self._connected) {
-        self._socket.emit('send', {NM: name, DT: data});
-      } else {
+      if(self._connected){
+        self._socket.emit('send', {NM: name , DT: data});
+      }else{
         self.messageStack.push({NM: name, DT: data});
       }
     };
@@ -1689,11 +1580,11 @@
      * @param {callback} cb - joinChannelCallback
      * @function
      */
-    Connection.prototype.joinChannel = function (param, cb) {
+    Connection.prototype.joinChannel = function(param, cb){
       var self = this;
-      if (self._socket.connected) {
-        self._socket.emit('channel.join', param, function (data) {
-          cb(data);
+      if(self._socket.connected){
+        self._socket.emit('join', param, function( data ){
+          cb( data );
         });
       }
     };
@@ -1707,9 +1598,9 @@
      * @param {callback} cb - uploadCallback
      * @function
      */
-    Connection.prototype.upload = function (stream, data, cb) {
+    Connection.prototype.upload = function(stream, data, cb){
       var self = this;
-      if (self._socket.connected) {
+      if(self._socket.connected){
         ss(self._socket).emit('file-upload', stream, data, cb);
       }
     };
@@ -1722,18 +1613,19 @@
      * @param {callback} cb - uploadCallback
      * @function
      */
-    Connection.prototype.getUnreadMessage = function (cb) {
+    Connection.prototype.getUnreadMessage = function(cb){
       var self = this;
-      if (self._socket.connected) {
-        self._socket.emit('message-unread', function (result) {
+      var data = {'C':self.chNm,'A':self._xpush.appId};
+      if(self._socket.connected){        
+        self._socket.emit('message.unread',function(data,result){
           cb(result.status, result.result);
         });
-      } else {
-        var func = function () {
-          self._socket.emit('message-unread', function (result) {
+      }else{
+        var func = function(){
+          self._socket.emit('message.unread',function(data,result){
             cb(result.status, result.result);
           });
-          self.off('connected', func);
+          self.off('connected',func);
         }
         self.on('connected', func);
       }
@@ -1746,13 +1638,13 @@
      * @function
      * @param {string} event key
      */
-    Connection.prototype.attchOnEvent = function (eventNm) {
+    Connection.prototype.attchOnEvent = function(eventNm){
       var self = this;
-      if (self._socket) {
-        self._socket.on(eventNm, function (data) {
-          debug("xpush : channel receive, " + eventNm, self.chNm, data, self._xpush.userId);
-          self._xpush.emit(eventNm, self.chNm, eventNm, data);
-        });
+      if(self._socket){
+        self._socket.on( eventNm ,function(data){
+          debug("xpush : channel receive, " +eventNm, self.chNm, data, self._xpush.userId);
+          self._xpush.emit(eventNm, self.chNm, eventNm , data);
+        });    
       }
     };
 
@@ -1764,7 +1656,7 @@
      * @param {string} event key
      * @param {function} function
      */
-    Connection.prototype.on = function (event, fct) {
+    Connection.prototype.on = function(event, fct){
       var self = this;
       self._events = self._events || {};
       self._events[event] = self._events[event] || [];
@@ -1779,10 +1671,10 @@
      * @param {string} event key
      * @param {function} function
      */
-    Connection.prototype.off = function (event, fct) {
+    Connection.prototype.off = function(event, fct){
       var self = this;
       self._events = self._events || {};
-      if (event in self._events === false)  return;
+      if( event in self._events === false  )  return;
       self._events[event].splice(self._events[event].indexOf(fct), 1);
     };
 
@@ -1792,31 +1684,31 @@
      * @memberof Connection
      * @function
      * @param {string} event key
-     */
-    Connection.prototype.emit = function (event /* , args... */) {
+     */  
+    Connection.prototype.emit = function(event /* , args... */){
       var self = this;
       self._events = self._events || {};
-      if (event in self._events === false)  return;
-      for (var i = 0; i < self._events[event].length; i++) {
+      if( event in self._events === false  )  return;
+      for(var i = 0; i < self._events[event].length; i++){
         self._events[event][i].apply(this, Array.prototype.slice.call(arguments, 1));
       }
     };
 
     var UTILS = {};
 
-    UTILS.messageTimeSort = function (a, b) {
+    UTILS.messageTimeSort = function(a,b){
       // created data
       return a.created > b.created;
     };
 
-    UTILS.changeKey = function (data, key) {
-      if (data instanceof Array) {
-        data.forEach(function (d) {
-          d[ST[key]] = d[key];
+    UTILS.changeKey = function(data, key){
+      if(data instanceof Array){
+        data.forEach(function(d){
+          d[ ST[key] ] = d[key];
           delete d[key];
         });
-      } else {
-        data[ST[key]] = data[key];
+      }else{
+        data[ ST[key] ] = data[key];
         delete data[key];
       }
     };
@@ -1828,35 +1720,11 @@
     module.exports = XPush;
   } else {
     if (typeof define === 'function' && define.amd) {
-      define([], function () {
+      define([], function() {
         return XPush;
       });
     } else {
       window.XPush = XPush;
     }
   }
-
-  /**
-   var myArray = new Entitiy(['Bob', 'Sue', 'Jim']);
-
-   // Entity looks like this
-   function Entity(arr) {
-      if (!Array.isArray(arr)) {
-          arr = [];
-          // maybe:
-          // arr.push.apply(arr, arguments);
-      }
-      arr.__proto__ = Entity.prototype;
-      arr.isChanged = false;
-      return arr;
-  }
-   Entity.prototype = Object.create(Array.prototype);
-   Entity.prototype.constructor = Entity;
-   Entity.prototype.add = function(newPerson) {
-      alert(this.length); //alerts with 3
-      alert(JSON.stringify(this)); //alerts a ["Bob","Sue","Jim"]
-      this.push(newPerson);
-      this.isChanged = true;
-  };
-   */
 })();
