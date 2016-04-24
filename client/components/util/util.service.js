@@ -12,7 +12,10 @@ angular.module('stalkApp')
 
         var yyyy = date.getFullYear();
         var mm = date.getMonth() + 1;
+        mm = mm >= 10 ? "" + mm : "0" + mm;
+
         var dd = date.getDate();
+        dd = dd >= 10 ? "" + dd : "0" + dd;
 
         var hour = date.getHours();
         hour = hour >= 10 ? hour : "0" + hour;
@@ -32,7 +35,8 @@ angular.module('stalkApp')
           result.push(hour + ":" + minute + ":" + second);
         }
 
-        result.push(yyyy + "." + mm + "." + dd);
+        result.push(yyyy + "-" + mm + "-" + dd);
+        result.push(hour + ":" + minute + ":" + second);
         result.push(date.toLocaleTimeString());
 
         return result;  

@@ -12,8 +12,10 @@ angular.module('stalkApp')
     $scope.siteArray = [];
     $scope.siteIds = {};
     $scope.messages = [];
-    $rootScope.isLogin = false;
     $scope.mapInit = false;
+    $scope.isPast = false;
+
+    $rootScope.isLogin = false;
 
     var fileObj;
 
@@ -201,6 +203,7 @@ angular.module('stalkApp')
     $scope.gotoChat = function (ch) {
 
       $scope.currentChannel = ch;
+      $scope.currentChannel.isPast = false;
       $scope.tabs.length = 0;
       $scope.tabs = [];
       $scope.tabs.push(ch);
@@ -211,25 +214,7 @@ angular.module('stalkApp')
       var tab = document.getElementById("tab_" + ch.C);
       angular.element(tab).parent().addClass("active");
 
-      var ip = ch.ip;
-      if( ch.data && ch.data.lat && ch.data.lon && ch.data.country ){
-        if( !$scope.mapInit ){
-          setWorldMap(ch.data.lat, ch.data.lng, ch.data.country);
-          $scope.mapInit = true;
-        }
-      } else {
-        Chat.getGeoLocation(ip).then(function (geo) {
-
-          var lng = geo.lon;
-          var lat = geo.lat;
-          var country = geo.country;
-
-          if( !$scope.mapInit ){
-            setWorldMap(lat, lng, country);
-            $scope.mapInit = true;
-          }
-        });
-      }
+      $scope.getLocationInfo( ch );
     };
 
     $scope.gotoPastChat = function (ch) {
@@ -237,6 +222,7 @@ angular.module('stalkApp')
       ch.C = ch.channel;
 
       $scope.currentChannel = ch;
+      $scope.currentChannel.isPast = true;
       $scope.tabs.length = 0;
       $scope.tabs = [];
       $scope.tabs.push(ch);
@@ -247,25 +233,7 @@ angular.module('stalkApp')
       var tab = document.getElementById("tab_" + ch.C);
       angular.element(tab).parent().addClass("active");
 
-      var ip = ch.data.ip;
-      if( ch.data && ch.data.lat && ch.data.lon && ch.data.country ){
-        if( !$scope.mapInit ){
-          setWorldMap(ch.data.lat, ch.data.lng, ch.data.country);
-          $scope.mapInit = true;
-        }
-      } else {
-        Chat.getGeoLocation(ip).then(function (geo) {
-
-          var lng = geo.lon;
-          var lat = geo.lat;
-          var country = geo.country;
-
-          if( !$scope.mapInit ){
-            setWorldMap(lat, lng, country);
-            $scope.mapInit = true;
-          }
-        });
-      }
+      $scope.getLocationInfo( ch );
 
       //$rootScope.xpush.enableDebug();
       $rootScope.xpush.getUnreadMessage( ch.C, function( err, messages ){
@@ -285,7 +253,8 @@ angular.module('stalkApp')
             opposite = "left";
           }
 
-          var time = Util.timeToString(data.TS)[0];
+          var timeArr = $scope.timeToString(data.TS);
+          var time = timeArr[1] +" "+ timeArr[2];
           var newMessage = {name: data.UO.NM, time: time, message: data.MG, side: side, opposite: opposite, timestamp:data.TS};
           if( data.TP ){
             newMessage.type = data.TP;
@@ -311,7 +280,27 @@ angular.module('stalkApp')
       return Util.timeToString(timestamp);
     };
 
+    $scope.getLocationInfo = function(ch){
+      var ip = ch.data.ip;
+      if( ch.data && ch.data.lat && ch.data.lon && ch.data.country ){
+        if( !$scope.mapInit ){
+          setWorldMap(ch.data.lat, ch.data.lng, ch.data.country);
+          $scope.mapInit = true;
+        }
+      } else {
+        Chat.getGeoLocation(ip).then(function (geo) {
 
+          var lng = geo.lon;
+          var lat = geo.lat;
+          var country = geo.country;
+
+          if( !$scope.mapInit ){
+            setWorldMap(lat, lng, country);
+            $scope.mapInit = true;
+          }
+        });
+      }  
+    };
     // Init Site List
     $scope.setSites();
 

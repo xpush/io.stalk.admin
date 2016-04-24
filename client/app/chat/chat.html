@@ -134,7 +134,7 @@
                   <!-- /#chatArea -->
                 </div>
                 <!-- /.box-body -->
-                <div class="box-footer">
+                <div class="box-footer" ng-if="!currentChannel.isPast">
                   <div class="input-group">
                     <strong class="action-button upload-button" title="Send attachment" id="attachment" style="display: inline;" ng-click="openFile()"></strong>
                     <input type="text" id="inputMessage" name="inputMessage" ng-model="messageText"
@@ -169,12 +169,12 @@
           </div>
           <div class="box-body no-padding">
             <ul class="nav nav-pills nav-stacked">
-              <li><a href="#"><i class="fa fa-inbox"></i> {{'text.started' | translate}} : {{currentChannel.startTime}}</a></li>
-              <li><a href="#"><i class="fa fa-envelope-o"></i> URL : {{currentChannel.url}}</a></li>
-              <li><a href="#"><i class="fa fa-file-text-o"></i> Path : {{currentChannel.origin}}</a></li>
-              <li><a href="#"><i class="fa fa-file-text-o"></i> OS : {{currentChannel.os}}</a></li>
-              <li><a href="#"><i class="fa fa-file-text-o"></i> Browser : {{currentChannel.browser}}</a></li>
-              <li><a href="#"><i class="fa fa-file-text-o"></i> IP : {{currentChannel.ip}}</a></li>
+              <li><a href="#"><i class="fa fa-inbox"></i> {{'text.started' | translate}} : {{currentChannel.data.startTime}}</a></li>
+              <li><a href="#"><i class="fa fa-envelope-o"></i> URL : {{currentChannel.data.url}}</a></li>
+              <li><a href="#"><i class="fa fa-file-text-o"></i> Path : {{currentChannel.data.origin}}</a></li>
+              <li><a href="#"><i class="fa fa-file-text-o"></i> OS : {{currentChannel.data.os}}</a></li>
+              <li><a href="#"><i class="fa fa-file-text-o"></i> Browser : {{currentChannel.data.browser}}</a></li>
+              <li><a href="#"><i class="fa fa-file-text-o"></i> IP : {{currentChannel.data.ip}}</a></li>
             </ul>
           </div>
           <!-- /.box-body -->
