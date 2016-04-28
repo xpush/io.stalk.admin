@@ -75,7 +75,6 @@ exports.save = function (req, res) {
       });
     } else {
       channel.name = name;
-      channel.startTime = startTime;
       channel.data = _.merge(channel.data, data);
 
       channel.save(function (err){
@@ -86,7 +85,33 @@ exports.save = function (req, res) {
   });
 };
 
+exports.close = function (req, res) {
+  var channel = req.body.channel;
+  var endTime = req.body.endTime;
+
+  var saveData = {
+    channel: channel
+  };
+
+  Channel.findOne(saveData, function (err, channel) {
+    if (err) {
+      console.log( err );
+      return handleError(res, err);
+    }
+    if (channel) {
+      channel.endTime = endTime;
+      channel.active = false;
+
+      channel.save(function (err){
+        if (err) return handleError(res, err);
+        return res.status(200).json(channel);
+      });
+    } else {
+      return res.status(200).json({'status':'FAIL'});
+    }
+  });
+};
+
 function handleError(res, err) {
   return res.status(500).send(err);
 }
-
