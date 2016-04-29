@@ -8,5 +8,6 @@ var router = express.Router();
 router.post('/', auth.isAuthenticated(), controller.index);
 router.post('/search', auth.isAuthenticated(), controller.search);
 router.put('/save', auth.isAuthenticated(), controller.save);
+router.post('/close', auth.isAuthenticated(), controller.close);
 
 module.exports = router;

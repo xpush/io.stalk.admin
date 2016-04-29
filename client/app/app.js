@@ -53,7 +53,7 @@ angular.module('stalkApp', [
     };
   })
 
-  .run(function ($rootScope, $location, $http, Auth, NEED_EMAIL_CONFIRM) {
+  .run(function ($rootScope, $location, $http, Auth, NEED_EMAIL_CONFIRM, Channel) {
 
     $http({
       method: 'GET',
@@ -68,7 +68,14 @@ angular.module('stalkApp', [
       $rootScope.GLOBAL_APP = result.data.app;
 
       $rootScope.xpush = new XPush($rootScope.GLOBAL_SERVER_XPUSH_URL, $rootScope.GLOBAL_APP, function (type, data) {
+        if( type === 'GLOBAL' && data.event === 'DISCONNECT' ){
+          if( data.DT && data.DT.USC > 0 ){
+            var info = { 'C':data.C, 'endTime':data.TS }
+            Channel.close( info ).then( function(result){
 
+            })
+          }
+        }
       }, false);
     }, function (err) {
       console.log(err);

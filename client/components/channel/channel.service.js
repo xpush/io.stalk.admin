@@ -27,7 +27,7 @@ angular.module('stalkApp')
         var cb = callback || angular.noop;
         var deferred = $q.defer();
 
-        $http.put('/api/channels/close',
+        $http.post('/api/channels/close',
             channel
           ).
           success(function (data) {
