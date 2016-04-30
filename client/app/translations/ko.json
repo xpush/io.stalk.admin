@@ -63,7 +63,9 @@
   	"text.custLocation":"고객 위치",
 	"text.started": "시작 시간",
  	"text.messageHolder":"메시지를 입력하세요.",
+ 	"text.searchHolder":"메시지 검색...",
  	"text.readyToChat":"방문자와 채팅을 준비가 되었습니다.",
 
- 	"button.send":"전송"
+ 	"button.send":"전송",
+ 	"button.search":"검색"
 }

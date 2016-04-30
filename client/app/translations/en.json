@@ -63,7 +63,9 @@
    	"text.custLocation":"Customer Location",
 	"text.started": "Started",
  	"text.messageHolder":"Type Message...",
+ 	"text.searchHolder":"Search Message...",
  	"text.readyToChat":"Ready to Chat with visitors",
 
- 	"button.send":"Send"
+ 	"button.send":"Send",
+ 	"button.search":"Search"
 }

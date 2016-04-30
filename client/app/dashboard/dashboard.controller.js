@@ -99,7 +99,6 @@ angular.module('stalkApp')
           gray: "#d2d6de"
         };
         data.data = data.data.map(function (d) {
-          console.log(d._id);
           d.label = d._id == null ? "navigator" : d._id;
           d.value = d.count;
           d.colorName = colorOrder[idx];

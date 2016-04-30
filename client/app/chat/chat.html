@@ -146,6 +146,17 @@
                     </span>
                   </div>
                 </div>
+                <div class="box-footer" ng-if="currentChannel.isPast">
+                    <strong class="action-button upload-button" title="Send attachment" id="attachment" style="display: inline;" ng-click="searchMessage()"></strong>
+                  <div class="input-group">
+                    <input type="text" id="inputMessage" name="inputMessage" ng-model="messageText"
+                         placeholder="{{'text.searchHolder' | translate}}" class="form-control" style="padding-left:30px;"
+                         ng-enter="searchMessage()">
+                    <span class="input-group-btn">
+                      <button type="button" id="search" class="btn btn-primary btn-flat" ng-click="searchMessage()">{{'button.search' | translate}}</button>
+                    </span>
+                  </div>
+                </div>
                 <!-- /.box-footer-->
               </div>
               <!--/.direct-chat -->

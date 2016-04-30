@@ -192,6 +192,12 @@
         mode = undefined;
       }
 
+      if (self._globalConnection) {
+        console.log("already connected");
+        cb(null, null);
+        return;
+      }
+
       self.userId = userId;
       self.deviceId = deviceId;
       var sendData = {A: self.appId, U: userId, PW: password, D: deviceId};
