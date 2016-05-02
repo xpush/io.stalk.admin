@@ -161,6 +161,7 @@ angular.module('stalkApp')
       $scope.setSites(data);
     });
 
+    var search
     $scope.sendMessage = function (message, type) {
       var msg;
       if( message ){
@@ -183,6 +184,32 @@ angular.module('stalkApp')
         $rootScope.xpush.send($scope.currentChannel.C, 'message', DT);
         document.getElementById("inputMessage").value = "";
 
+      }
+    };
+
+    $scope.searchMessage = function (){
+      var inputMsg = document.getElementById("inputMessage").value.toString().trim();
+      if( inputMsg && inputMsg.length > 0 ){
+        for( var inx = 0; inx < $scope.messages.length ; inx++ ){
+          var msgObj = $scope.messages[inx];
+
+          console.log( inputMsg );
+          console.log( msgObj.message );
+
+          if( msgObj.type == 'MG' && msgObj.message.indexOf( inputMsg ) > -1 ){
+
+            var orgMsg = msgObj.message;
+            if( !$scope.messages[inx].matched ){
+              $scope.messages[inx].searchedMessage = orgMsg.replace( inputMsg, "<span class='match'>"+inputMsg+"</span>" );
+            }
+
+            $scope.messages[inx].matched = true;
+          } else {
+            var orgMsg = msgObj.message;
+            $scope.messages[inx].matched = false;
+          }
+        }
+        //console.log( $scope.messages );
       }
     };
 

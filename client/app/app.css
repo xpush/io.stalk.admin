@@ -176,3 +176,11 @@
     -o-transition: -o-transform 0.5s ease-in-out;
     transition: transform 0.5s ease-in-out;
 }
+
+.direct-chat-primary .right > .direct-chat-text > span.match {
+    background: #555555;
+}
+
+.direct-chat-text > span.match {
+    background: #fff3b8;  
+}
