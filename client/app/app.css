@@ -184,3 +184,8 @@
 .direct-chat-text > span.match {
     background: #fff3b8;  
 }
+
+.box > .loading-img {
+  z-index: 1020;
+  background: transparent url('../assets/image/ajax-loader.gif') 50% 50% no-repeat;
+}
