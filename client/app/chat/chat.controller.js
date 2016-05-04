@@ -14,6 +14,7 @@ angular.module('stalkApp')
     $scope.messages = [];
     $scope.mapInit = false;
     $scope.isPast = false;
+    $scope.isLoading = false;
 
     $rootScope.isLogin = false;
 
@@ -245,10 +246,12 @@ angular.module('stalkApp')
     };
 
     $scope.gotoPastChat = function (ch) {
+      $scope.isLoading = true;
 
       ch.C = ch.channel;
 
       $scope.currentChannel = ch;
+      $scope.currentChannel.isLoading = true;
       $scope.currentChannel.isPast = true;
       $scope.tabs.length = 0;
       $scope.tabs = [];
@@ -299,6 +302,8 @@ angular.module('stalkApp')
         }
 
         $scope.messages = tmpMessages;
+        $scope.$broadcast('items_changed');
+        $scope.currentChannel.isLoading = false;
       });
     };
 

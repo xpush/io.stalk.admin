@@ -159,10 +159,8 @@
                   </div>
                 </div>
                 <!-- /.box-footer-->
-                <!--
-                <div class="overlay"></div>
-                <div class="loading-img"></div>
-                  -->
+                <div class="overlay" ng-if="currentChannel.isLoading"></div>
+                <div class="loading-img" ng-if="currentChannel.isLoading"></div>
               </div>
               <!--/.direct-chat -->
 

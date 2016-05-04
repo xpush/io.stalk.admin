@@ -187,5 +187,5 @@
 
 .box > .loading-img {
   z-index: 1020;
-  background: transparent url('../assets/image/ajax-loader.gif') 50% 50% no-repeat;
+  background: transparent url('/assets/images/ajax-loader.gif') 50% 50% no-repeat;
 }
