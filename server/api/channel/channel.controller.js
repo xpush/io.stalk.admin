@@ -46,7 +46,7 @@ exports.search = function (req, res) {
 exports.save = function (req, res) {
   var channel = req.body.channel;
   var name = req.body.name;
-  var startTime = req.body.startTimestamp;
+  var startTimestamp = req.body.startTimestamp;
   var origin = req.body.origin;
   var data = req.body.data;
   var uid = req.body.uid;
@@ -63,7 +63,7 @@ exports.save = function (req, res) {
     }
     if (!channel) {
       saveData.name = name;
-      saveData.startTime = startTime;
+      saveData.startTimestamp = startTimestamp;
       saveData.data = data;
 
       Channel.create(saveData, function (err, _channel) {
@@ -87,26 +87,29 @@ exports.save = function (req, res) {
 
 exports.close = function (req, res) {
   var channel = req.body.channel;
-  var endTime = req.body.endTime;
-
+  var endTimestamp = req.body.endTimestamp;
   var saveData = {
     channel: channel
   };
 
-  Channel.findOne(saveData, function (err, channel) {
+  console.log( saveData );
+
+  Channel.findOne(saveData, function (err, _channel) {
     if (err) {
       console.log( err );
       return handleError(res, err);
     }
-    if (channel) {
-      channel.endTime = endTime;
-      channel.active = false;
+    if (_channel) {
 
-      channel.save(function (err){
+      _channel.endTimestamp = endTimestamp;
+      _channel.active = false;
+
+      _channel.save(function (err){
         if (err) return handleError(res, err);
-        return res.status(200).json(channel);
+        return res.status(200).json({'status':'ok'});
       });
     } else {
+            console.log( '222' );
       return res.status(200).json({'status':'FAIL'});
     }
   });

@@ -253,6 +253,14 @@ angular.module('stalkApp')
       $scope.currentChannel = ch;
       $scope.currentChannel.isLoading = true;
       $scope.currentChannel.isPast = true;
+
+      if( $scope.currentChannel.endTimestamp ){
+        var timeArr = $scope.timeToString($scope.currentChannel.endTimestamp);
+        var time = timeArr[1] +" "+ timeArr[2];
+        $scope.currentChannel.endTime = time;
+      }
+
+
       $scope.tabs.length = 0;
       $scope.tabs = [];
       $scope.tabs.push(ch);
@@ -337,7 +345,7 @@ angular.module('stalkApp')
     $scope.setSites();
 
     // get Old channels
-    Channel.search({'activeYN':"Y"}).then( function(channels) {
+    Channel.search({'activeYN':"N"}).then( function(channels) {
       $scope.pastChannels = channels;
     });
   });

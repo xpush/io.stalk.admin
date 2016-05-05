@@ -189,3 +189,13 @@
   z-index: 1020;
   background: transparent url('/assets/images/ajax-loader.gif') 50% 50% no-repeat;
 }
+
+.direct-chat-close-time {
+  margin: auto;
+  width:80%;
+  background-color: #f4f4f4;
+  color: #444;
+  border-color: #ddd;
+  text-align: center;
+  border-radius: 5px;
+}

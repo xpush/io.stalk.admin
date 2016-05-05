@@ -10,8 +10,8 @@ var ChannelSchema = new Schema({
   name: String,
   data:{},
   active: {type: Boolean, default: true},
-  startTime: {type: Date},
-  endTime:{type: Date},
+  startTimestamp: {type: Number},
+  endTimestamp:{type: Number},
   uid: {type: String}
 });
 

@@ -69,8 +69,8 @@ angular.module('stalkApp', [
 
       $rootScope.xpush = new XPush($rootScope.GLOBAL_SERVER_XPUSH_URL, $rootScope.GLOBAL_APP, function (type, data) {
         if( type === 'GLOBAL' && data.event === 'DISCONNECT' ){
-          if( data.DT && data.DT.USC > 0 ){
-            var info = { 'C':data.C, 'endTime':data.TS }
+          if( data.DT && data.DT.USC == 0 ){
+            var info = { 'channel':data.C, 'endTimestamp':data.TS }
             Channel.close( info ).then( function(result){
 
             })
