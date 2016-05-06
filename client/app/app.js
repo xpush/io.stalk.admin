@@ -53,7 +53,7 @@ angular.module('stalkApp', [
     };
   })
 
-  .run(function ($rootScope, $location, $http, Auth, NEED_EMAIL_CONFIRM, Channel) {
+  .run(function ($rootScope, $location, $http, Auth, NEED_EMAIL_CONFIRM, Channel, Chat) {
 
     $http({
       method: 'GET',
@@ -72,7 +72,7 @@ angular.module('stalkApp', [
           if( data.DT && data.DT.USC == 0 ){
             var info = { 'channel':data.C, 'endTimestamp':data.TS }
             Channel.close( info ).then( function(result){
-
+              Chat.closeChannel( data.C );
             })
           }
         }

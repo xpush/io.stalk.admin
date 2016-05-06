@@ -107,6 +107,31 @@ angular.module('stalkApp')
         activeChannel = channel;
         self.clearUnreadMessages(channel);
       },
+      closeChannel: function(channel){
+        if( channelInfos[channel] ){
+          delete channelInfos[channel];
+
+          var searchFlag = false;
+          for( var key in sites ){
+            var channels = sites[key];
+
+            for( var inx =0 ; !searchFlag && inx < channels.length ; inx++ ){
+              console.log( channels[inx] );
+              if( channels[inx].channel == channel ){
+                channels = channels.splice(inx,1);
+                searchFlag = true;
+              }
+            }
+
+            if( searchFlag ){
+              if( sites[key].length == 0 ){
+                delete sites[key];
+              }
+            }
+          }
+          $rootScope.$broadcast('channel_changed');
+        }
+      },
       getMessages : function(channel){
         if( !channelMessages[channel] ){
           channelMessages[channel] = [];

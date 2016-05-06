@@ -3,7 +3,6 @@
 angular.module('stalkApp')
   .controller('ChatCtrl', function ($rootScope, $scope, Auth, Chat, Util, Channel) {
     $scope.tabs = [];
-    $scope.sites = [];
     $scope.pastChannels = [];
 
     $scope.currentChannel = {};
@@ -347,6 +346,18 @@ angular.module('stalkApp')
     // get Old channels
     Channel.search({'activeYN':"N"}).then( function(channels) {
       $scope.pastChannels = channels;
+    });
+
+    $rootScope.$on('channel_changed', function(){
+      $scope.siteArray = [];
+      $scope.pastChannels = [];
+
+      $scope.setSites();
+
+      // get Old channels
+      Channel.search({'activeYN':"N"}).then( function(channels) {
+        $scope.pastChannels = channels;
+      });
     });
   });
 
