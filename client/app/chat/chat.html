@@ -120,9 +120,9 @@
                       <!-- /.direct-chat-info -->
                       <br/>
                       <img class="direct-chat-img" ng-src="{{m.image}}" alt="{{m.name}}">
-                      <div class="direct-chat-text" ng-if="m.type=='MG' && !m.matched " ng-bind-html="m.message">
+                      <div class="direct-chat-text" ng-if="m.type=='MG' && !m.matched " id="m{{$index}}" ng-bind-html="m.message">
                       </div>
-                      <div class="direct-chat-text" ng-if="m.type=='MG' && m.matched " ng-bind-html="m.searchedMessage">
+                      <div class="direct-chat-text" ng-if="m.type=='MG' && m.matched " id="m{{$index}}" ng-bind-html="m.searchedMessage">
                       </div>
                       <div ng-if="m.type=='IM'" class="direct-chat-image {{m.side}}">
                         <img ng-src="{{m.message}}" class="direct-chat-message-image-{{m.side}} stalk-image-viewable" ng-click="viewImage($event);"/>

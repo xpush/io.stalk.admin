@@ -190,20 +190,25 @@ angular.module('stalkApp')
     $scope.searchMessage = function (){
       var inputMsg = document.getElementById("inputMessage").value.toString().trim();
       if( inputMsg && inputMsg.length > 0 ){
-        for( var inx = 0; inx < $scope.messages.length ; inx++ ){
+        for( var inx = $scope.messages.length-1 ; inx >= 0 ; inx-- ){
           var msgObj = $scope.messages[inx];
 
-          console.log( inputMsg );
-          console.log( msgObj.message );
-
-          if( msgObj.type == 'MG' && msgObj.message.indexOf( inputMsg ) > -1 ){
+          if( inx < $scope.searchInx && msgObj.type == 'MG' && msgObj.message.indexOf( inputMsg ) > -1 ){
 
             var orgMsg = msgObj.message;
             if( !$scope.messages[inx].matched ){
-              $scope.messages[inx].searchedMessage = orgMsg.replace( inputMsg, "<span class='match'>"+inputMsg+"</span>" );
+              $scope.messages[inx].searchedMessage = orgMsg.replace( inputMsg, "<span class='match' id='match'>"+inputMsg+"</span>" );
             }
 
             $scope.messages[inx].matched = true;
+            $scope.searchInx = inx;
+
+            var offsetTop = $( "#m"+inx ).offset().top;
+      
+            // TODO : Impl animate
+            //$("#chatArea").animate({scrollTop: offsetTop}, "slow");
+
+            break;
           } else {
             var orgMsg = msgObj.message;
             $scope.messages[inx].matched = false;
@@ -309,8 +314,13 @@ angular.module('stalkApp')
         }
 
         $scope.messages = tmpMessages;
-        $scope.$broadcast('items_changed');
+        $scope.searchInx = $scope.messages.length;
         $scope.currentChannel.isLoading = false;
+
+        var stmp = $scope.messages.length * 10;
+        setTimeout(function(){
+          $scope.$broadcast('items_changed');
+        }, stmp );
       });
     };
 
