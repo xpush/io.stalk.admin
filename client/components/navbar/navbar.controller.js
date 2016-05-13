@@ -73,6 +73,7 @@ angular.module('stalkApp')
 
 
     $scope.logout = function () {
+      $rootScope.xpush.logout();
       Auth.logout();
       $location.path('/login');
     };
