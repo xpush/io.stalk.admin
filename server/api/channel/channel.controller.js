@@ -50,6 +50,7 @@ exports.save = function (req, res) {
   var origin = req.body.origin;
   var data = req.body.data;
   var uid = req.body.uid;
+  var activeYN = req.body.activeYN;
 
   var saveData = {
     channel: channel,
@@ -62,6 +63,7 @@ exports.save = function (req, res) {
       return handleError(res, err);
     }
     if (!channel) {
+
       saveData.name = name;
       saveData.startTimestamp = startTimestamp;
       saveData.data = data;
@@ -77,6 +79,10 @@ exports.save = function (req, res) {
       channel.name = name;
       channel.data = _.merge(channel.data, data);
 
+      if( activeYN == "Y" ){
+        channel.active = true; 
+      }
+      
       channel.save(function (err){
         if (err) return handleError(res, err);
         return res.status(200).json(channel);
@@ -91,8 +97,6 @@ exports.close = function (req, res) {
   var saveData = {
     channel: channel
   };
-
-  console.log( saveData );
 
   Channel.findOne(saveData, function (err, _channel) {
     if (err) {

@@ -139,13 +139,11 @@ angular.module('stalkApp')
         var origin = data.origin;
         if ($scope.siteIds[origin] == undefined) {
           var channels = Chat.getChannels(origin);
+
           $scope.siteIds[origin] = $scope.siteArray.length;
           $scope.siteArray.push({'origin': origin, 'channels': channels})
-        } else {
-          //var inx = $scope.siteIds[origin];          
-          //$scope.siteArray[inx].channels.push( data );
+          changed = true;
         }
-        changed = true;
       }
       if (changed) {
         $scope.$apply();
@@ -161,7 +159,6 @@ angular.module('stalkApp')
       $scope.setSites(data);
     });
 
-    var search
     $scope.sendMessage = function (message, type) {
       var msg;
       if( message ){
@@ -297,6 +294,8 @@ angular.module('stalkApp')
 
           var timeArr = $scope.timeToString(data.TS);
           var time = timeArr[1] +" "+ timeArr[2];
+
+          data.MG = decodeURIComponent(data.MG);
           var newMessage = {name: data.UO.NM, time: time, message: data.MG, side: side, opposite: opposite, timestamp:data.TS};
           if( data.TP ){
             newMessage.type = data.TP;
@@ -350,23 +349,37 @@ angular.module('stalkApp')
         });
       }  
     };
-    // Init Site List
-    $scope.setSites();
 
-    // get Old channels
-    Channel.search({'activeYN':"N"}).then( function(channels) {
-      $scope.pastChannels = channels;
+    // Init Site List
+    Channel.search({}).then( function(channels) {
+
+      for( var inx = 0 ; inx < channels.length ; inx++ ){
+        if( !channels[inx].active ){
+          $scope.pastChannels.push( channels[inx] );
+        } else {
+          Chat.addChannel(channels[inx]);
+        }
+      }
+
+      $scope.setSites();
     });
 
     $rootScope.$on('channel_changed', function(){
       $scope.siteArray = [];
       $scope.pastChannels = [];
 
-      $scope.setSites();
+      // Init Site List
+      Channel.search({}).then( function(channels) {
 
-      // get Old channels
-      Channel.search({'activeYN':"N"}).then( function(channels) {
-        $scope.pastChannels = channels;
+        for( var inx = 0 ; inx < channels.length ; inx++ ){
+          if( !channels[inx].active ){
+            $scope.pastChannels.push( channels[inx] );
+          } else {
+            Chat.addChannel(channels[inx].data);
+          }
+        }
+
+        $scope.setSites();
       });
     });
   });

@@ -44,6 +44,7 @@ angular.module('stalkApp')
               sites[origin].push( info );
 
               info.uid = currentUser.uid;
+              info.activeYN = 'Y';
               Channel.save( info ).then( function(result){
                 //console.log( result );
               })
@@ -51,7 +52,7 @@ angular.module('stalkApp')
                 console.log( err );
               });
 
-              $rootScope.$emit( "$onInfo", info );              
+              $rootScope.$emit( "$onInfo", info );           
             }
           });
 
@@ -116,7 +117,6 @@ angular.module('stalkApp')
             var channels = sites[key];
 
             for( var inx =0 ; !searchFlag && inx < channels.length ; inx++ ){
-              console.log( channels[inx] );
               if( channels[inx].channel == channel ){
                 channels = channels.splice(inx,1);
                 searchFlag = true;
@@ -137,6 +137,22 @@ angular.module('stalkApp')
           channelMessages[channel] = [];
         }
         return channelMessages[channel];
+      },
+      addChannel: function(channelInfo){
+
+        var channel = channelInfo.channel;
+        if( !channelInfos[channel] ){
+          channelInfos[channel] = channelInfo;
+        }
+
+        var origin = channelInfo.data.origin;
+        if( !sites[origin] ){
+          sites[origin] = [];
+        }
+
+        channelInfo.C = channelInfo.channel;
+        sites[origin].push( channelInfo );
+
       },
       getChannels : function(origin){
         return sites[origin];
