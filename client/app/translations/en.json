@@ -67,5 +67,7 @@
  	"text.readyToChat":"Ready to Chat with visitors",
 
  	"button.send":"Send",
- 	"button.search":"Search"
+ 	"button.search":"Search",
+
+ 	"text.image":"Image"
 }

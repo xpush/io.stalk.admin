@@ -140,19 +140,23 @@ angular.module('stalkApp')
       },
       addChannel: function(channelInfo){
 
+        var newChannelFlag = false;
         var channel = channelInfo.channel;
         if( !channelInfos[channel] ){
           channelInfos[channel] = channelInfo;
+          newChannelFlag = true;
         }
 
-        var origin = channelInfo.data.origin;
-        if( !sites[origin] ){
-          sites[origin] = [];
+        if( newChannelFlag ){
+          var origin = channelInfo.data.origin;
+          if( !sites[origin] ){
+            sites[origin] = [];
+          }
+
+          channelInfo.C = channelInfo.channel;
+        
+          sites[origin].push( channelInfo );
         }
-
-        channelInfo.C = channelInfo.channel;
-        sites[origin].push( channelInfo );
-
       },
       getChannels : function(origin){
         return sites[origin];
@@ -182,7 +186,7 @@ angular.module('stalkApp')
       }
     };
   })
-.factory('NotificationManager', function($window){
+.factory('NotificationManager', function($window, $translate){
   var notificationsSupport = ('Notification' in window) || ('mozNotification' in navigator);
   var notificationsCnt = 0;
   var notificationsInx = 0;
@@ -226,16 +230,21 @@ angular.module('stalkApp')
       return false;
     }
 
+    var message = data.message;
+    if( data.type == "IM" ){
+      message = $translate.instant('text.image');
+    }
+
     var idx = ++notificationsInx,
         channel = data.channel,
         notification;
 
     if ('Notification' in window) {
       notification = new Notification(data.name, {
-        icon: data.image, body: data.message
+        icon: data.image, body: message
       });
     } else if ('mozNotification' in navigator) {
-      notification = navigator.mozNotification.createNotification(data.name, data.message, data.image);
+      notification = navigator.mozNotification.createNotification(data.name, message, data.image);
     } else {
       return;
     }

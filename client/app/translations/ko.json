@@ -67,5 +67,7 @@
  	"text.readyToChat":"방문자와 채팅을 준비가 되었습니다.",
 
  	"button.send":"전송",
- 	"button.search":"검색"
+ 	"button.search":"검색",
+
+ 	"text.image":"사진"
 }

@@ -46,7 +46,8 @@
                       {{m.name}}
                       <small><i class="fa fa-clock-o"></i> {{m.timeBefore}}</small>
                     </h4>
-                    <p>{{m.message}}</p>
+                    <p ng-if="m.type=='MG'" >{{m.message}}</p>
+                    <p ng-if="m.type=='IM'" >{{'text.image' | translate}}</p>
                   </a>
                 </li><!-- end message -->
               </ul>
