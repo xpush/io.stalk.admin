@@ -282,8 +282,13 @@
           }
         }
 
+        // init event;
         self._globalConnection = null;
         self._channels = {};
+        self._events = {};
+        self.channelNameList = [];
+        self.receiveMessageStack = [];
+        self._userEventNames = [];
       }      
     };
 
@@ -1666,6 +1671,7 @@
      * @param {function} function
      */
     Connection.prototype.on = function(event, fct){
+
       var self = this;
       self._events = self._events || {};
       self._events[event] = self._events[event] || [];

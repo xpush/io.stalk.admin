@@ -1,29 +1,24 @@
 <style>
   .online {
-    background-color: #30EFDF;
-    color: white;
+    background-color: #30EFDF !important;
+    color: white !important;
   }
 
   .busy {
-    background-color: #00A65A;
-    color: white;
-  }
-
-  .away {
-    background-color: #EC911C;
-    color: white;
+    background-color: #00A65A !important;
+    color: white !important;
   }
 
   .unselect {
-    background-color: #5a5a5a;
-    color: #bebebe;
+    background-color: #5a5a5a !important;
+    color: #bebebe !important;
   }
 
   a.unselect:hover {
     color: white;
   }
 </style>
-<header class="main-header" ng-controller="NavbarCtrl">
+<header id="main-header" class="main-header" ng-controller="NavbarCtrl">
   <!-- Logo -->
   <a href="/" class="logo">
     <!-- mini logo for sidebar mini 50x50 pixels -->
@@ -89,6 +84,30 @@
       </ul>
     </div>
   </nav>
+  <!-- modal -->
+  <div id="confirmModal" class="modal fade" role="dialog">
+
+      <div class="modal-warning">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <button type="button" class="close" ng-click="cancelBusy()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                      <h4 class="modal-title">{{'text.confirm' | translate}}</h4>
+                  </div>
+                  <div class="modal-body">
+                      {{'text.confirm.busyStatus' | translate}}
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-outline pull-left" ng-click="cancelBusy()">{{'button.cancel' | translate}}</button>
+                      <button type="button" class="btn btn-outline pull-right" ng-click="confirmBusy()">{{'button.ok' | translate}}</button>
+                  </div>
+              </div>
+              <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+  </div>
 </header>
 
 <script src="assets/js/app.js"></script>

@@ -375,7 +375,7 @@ angular.module('stalkApp')
           if( !channels[inx].active ){
             $scope.pastChannels.push( channels[inx] );
           } else {
-            Chat.addChannel(channels[inx].data);
+            Chat.addChannel(channels[inx]);
           }
         }
 

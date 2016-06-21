@@ -28,6 +28,8 @@
 	"button.delete": "삭제",	
 	"button.update": "수정",
 	"button.close": "닫기",
+	"button.cancel": "취소",
+	"button.ok": "확인",
 	"button.addsite": "신규 등록",
 	"required.input.sitename": "사이트 이름이 무엇인가요?",	
 	"required.input.siteurl": "사이트 Url을 입력해주세요",
@@ -69,5 +71,7 @@
  	"button.send":"전송",
  	"button.search":"검색",
 
- 	"text.image":"사진"
+ 	"text.image":"사진",
+	"text.confirm":"확인",
+	"text.confirm.busyStatus":"모든 상담이 종료되었는지 확인해주십시오."
 }

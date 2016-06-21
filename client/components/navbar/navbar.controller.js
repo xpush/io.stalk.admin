@@ -7,70 +7,54 @@ angular.module('stalkApp')
       'link': '/'
     }];
 
-    $scope.unreadCount = 0;
-    $scope.unreadMessage = [];
-    $rootScope.currentUser;
+    $scope.login = function(){
 
-    $rootScope.profileInfo = {};
+      Auth.getCurrentUser().$promise.then(function (user) {
 
-    Auth.getCurrentUser().$promise.then(function (user) {
+        var hash = CryptoJS.HmacSHA256(user.uid, "sha256");
+        var pw = CryptoJS.enc.Base64.stringify(hash);
 
-      var hash = CryptoJS.HmacSHA256(user.uid, "sha256");
-      var pw = CryptoJS.enc.Base64.stringify(hash);
+        $rootScope.currentUser = user;
 
-      $rootScope.currentUser = user;
+        $rootScope.profileInfo.name = user.name;
+        $rootScope.profileInfo.image = user.image;
 
-      $rootScope.profileInfo.name = user.name;
-      $rootScope.profileInfo.image = user.image;
+        $rootScope.xpush.login(user.uid, pw, 'WEB', function (err, data) {
 
-      $rootScope.xpush.login(user.uid, pw, 'WEB', function (err, data) {
+          if (err) {
+            if (err == 'ERR-SRV_NOT_EXISTED') {
+              $rootScope.errorMessage = '<h3>Connection to server failed ! </h3><br><b>Channel server is not existed.</b>';
+            } else if (err == 'ERR-SRV_CONNECT_FAILED') {
+              $rootScope.errorMessage = '<h3>Connection to server failed ! </h3><br>Check XPUSH session server ( <b>' + $rootScope.xpush.getServerAddress() + '</b> )';
+            } else if (err == 'ERR-NOTEXIST') {
+              $rootScope.errorMessage = '<h3>User is not existed ! </h3><br>Check XPUSH session server ( <b>' + $rootScope.xpush.getServerAddress() + '</b> )';
+            } else {
+              $rootScope.errorMessage = '<h3>Server Error</h3>';
+            }
 
-        if (err) {
-          if (err == 'ERR-SRV_NOT_EXISTED') {
-            $rootScope.errorMessage = '<h3>Connection to server failed ! </h3><br><b>Channel server is not existed.</b>';
-          } else if (err == 'ERR-SRV_CONNECT_FAILED') {
-            $rootScope.errorMessage = '<h3>Connection to server failed ! </h3><br>Check XPUSH session server ( <b>' + $rootScope.xpush.getServerAddress() + '</b> )';
-          } else if (err == 'ERR-NOTEXIST') {
-            $rootScope.errorMessage = '<h3>User is not existed ! </h3><br>Check XPUSH session server ( <b>' + $rootScope.xpush.getServerAddress() + '</b> )';
+            $('#dashboardPage').hide();
+            $('#navAside').hide();
+            $('#navHeader').hide();
+            $('#errorModal').modal('show');
+
           } else {
-            $rootScope.errorMessage = '<h3>Server Error</h3>';
-          }
-
-          $('#dashboardPage').hide();
-          $('#navAside').hide();
-          $('#navHeader').hide();
-          $('#errorModal').modal('show');
-
-        } else {
-          if (data) {
-            Chat.init();
-          }
-          $scope.unreadMessage = Chat.getAllUnreadMssages();
-
-          $rootScope.$on("$onMessage", function (event, channel, data) {
+            if (data) {
+              Chat.init();
+            }
             $scope.unreadMessage = Chat.getAllUnreadMssages();
-            $scope.unreadCount = $scope.unreadMessage.length;
-            $scope.$apply();
-          });
-        }
 
+            $rootScope.$on("$onMessage", function (event, channel, data) {
+              $scope.unreadMessage = Chat.getAllUnreadMssages();
+              $scope.unreadCount = $scope.unreadMessage.length;
+              $scope.$apply();
+            });
+          }
+
+        });
+      }).catch(function () {
+        console.log('==== err =====');
       });
-    }).catch(function () {
-      console.log('==== err =====');
-    });
-
-    $scope.isCollapsed = true;
-    $scope.isLoggedIn = Auth.isLoggedIn;
-    $scope.isAdmin = Auth.isAdmin;
-    $scope.getCurrentUser = Auth.getCurrentUser;
-    $scope.stat = "online";
-
-    if( $rootScope.language ){
-      $scope.currentLanguage = $rootScope.language;
-    } else {
-      $scope.currentLanguage = $translate.proposedLanguage();
     }
-
 
     $scope.logout = function () {
       $rootScope.xpush.logout();
@@ -78,13 +62,52 @@ angular.module('stalkApp')
       $location.path('/login');
     };
 
+    $scope.unreadCount = 0;
+    $scope.unreadMessage = [];
+    $rootScope.currentUser;
+
+    $rootScope.profileInfo = {};
+
+    $scope.isCollapsed = true;
+    $scope.isLoggedIn = Auth.isLoggedIn;
+    $scope.isAdmin = Auth.isAdmin;
+    $scope.getCurrentUser = Auth.getCurrentUser;
+    $scope.stat = "online";
+
+    $scope.login();
+
+    if( $rootScope.language ){
+      $scope.currentLanguage = $rootScope.language;
+    } else {
+      $scope.currentLanguage = $translate.proposedLanguage();
+    }
+
     $scope.isActive = function (stat) {
       return $scope.stat === stat;
     };
 
     $scope.setStatus = function (stat) {
-      $scope.stat = stat;
+      if( stat == 'online' ){
+        $scope.stat = stat;
+        $scope.login();
+      } else {
+        jQuery('#main-header').css({"z-index":1060} );
+        $('#confirmModal').modal('show');
+      }
     };
+
+    $scope.cancelBusy = function(){
+      jQuery('#main-header').css({"z-index":1030} );
+      $('#confirmModal').modal('hide');
+    }
+
+    $scope.confirmBusy = function(){
+      jQuery('#main-header').css({"z-index":1030} );
+      $('#confirmModal').modal('hide');
+      $rootScope.xpush.logout();
+      $scope.stat = 'busy';
+    }
+
     $scope.profile = function () {
       $('#profileModal').modal('show');
     };

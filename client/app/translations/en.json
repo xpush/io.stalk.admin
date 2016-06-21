@@ -28,6 +28,8 @@
 	"button.delete": "Delete",	
 	"button.update": "Update",
 	"button.close": "Close",
+	"button.cancel": "Cancel",
+	"button.ok": "OK",
 	"button.addsite": "Add Site",
 	"required.input.sitename": "What's your site name?",	
 	"required.input.siteurl": "What's your site url?",
@@ -69,5 +71,7 @@
  	"button.send":"Send",
  	"button.search":"Search",
 
- 	"text.image":"Image"
+ 	"text.image":"Image",
+	"text.confirm":"Confirm",
+	"text.confirm.busyStatus":"Are you sure?"
 }
