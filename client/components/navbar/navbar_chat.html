@@ -41,11 +41,9 @@
 
     <div class="navbar-custom-menu" style="margin-top: 11px;margin-right: 11px;">
       <a ng-click="setStatus('online')" ng-class="{online: isActive('online'), unselect: !isActive('online')}"
-         class="btn btn-social-icon"><i class="fa fa-link"></i> </a>
+         class="btn btn-social-icon"><i class="fa fa-bell-o"></i> </a>
       <a ng-click="setStatus('busy')" ng-class="{busy: isActive('busy'), unselect: !isActive('busy')}"
-         class="btn btn-social-icon "><i class="fa fa-ambulance"></i> </a>
-      <a ng-click="setStatus('unlink')" ng-class="{away: isActive('unlink'), unselect: !isActive('unlink')}"
-         class="btn btn-social-icon "><i class="fa fa-unlink"></i> </a>
+         class="btn btn-social-icon "><i class="fa fa-bell-slash-o"></i> </a>
       <a href="#" ng-click="logout();" class="btn btn-social-icon btn-foursquare"><i class="fa fa-power-off"></i></a>
 
     </div>

@@ -281,6 +281,9 @@
             }
           }
         }
+
+        self._globalConnection = null;
+        self._channels = {};
       }      
     };
 
