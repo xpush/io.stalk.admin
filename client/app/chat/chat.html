@@ -124,6 +124,11 @@
                       </div>
                       <div class="direct-chat-text" ng-if="m.type=='MG' && m.matched " id="m{{$index}}" ng-bind-html="m.searchedMessage">
                       </div>
+                      <div class="direct-chat-text" ng-if="m.type=='LN' " id="m{{$index}}">
+                        <span class="direct-chat-message-link">
+                          <a ng-href="{{m.message}}" target="_blank">{{m.message}}</a>
+                        </span>
+                      </div>
                       <div ng-if="m.type=='IM'" class="direct-chat-image {{m.side}}">
                         <img ng-src="{{m.message}}" class="direct-chat-message-image-{{m.side}} stalk-image-viewable" ng-click="viewImage($event);"/>
                       </div>

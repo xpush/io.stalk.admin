@@ -45,6 +45,14 @@
     float:left;
 }
 
+.direct-chat-message-link a:link,
+.direct-chat-message-link a:visited,
+.direct-chat-message-link a:hover,
+.direct-chat-message-link a:active{
+    color:white;
+    text-decoration:underline    
+}
+
 .direct-chat-image {
     max-width: 266px;
     border-radius: 5px;
