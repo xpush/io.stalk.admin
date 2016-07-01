@@ -244,6 +244,8 @@ angular.module('stalkApp')
       angular.element(tab).parent().addClass("active");
 
       $scope.getLocationInfo( ch );
+
+      $scope.messages = Chat.getMessages(ch.C);
     };
 
     $scope.gotoPastChat = function (ch) {
@@ -266,60 +268,16 @@ angular.module('stalkApp')
       $scope.tabs = [];
       $scope.tabs.push(ch);
 
-      // TODO : implement this
-      //$scope.messages = Chat.getMessages(ch.C);
-
       var tab = document.getElementById("tab_" + ch.C);
       angular.element(tab).parent().addClass("active");
 
       $scope.getLocationInfo( ch );
-
-      //$rootScope.xpush.enableDebug();
-      $rootScope.xpush.getUnreadMessage( ch.C, function( err, messages ){
-
-        var tmpMessages = [];
-        for( var inx = 0; inx < messages.length ;inx++ ){
-          if( messages[inx].NM != 'message' ){
-            continue;
-          }
-
-          var data = JSON.parse( messages[inx].DT );
-
-          var side = "left";
-          var opposite = "right";
-          if (data.UO.U == $rootScope.currentUser.uid) {
-            side = "right";
-            opposite = "left";
-          }
-
-          var timeArr = $scope.timeToString(data.TS);
-          var time = timeArr[1] +" "+ timeArr[2];
-
-          data.MG = decodeURIComponent(data.MG);
-          var newMessage = {name: data.UO.NM, time: time, message: data.MG, side: side, opposite: opposite, timestamp:data.TS};
-          if( data.TP ){
-            newMessage.type = data.TP;
-          } else {
-            newMessage.type = "MG";
-          }
-
-          if( data.UO.I ){
-            newMessage.image = data.UO.I;
-          } else {
-            newMessage.image = 'https://raw.githubusercontent.com/xpush/io.stalk.admin/master/client/assets/images/face.png';
-          }
-
-          tmpMessages.push( newMessage );
-        }
-
-        $scope.messages = tmpMessages;
+      Chat.getOldMessages( ch.C, function( oldMessages ){
+        $scope.messages = oldMessages;
         $scope.searchInx = $scope.messages.length;
         $scope.currentChannel.isLoading = false;
 
         var stmp = $scope.messages.length * 10;
-        setTimeout(function(){
-          $scope.$broadcast('items_changed');
-        }, stmp );
       });
     };
 

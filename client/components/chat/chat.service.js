@@ -138,6 +138,51 @@ angular.module('stalkApp')
         }
         return channelMessages[channel];
       },
+      getOldMessages:function(channel, callback){
+        $rootScope.xpush.getUnreadMessage( channel, function( err, messages ){
+
+          if( !channelMessages[channel] ){
+            channelMessages[channel] = [];
+          }
+
+          var tmpMessages = [];
+          for( var inx = 0; inx < messages.length ;inx++ ){
+            if( messages[inx].NM != 'message' ){
+              continue;
+            }
+
+            var data = JSON.parse( messages[inx].DT );
+
+            var side = "left";
+            var opposite = "right";
+            if (data.UO.U == $rootScope.currentUser.uid) {
+              side = "right";
+              opposite = "left";
+            }
+
+            var timeArr = Util.timeToString(data.TS);
+            var time = timeArr[1] +" "+ timeArr[2];
+
+            data.MG = decodeURIComponent(data.MG);
+            var newMessage = {name: data.UO.NM, time: time, message: data.MG, side: side, opposite: opposite, timestamp:data.TS};
+            if( data.TP ){
+              newMessage.type = data.TP;
+            } else {
+              newMessage.type = "MG";
+            }
+
+            if( data.UO.I ){
+              newMessage.image = data.UO.I;
+            } else {
+              newMessage.image = 'https://raw.githubusercontent.com/xpush/io.stalk.admin/master/client/assets/images/face.png';
+            }
+
+            tmpMessages.push( newMessage );
+          }
+
+          callback( tmpMessages );
+        });      
+      },
       addChannel: function(channelInfo){
 
         var newChannelFlag = false;
