@@ -29,9 +29,9 @@ angular.module('stalkApp')
               newChannelFlag = true;
             }
 
-            var origin = info.origin;
-            if( !sites[origin] ){
-              sites[origin] = [];
+            var siteId = info.siteId || info.origin;
+            if( !sites[siteId] ){
+              sites[siteId] = [];
             }
 
             if( newChannelFlag ){
@@ -41,7 +41,7 @@ angular.module('stalkApp')
               info.channel = channel;
               info.startTime = new Date( info.TS ).toLocaleTimeString();
               info.startTimestamp = info.TS;
-              sites[origin].push( info );
+              sites[siteId].push( info );
 
               info.uid = currentUser.uid;
               info.activeYN = 'Y';
@@ -193,18 +193,18 @@ angular.module('stalkApp')
         }
 
         if( newChannelFlag ){
-          var origin = channelInfo.data.origin;
-          if( !sites[origin] ){
-            sites[origin] = [];
+          var siteId = channelInfo.data.siteId || channelInfo.data.origin ;
+          if( !sites[siteId] ){
+            sites[siteId] = [];
           }
 
           channelInfo.C = channelInfo.channel;
         
-          sites[origin].push( channelInfo );
+          sites[siteId].push( channelInfo );
         }
       },
-      getChannels : function(origin){
-        return sites[origin];
+      getChannels : function(siteId){
+        return sites[siteId];
       },
       getAllSites : function(){
         return sites;

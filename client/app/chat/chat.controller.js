@@ -119,10 +119,10 @@ angular.module('stalkApp')
 
         var sites = Chat.getAllSites();
 
-        for (var origin in sites) {
-          var channels = sites[origin];
-          $scope.siteIds[origin] = $scope.siteArray.length;
-          $scope.siteArray.push({'origin': origin, 'channels': channels});
+        for (var siteId in sites) {
+          var channels = sites[siteId];
+          $scope.siteIds[siteId] = $scope.siteArray.length;
+          $scope.siteArray.push({'siteId': siteId, 'channels': channels});
 
           if( !selectedChannel && $rootScope.selectedChannelId ){
             for( var inx = 0; inx < channels.length ; inx++ ){
@@ -136,12 +136,12 @@ angular.module('stalkApp')
 
       } else {
 
-        var origin = data.origin;
-        if ($scope.siteIds[origin] == undefined) {
-          var channels = Chat.getChannels(origin);
+        var siteId = data.siteId;
+        if ($scope.siteIds[siteId] == undefined) {
+          var channels = Chat.getChannels(siteId);
 
-          $scope.siteIds[origin] = $scope.siteArray.length;
-          $scope.siteArray.push({'origin': origin, 'channels': channels})
+          $scope.siteIds[siteId] = $scope.siteArray.length;
+          $scope.siteArray.push({'siteId': siteId, 'channels': channels})
           changed = true;
         }
       }
@@ -158,6 +158,11 @@ angular.module('stalkApp')
     $rootScope.$on("$onInfo", function (event, data) {
       $scope.setSites(data);
     });
+
+    $scope.broadcast = function( site ){
+      // TODO : impl this.
+      console.log( site );
+    };
 
     $scope.sendMessage = function (message, type) {
       var msg;
