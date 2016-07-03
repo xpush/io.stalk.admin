@@ -10,6 +10,7 @@ angular.module('stalkApp')
     var unreadMessages = {};
 
     var sites = {};
+    var siteInfos = {};
     var self;
 
     return {
@@ -32,6 +33,7 @@ angular.module('stalkApp')
             var siteId = info.siteId || info.origin;
             if( !sites[siteId] ){
               sites[siteId] = [];
+              siteInfos[siteId] = info.origin;
             }
 
             if( newChannelFlag ){
@@ -196,6 +198,7 @@ angular.module('stalkApp')
           var siteId = channelInfo.data.siteId || channelInfo.data.origin ;
           if( !sites[siteId] ){
             sites[siteId] = [];
+            siteInfos[siteId] = channelInfo.data.origin;
           }
 
           channelInfo.C = channelInfo.channel;
@@ -208,6 +211,9 @@ angular.module('stalkApp')
       },
       getAllSites : function(){
         return sites;
+      },
+      getSiteInfo : function(siteId){
+        return siteInfos[siteId];
       },
       getGeoLocation : function(ip){
         return Auth.getGeoLocation(ip);
