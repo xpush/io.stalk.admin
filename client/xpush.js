@@ -948,7 +948,7 @@
     XPush.prototype._getChannelInfo = function(channel, cb){
       var self = this;
       debug("xpush : _getChannelInfo ",channel);
-      self.ajax( XPush.Context.NODE+'/'+self.appId+'/'+channel , 'GET', {}, cb);
+      self.ajax( XPush.Context.NODE+'/'+self.appId+'/'+encodeURIComponent(channel) , 'GET', {}, cb);
     };
 
     /**

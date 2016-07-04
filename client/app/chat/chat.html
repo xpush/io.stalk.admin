@@ -7,7 +7,7 @@
     <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" ng-repeat="site in siteArray">
         <li class="header" style="color:#FFFFFF" >
-            {{site.siteId}}<span class="btn btn-social-icon pull-right" style="height:20px;"><i class="fa fa-commenting-o"  style="line-height:20px;"></i></span>
+            {{site.origin}}<span class="btn btn-social-icon pull-right" style="height:20px;" ng-click="gotoBroadcast( site  )"><i class="fa fa-commenting-o"  style="line-height:20px;"></i></span>
         </li>
         <li ng-repeat="channel in site.channels track by channel.C">
           <a href="#" ng-click="gotoChat(channel)">

@@ -162,9 +162,13 @@ angular.module('stalkApp')
       $scope.setSites(data);
     });
 
-    $scope.broadcast = function( site ){
-      // TODO : impl this.
-      console.log( site );
+    $scope.gotoBroadcast = function( site ){ 
+      var ch = {};
+      ch.title = site.origin;
+      ch.name = site.origin;
+      ch.C = site.siteId;
+      ch.channel = site.siteId;
+      $scope.gotoChat( ch );
     };
 
     $scope.sendMessage = function (message, type) {
@@ -295,7 +299,12 @@ angular.module('stalkApp')
     };
 
     $scope.getLocationInfo = function(ch){
+      if( !ch.data ){
+        return;
+      }
+
       var ip = ch.data.ip;
+
       if( ch.data && ch.data.lat && ch.data.lon && ch.data.country ){
         if( !$scope.mapInit ){
           setWorldMap(ch.data.lat, ch.data.lng, ch.data.country);

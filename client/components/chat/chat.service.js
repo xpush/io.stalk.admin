@@ -219,10 +219,13 @@ angular.module('stalkApp')
         return Auth.getGeoLocation(ip);
       },
       clearUnreadMessages : function(channel){
+        if( unreadMessages[channel] == undefined ){
+          unreadMessages[channel] = [];
+        } 
         unreadMessages[channel].length = 0;
       },
       getUnreadMessages : function(channel){
-        if( !unreadMessages[channel] ){
+        if( unreadMessages[channel] == undefined ){
           unreadMessages[channel] = [];
         }
         return unreadMessages[channel];
