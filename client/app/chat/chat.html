@@ -90,7 +90,9 @@
         <!-- Conversations are loaded here -->
         <div class="nav-tabs-custom" ng-if="tabs.length > 0">
           <ul class="nav nav-tabs">
-            <li ng-repeat="tab in tabs"><a href="#" data-toggle="tab" ng-click="gotoChat(tab)">{{tab.title}}</a></li>
+            <li ng-repeat="tab in tabs">
+              <h4 class="box-title ng-binding" ng-if="tab.isBroadcast" style="padding-left:5px;">{{ 'text.broadcast.message' | translate}}</h4>
+            </li>
           </ul>
           <div class="tab-content">
             <div class="tab-pane active" ng-repeat="tab in tabs">

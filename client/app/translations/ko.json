@@ -73,5 +73,6 @@
 
  	"text.image":"사진",
 	"text.confirm":"확인",
-	"text.confirm.busyStatus":"모든 상담이 종료되었는지 확인해주십시오."
+	"text.confirm.busyStatus":"모든 상담이 종료되었는지 확인해주십시오.",
+	"text.broadcast.message":"현재 접속해 있는 모든 사용자에게 메시지를 전송하세요."
 }

@@ -73,5 +73,7 @@
 
  	"text.image":"Image",
 	"text.confirm":"Confirm",
-	"text.confirm.busyStatus":"Are you sure?"
+	"text.confirm.busyStatus":"Are you sure?",
+
+	"text.broadcast.message":"Broadcast messages to all user in this site"
 }

@@ -167,6 +167,7 @@ angular.module('stalkApp')
       ch.title = site.origin;
       ch.name = site.origin;
       ch.C = site.siteId;
+      ch.isBroadcast = true;
       ch.channel = site.siteId;
       $scope.gotoChat( ch );
     };
