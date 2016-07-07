@@ -106,8 +106,6 @@
                         class="badge bg-light-blue">{{ getUnreadCnt(tab.C) }}</span>
                     <button class="btn btn-box-tool" data-widget="collapse"><i
                         class="fa fa-minus"></i></button>
-                    <button class="btn btn-box-tool" data-toggle="tooltip" title="Contacts"
-                        data-widget="chat-pane-toggle"><i class="fa fa-comments"></i></button>
                     <button class="btn btn-box-tool" data-widget="remove"><i
                         class="fa fa-times"></i></button>
                   </div>
@@ -185,7 +183,22 @@
         <!-- /.tab-content -->
       </div>
       <!-- nav-tabs-custom -->
-      <div class="col-md-4">
+      <div class="col-md-4" >
+        <div class="box box-solid" ng-if="currentChannel.isBroadcast">
+          <div class="box-header with-border">
+            <h3 class="box-title">Users</h3>
+
+            <div class="box-tools">
+              <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            </div>
+          </div>
+          <div class="box-body no-padding">
+            <ul class="nav nav-pills nav-stacked">
+              <li ng-repeat="user in users"><a href="#" ><i class="fa fa-inbox"></i></li>
+            </ul>
+          </div>
+        </div>
+  
         <div class="box box-solid">
           <div class="box-header with-border">
             <h3 class="box-title">{{'text.custInfo' | translate}}</h3>
@@ -208,7 +221,7 @@
         </div>
         <!-- /. box -->
         <!-- Map box -->
-        <div class="box box-solid bg-light-blue-gradient">
+        <div class="box box-solid bg-light-blue-gradient" ng-if="!currentChannel.isBroadcast">
           <div class="box-header">
             <!-- tools box -->
             <div class="pull-right box-tools">

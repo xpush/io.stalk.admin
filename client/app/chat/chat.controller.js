@@ -170,6 +170,7 @@ angular.module('stalkApp')
       ch.isBroadcast = true;
       ch.channel = site.siteId;
       $scope.gotoChat( ch );
+      $scope.getUsers( ch.C );
     };
 
     $scope.sendMessage = function (message, type) {
@@ -297,6 +298,11 @@ angular.module('stalkApp')
     $scope.timeToString = function (timestamp) {
 
       return Util.timeToString(timestamp);
+    };
+
+    $scope.getUsers = function(channel){
+      //TODO impl this
+      $scope.users = [];
     };
 
     $scope.getLocationInfo = function(ch){
