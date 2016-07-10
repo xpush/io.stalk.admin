@@ -156,6 +156,8 @@ angular.module('stalkApp')
       if( selectedChannel ){
         $scope.gotoChat( selectedChannel );  
       }
+
+      console.log( $scope.siteArray );
     };
 
     $rootScope.$on("$onInfo", function (event, data) {
@@ -252,13 +254,14 @@ angular.module('stalkApp')
       $scope.tabs.push(ch);
 
       Chat.setActiveChannel(ch.C);
-      $scope.messages = Chat.getMessages(ch.C);
+      Chat.initChannel(ch.C, function(){
+        $scope.messages = Chat.getMessages(ch.C);
+      });
 
       var tab = document.getElementById("tab_" + ch.C);
       angular.element(tab).parent().addClass("active");
 
       $scope.getLocationInfo( ch );
-
       $scope.messages = Chat.getMessages(ch.C);
     };
 

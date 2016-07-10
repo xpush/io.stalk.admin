@@ -8,6 +8,7 @@ angular.module('stalkApp')
     var channelMessages = {};
     var channelInfos = {};
     var unreadMessages = {};
+    var channelLoaded = {};
 
     var sites = {};
     var siteInfos = {};
@@ -61,8 +62,9 @@ angular.module('stalkApp')
           //init xpush
           $rootScope.xpush.on('message', function (channel, name, data) {
             if( !channelMessages[channel] ){
-              channelMessages[channel] = [];
-              unreadMessages[channel] = [];
+              self.initChannel(channel, function(){
+                unreadMessages[channel] = [];
+              });
             }
             data.MG = decodeURIComponent(data.MG);
 
@@ -132,6 +134,19 @@ angular.module('stalkApp')
             }
           }
           $rootScope.$broadcast('channel_changed');
+        }
+      },
+      initChannel : function(channel, callback){
+        var self = this;
+
+        if( !channelLoaded[channel] ){
+          self.getOldMessages(channel, function(messages){
+            channelMessages[channel] = messages;
+            channelLoaded[channel] = true;
+            callback();
+          });
+        } else {
+          callback();
         }
       },
       getMessages : function(channel){
