@@ -10,7 +10,7 @@ var XPUSH = require("./../../xpush-node-client")(config.xpush);
 var request = require('request');
 
 var EMAIL;
-if (config.auth && config.auth.email) EMAIL = require('./../../components/email');
+if (config.email) EMAIL = require('./../../components/email');
 
 // Get list of auths
 exports.index = function (req, res) {
