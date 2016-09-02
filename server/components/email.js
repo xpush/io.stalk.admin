@@ -1,30 +1,40 @@
 var nodemailer = require('nodemailer');
 var config = require('./../config/environment');
 var _ = require('lodash');
+var xoauth2 = require('xoauth2') ;
+var xoauth2gen;
 
 //var smtpTransport = nodemailer.createTransport("SMTP", config.auth.email.smtc);
 
 var transporter;
+var accessToken;
 
-if( config.email && config.email.service && config.email.auth.user && config.email.auth.pass ){
+if( config.email && config.email.service && config.email.auth && config.email.auth.xoauth2){
+
+  accessToken = config.email.auth.xoauth2.accessToken;
+
+  xoauth2gen = xoauth2.createXOAuth2Generator({
+      user: config.email.auth.xoauth2.user,
+      clientId: config.email.auth.xoauth2.clientId,
+      clientSecret: config.email.auth.xoauth2.clientSecret,
+      refreshToken: config.email.auth.xoauth2.refreshToken,
+      accessToken: accessToken 
+  });
 
   var smtpConfig = {
-    host: 'smtp.gmail.com',
-    port: 587,
-    secure: false, // use SSL
-    auth: {
-        user: config.email.auth.user,
-        pass: config.email.auth.pass
+    service: config.email.service,
+    auth:{
+      xoauth2: xoauth2gen
     }
   };
 
+  xoauth2gen.on('token', function(token){
+    console.log('New token for %s: %s', token.user, token.accessToken);
+    accessToken = token.accessToken;
+  });
+
   transporter = nodemailer.createTransport(smtpConfig);
 }
-
-console.log( '11111' );
-console.log( config );
-console.log( transporter );
-
 
 function makeBodyText (name, email, authId){
   var contents = "<p>";
@@ -78,16 +88,15 @@ var sendVerifyMail = function (name, emailAddress, authId) {
 };
 
 function makeUnreadMessageBodyText(name, email, authId, messageCnt){
-  var contents = "<div>";
+  var contents = "<p>";
   /**
   for ( var inx = 0 ; inx < messages.length ; inx++ ){
   }
   */
+  contents += "다음의 url에 접속해서 새로운 메세지를 확인하세요!";
   contents += "<p>";
-  contents += "다음의 url에 접속해서 새로운 메세지를 확인하세요! <br />";
   contents += "<a href='http://admin.stalk.io:9000/login'>stalk.io</a>"
-  contents += "</p>";
-  contents += "</div>";
+  contents += "<p>";
   return contents;
 }
 
@@ -102,7 +111,7 @@ var sendUnreadMessageMail = function (name, emailAddress, authId, messageCnt) {
   var preTitle = messageCnt+ "개의 ";
 
   var mailOptions = {
-    from: 'Stalk Company<0nlyoung7@gmail.com>', // sender address
+    from: 'stalk.io<xpush.io@gmail.com>', // sender address
     to: emailAddress, // list of receivers
     subject: preTitle+' 읽지 않은 메시지가 있습니다.',
     text: '', // plaintext body
@@ -123,9 +132,8 @@ module.exports = {
   sendVerifyMail: sendVerifyMail,
   sendUnreadMessageMail : sendUnreadMessageMail,
 }
-
 /**
 setTimeout(function(){
   sendUnreadMessageMail( 'james', '0nlyoung7@gmail.com', '22', 10);
-}, 5000);
+}, 2000);
 */
