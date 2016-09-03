@@ -87,12 +87,9 @@ var sendVerifyMail = function (name, emailAddress, authId) {
   }
 };
 
-function makeUnreadMessageBodyText(name, email, authId, messageCnt){
+function makeUnreadMessageBodyText(name, email, messageCnt){
   var contents = "<p>";
-  /**
-  for ( var inx = 0 ; inx < messages.length ; inx++ ){
-  }
-  */
+
   contents += "다음의 url에 접속해서 새로운 메세지를 확인하세요!";
   contents += "<p>";
   contents += "<a href='http://admin.stalk.io:9000/login'>stalk.io</a>"
@@ -100,13 +97,9 @@ function makeUnreadMessageBodyText(name, email, authId, messageCnt){
   return contents;
 }
 
-var sendUnreadMessageMail = function (name, emailAddress, authId, messageCnt) {
+var sendUnreadMessageMail = function (name, emailAddress, messageCnt) {
   console.log("*** send unread messages mail");
-  console.log(name, emailAddress, authId);
-
-  if( messageCnt < 10  ){
-    return;
-  }
+  console.log(name, emailAddress);
 
   var preTitle = messageCnt+ "개의 ";
 
@@ -115,13 +108,13 @@ var sendUnreadMessageMail = function (name, emailAddress, authId, messageCnt) {
     to: emailAddress, // list of receivers
     subject: preTitle+' 읽지 않은 메시지가 있습니다.',
     text: '', // plaintext body
-    html: makeUnreadMessageBodyText(name,emailAddress,authId,messageCnt)
+    html: makeUnreadMessageBodyText(name,emailAddress,messageCnt)
   };
 
   if( transporter ){
     transporter.sendMail(mailOptions, function(error, info){
       if(error){
-          return console.log(error);
+        return console.log(error);
       }
       console.log('Message sent: ' + info.response);
     });
@@ -132,8 +125,3 @@ module.exports = {
   sendVerifyMail: sendVerifyMail,
   sendUnreadMessageMail : sendUnreadMessageMail,
 }
-/**
-setTimeout(function(){
-  sendUnreadMessageMail( 'james', '0nlyoung7@gmail.com', '22', 10);
-}, 2000);
-*/

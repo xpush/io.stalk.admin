@@ -3,6 +3,8 @@
 var _ = require('lodash');
 var App = require('../app/app.model');
 var Message = require('./message.model');
+var Auth = require('../auth/auth.model');
+var Email = require('../../components/email');
 
 exports.index = function (req, res) {
 
@@ -54,6 +56,24 @@ exports.save = function (req, res) {
     } else {
       _message._id = undefined;
       _message.__v = undefined;
+
+      var query = Message.find({"appkey": appkey, "unread": true, "message": { $exists: true } });
+      query.exec(function (err, messages) {
+
+        if( messages && messages.length > 0 && messages.length % 10 == 0 ){
+          App.find({key:appkey}, function (err, apps) {
+
+            if( apps && apps.length > 0 && apps[0].users && apps[0].users.length > 0 ){
+              Auth.findOne({uid:apps[0].users[0]}, function(err, user){
+                if( user ){
+                  Email.sendUnreadMessageMail( 'james', user.email, messages.length);
+                }
+              });
+            }
+          });
+        }
+      }); 
+
       return res.status(200).json(_message); 
     }
   });

@@ -533,13 +533,6 @@ module.exports = function (grunt) {
           ]
         }
       }
-    },
-    forever: {
-      server: {
-        options: {
-          index: 'server/app.js'
-        }
-      }
     }
   });
 
@@ -554,8 +547,6 @@ module.exports = function (grunt) {
       done();
     }, 1500);
   });
-
-  grunt.loadNpmTasks('grunt-forever');
 
   grunt.registerTask('express-keepalive', 'Keep grunt running', function() {
     this.async();
@@ -588,14 +579,6 @@ module.exports = function (grunt) {
       'express:dev',
       'wait',
       'open',
-      'watch'
-    ]);
-  });
-
-  grunt.registerTask('serve:forever', function () {
-    grunt.task.run([
-      'forever:server:start',
-      'env:all',
       'watch'
     ]);
   });
