@@ -57,16 +57,16 @@ exports.save = function (req, res) {
       _message._id = undefined;
       _message.__v = undefined;
 
-      var query = Message.find({"appkey": appkey, "unread": true, "message": { $exists: true } });
+      var query = Message.find({"appkey": appkey, "unread": true, "message": { $exists: true } }).sort({'timestamp':-1});
       query.exec(function (err, messages) {
 
-        if( messages && messages.length > 0 && messages.length % 10 == 0 ){
+        if( messages && messages.length > 0 ){ //&& messages.length % 10 == 0 ){
           App.find({key:appkey}, function (err, apps) {
 
             if( apps && apps.length > 0 && apps[0].users && apps[0].users.length > 0 ){
               Auth.findOne({uid:apps[0].users[0]}, function(err, user){
                 if( user ){
-                  Email.sendUnreadMessageMail( 'james', user.email, messages.length);
+                  Email.sendUnreadMessageMail( user.email, messages);
                 }
               });
             }

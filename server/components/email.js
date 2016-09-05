@@ -7,18 +7,17 @@ var xoauth2gen;
 //var smtpTransport = nodemailer.createTransport("SMTP", config.auth.email.smtc);
 
 var transporter;
-var accessToken;
+var mailConfig;
 
 if( config.email && config.email.service && config.email.auth && config.email.auth.xoauth2){
-
-  accessToken = config.email.auth.xoauth2.accessToken;
+  
+  mailConfig = config.email;
 
   xoauth2gen = xoauth2.createXOAuth2Generator({
       user: config.email.auth.xoauth2.user,
       clientId: config.email.auth.xoauth2.clientId,
       clientSecret: config.email.auth.xoauth2.clientSecret,
-      refreshToken: config.email.auth.xoauth2.refreshToken,
-      accessToken: accessToken 
+      refreshToken: config.email.auth.xoauth2.refreshToken
   });
 
   var smtpConfig = {
@@ -28,9 +27,8 @@ if( config.email && config.email.service && config.email.auth && config.email.au
     }
   };
 
-  xoauth2gen.on('token', function(token){
-    console.log('New token for %s: %s', token.user, token.accessToken);
-    accessToken = token.accessToken;
+  xoauth2gen.getToken( function(err,token,accessToken){
+    console.log('New token for %s: %s', accessToken);
   });
 
   transporter = nodemailer.createTransport(smtpConfig);
@@ -87,28 +85,38 @@ var sendVerifyMail = function (name, emailAddress, authId) {
   }
 };
 
-function makeUnreadMessageBodyText(name, email, messageCnt){
+function makeUnreadMessageBodyText(messages){
   var contents = "<p>";
 
-  contents += "다음의 url에 접속해서 새로운 메세지를 확인하세요!";
+  contents += "<h1>You have unread messages</h1>";
+  contents += "<br />";
+  contents += "<h4>"+ messages.length + " unread messages (showing 3 most recent) </h4>";
+  contents += "<br />";
+  contents += "<ul>"
+ 
+  for( var inx = 0 ; inx < messages.length && inx < 3 ; inx ++ ){
+    contents += "<li>";
+    contents += messages[inx].message;
+    contents += "</li>";
+  }  
+
+  contents += "</ul>";
+  contents += "<a href='"+mailConfig.siteUrl+ "'>"+mailConfig.siteName+"</a>"
   contents += "<p>";
-  contents += "<a href='http://admin.stalk.io:9000/login'>stalk.io</a>"
-  contents += "<p>";
+
   return contents;
 }
 
-var sendUnreadMessageMail = function (name, emailAddress, messageCnt) {
-  console.log("*** send unread messages mail");
-  console.log(name, emailAddress);
-
-  var preTitle = messageCnt+ "개의 ";
+var sendUnreadMessageMail = function (emailAddress, messages) {
+  console.log("*** send unread messages mail : " + emailAddress);
+  console.log( mailConfig );
 
   var mailOptions = {
-    from: 'stalk.io<xpush.io@gmail.com>', // sender address
+    from: mailConfig.senderName + '<'+mailConfig.senderEmail+'>', // sender address
     to: emailAddress, // list of receivers
-    subject: preTitle+' 읽지 않은 메시지가 있습니다.',
+    subject: 'Unread messages in '+mailConfig.siteName,
     text: '', // plaintext body
-    html: makeUnreadMessageBodyText(name,emailAddress,messageCnt)
+    html: makeUnreadMessageBodyText(messages)
   };
 
   if( transporter ){
