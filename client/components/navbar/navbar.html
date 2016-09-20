@@ -1,4 +1,24 @@
-<header id="navHeader" class="main-header" ng-controller="NavbarCtrl">
+<style>
+  .online {
+    background-color: #30EFDF !important;
+    color: white !important;
+  }
+
+  .busy {
+    background-color: #00A65A !important;
+    color: white !important;
+  }
+
+  .unselect {
+    background-color: #5a5a5a !important;
+    color: #bebebe !important;
+  }
+
+  a.unselect:hover {
+    color: white;
+  }
+</style>
+<header id="main-header" class="main-header" ng-controller="NavbarCtrl">
   <!-- Logo -->
   <a href="/" class="logo">
     <!-- mini logo for sidebar mini 50x50 pixels -->
@@ -14,11 +34,15 @@
       <span class="sr-only">Toggle navigation</span>
     </a>
 
-    <!--<div class="navbar-custom-menu" style="margin-top: 7px;margin-right: 7px;">-->
-    <!-- -->
-    <!--<a href="/chat" class="btn btn-social-icon btn-foursquare" style="background-color:#376682"><i class="fa fa-commenting-o"></i></a>-->
-    <!--<a ng-show="isLoggedIn()"  ng-click="logout()" class="btn btn-social-icon btn-foursquare" style="background-color:#D60E0E"><i class="fa fa-power-off"></i></a>-->
-    <!--</div>-->
+    <div class="navbar-custom-menu" style="margin-top: 11px;margin-right: 11px;">
+      <a ng-click="setStatus('online')" ng-class="{online: isActive('online'), unselect: !isActive('online')}"
+         class="btn btn-social-icon"><i class="fa fa-bell-o"></i> </a>
+      <a ng-click="setStatus('busy')" ng-class="{busy: isActive('busy'), unselect: !isActive('busy')}"
+         class="btn btn-social-icon "><i class="fa fa-bell-slash-o"></i> </a>
+      <a href="#" ng-click="logout();" class="btn btn-social-icon btn-foursquare"><i class="fa fa-power-off"></i></a>
+
+    </div>
+
     <div class="navbar-custom-menu">
       <ul class="nav navbar-nav">
         <!-- Messages: style can be found in dropdown.less-->
@@ -92,6 +116,31 @@
       </ul>
     </div>
   </nav>
+    <!-- modal -->
+  <div id="confirmModal" class="modal fade" role="dialog">
+
+      <div class="modal-warning">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <button type="button" class="close" ng-click="cancelBusy()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                      <h4 class="modal-title">{{'text.confirm' | translate}}</h4>
+                  </div>
+                  <div class="modal-body">
+                      {{'text.confirm.busyStatus' | translate}}
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-outline pull-left" ng-click="cancelBusy()">{{'button.cancel' | translate}}</button>
+                      <button type="button" class="btn btn-outline pull-right" ng-click="confirmBusy()">{{'button.ok' | translate}}</button>
+                  </div>
+              </div>
+              <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+  </div>
+  <!-- modal -->
 </header>
 
 <aside id="navAside" class="main-sidebar">

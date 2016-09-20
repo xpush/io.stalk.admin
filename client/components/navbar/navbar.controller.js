@@ -34,7 +34,7 @@ angular.module('stalkApp')
 
             $('#dashboardPage').hide();
             $('#navAside').hide();
-            $('#navHeader').hide();
+            $('#main-header').hide();
             $('#errorModal').modal('show');
 
           } else {

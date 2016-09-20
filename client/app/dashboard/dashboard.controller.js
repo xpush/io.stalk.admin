@@ -30,7 +30,6 @@ angular.module('stalkApp')
         },
         data: data
       };
-      console.log(req.url, data);
       $http(req).then(function (data) {
         if (cb)cb(null, data);
       }, function (err) {
