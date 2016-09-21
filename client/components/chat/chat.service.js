@@ -62,8 +62,9 @@ angular.module('stalkApp')
           //init xpush
           $rootScope.xpush.on('message', function (channel, name, data) {
             if( !channelMessages[channel] ){
+              channelMessages[channel] = [];
+              unreadMessages[channel] = [];
               self.initChannel(channel, function(){
-                unreadMessages[channel] = [];
               });
             }
             data.MG = decodeURIComponent(data.MG);
