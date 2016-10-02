@@ -67,6 +67,7 @@ exports.currentCustomers = function(req, res){
 }
 
 exports.todayCustomers = function(req, res){
+
   var today = new Date();
   today.setHours(0); today.setMinutes(0);
   var year = 1900 + today.getYear();
@@ -74,6 +75,33 @@ exports.todayCustomers = function(req, res){
   var day = today.getDate();
   today = today.toISOString().substring(0, 19);
   Activity.find({"ENS": { "$gte" : today} }, function(err, activity){
+    if(err) { return handleError(res, err); }
+    return res.status(200).json({count: activity.length});
+  });
+}
+
+exports.weeklyCustomers = function(req, res){
+  var today = new Date();
+  today.setHours(0); today.setMinutes(0);today.setSeconds(0);
+  var start_date = new Date(today);
+  start_date.setDate( today.getDate() - 7);
+  start_date.setHours(0);
+  start_date.setMinutes(0);
+  start_date.setSeconds(0);
+
+  start_date  = start_date.toISOString().substring(0, 19);
+
+  var end_date = new Date();
+
+  var end_date = new Date(today);
+  end_date.setHours(0);
+  end_date.setMinutes(0);
+  end_date.setSeconds(0);
+
+  end_date  = end_date.toISOString().substring(0, 19);
+
+
+  Activity.find({"ENS": { "$gte" : start_date, $lte: end_date} }, function(err, activity){
     if(err) { return handleError(res, err); }
     return res.status(200).json({count: activity.length});
   });
