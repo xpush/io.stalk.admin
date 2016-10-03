@@ -53,6 +53,14 @@ angular.module('stalkApp')
       })
     };
 
+    var weeklyCustomers = function(){
+      postData("weeklyCustomers", {}, function (err, data) {
+        console.log( data );
+        //$scope.todayVisitors = data.data.count;
+        //getReferSite();
+      })
+    };
+
     var getReferSite = function () {
       postData("getReferSites", {}, function (err, data) {
         var refers = data.data;
@@ -122,6 +130,7 @@ angular.module('stalkApp')
 
         getCurrentCustomer();
         todayCustomers();
+        weeklyCustomers();
         getBrowserInfos();
 
       })

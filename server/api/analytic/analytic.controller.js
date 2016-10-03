@@ -100,11 +100,23 @@ exports.weeklyCustomers = function(req, res){
 
   end_date  = end_date.toISOString().substring(0, 19);
 
-
-  Activity.find({"ENS": { "$gte" : start_date, $lte: end_date} }, function(err, activity){
-    if(err) { return handleError(res, err); }
-    return res.status(200).json({count: activity.length});
-  });
+  Activity.aggregate([
+        {$match: {$and: [{'ENS' : {"$exists": true}}, {'ENS': {$gte: start_date}}, {'ENS': {$lte: end_date}}]}},
+        {$group: {
+            _id: {
+              date:  {$substr : ["$ENS",0, 10]}
+            },
+            count: {$sum: 1}
+        }},
+        {$project: {
+            date: "$_id", // so this is the shorter way
+            count: 1,
+            _id: 0
+        }},
+        {$sort: {"date": 1} } // and this will sort based on your date
+    ], function(err, activity){
+      return res.status(200).json(activity);
+    });
 }
 
 exports.getReferSites = function(req, res){
