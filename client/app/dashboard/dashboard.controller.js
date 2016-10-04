@@ -55,9 +55,19 @@ angular.module('stalkApp')
 
     var weeklyCustomers = function(){
       postData("weeklyCustomers", {}, function (err, data) {
-        console.log( data );
+        var results = data.data;
         //$scope.todayVisitors = data.data.count;
         //getReferSite();
+
+        var labels = [];
+        var datas = [];
+
+        for ( var key in results ){
+          labels.push( results[key].date );
+          datas.push( results[key].count );
+        }
+
+        createAreaChart(labels, datas);
       })
     };
 
@@ -117,7 +127,6 @@ angular.module('stalkApp')
 
         $scope.browserInfos = data.data;
         createPieChart($scope.browserInfos);
-        createAreaChart();
       });
     };
 
@@ -179,24 +188,22 @@ function createPieChart(data) {
   pieChart.Doughnut(PieData, pieOptions);
 }
 
-function createAreaChart(){
+function createAreaChart(labels, datas){
     var areaChartCanvas = $("#areaChart").get(0).getContext("2d");
     // This will get the first returned node in the jQuery collection.
     var areaChart = new Chart(areaChartCanvas);
     var areaChartData = {
-      labels: ["January", "February", "March", "April", "May", "June", "July"],
-      datasets: [
-        {
-          label: "Digital Goods",
-          fillColor: "rgba(60,141,188,0.9)",
-          strokeColor: "rgba(60,141,188,0.8)",
-          pointColor: "#3b8bba",
-          pointStrokeColor: "rgba(60,141,188,1)",
-          pointHighlightFill: "#fff",
-          pointHighlightStroke: "rgba(60,141,188,1)",
-          data: [28, 48, 40, 19, 86, 27, 90]
-        }
-      ]
+      labels: labels,
+      datasets: {
+        label: "Digital Goods",
+        fillColor: "rgba(60,141,188,0.9)",
+        strokeColor: "rgba(60,141,188,0.8)",
+        pointColor: "#3b8bba",
+        pointStrokeColor: "rgba(60,141,188,1)",
+        pointHighlightFill: "#fff",
+        pointHighlightStroke: "rgba(60,141,188,1)",
+        data: datas
+      }
     };
     var areaChartOptions = {
       //Boolean - If we should show the scale at all

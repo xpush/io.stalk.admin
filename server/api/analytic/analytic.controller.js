@@ -103,9 +103,7 @@ exports.weeklyCustomers = function(req, res){
   Activity.aggregate([
         {$match: {$and: [{'ENS' : {"$exists": true}}, {'ENS': {$gte: start_date}}, {'ENS': {$lte: end_date}}]}},
         {$group: {
-            _id: {
-              date:  {$substr : ["$ENS",0, 10]}
-            },
+            _id: {$substr : ["$ENS",0, 10]},
             count: {$sum: 1}
         }},
         {$project: {
@@ -115,6 +113,10 @@ exports.weeklyCustomers = function(req, res){
         }},
         {$sort: {"date": 1} } // and this will sort based on your date
     ], function(err, activity){
+
+      console.log( '111111' );
+      console.log( activity );
+
       return res.status(200).json(activity);
     });
 }
