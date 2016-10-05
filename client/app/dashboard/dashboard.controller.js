@@ -194,8 +194,8 @@ function createAreaChart(labels, datas){
     var areaChart = new Chart(areaChartCanvas);
     var areaChartData = {
       labels: labels,
-      datasets: {
-        label: "Digital Goods",
+      datasets: [{
+        label: "Weekly Visits",
         fillColor: "rgba(60,141,188,0.9)",
         strokeColor: "rgba(60,141,188,0.8)",
         pointColor: "#3b8bba",
@@ -203,7 +203,7 @@ function createAreaChart(labels, datas){
         pointHighlightFill: "#fff",
         pointHighlightStroke: "rgba(60,141,188,1)",
         data: datas
-      }
+      }]
     };
     var areaChartOptions = {
       //Boolean - If we should show the scale at all

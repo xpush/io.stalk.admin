@@ -81,23 +81,23 @@ exports.todayCustomers = function(req, res){
 }
 
 exports.weeklyCustomers = function(req, res){
+
   var today = new Date();
   today.setHours(0); today.setMinutes(0);today.setSeconds(0);
-  var start_date = new Date(today);
-  start_date.setDate( today.getDate() - 7);
-  start_date.setHours(0);
-  start_date.setMinutes(0);
-  start_date.setSeconds(0);
 
+  var dateMap = {};
+  for( var inx  = 7 ; inx >= 1 ;  inx-- ){
+    var tmpDate = new Date(today);
+    tmpDate.setDate( today.getDate() - inx );
+    tmpDate = tmpDate.toISOString().substring(0, 10);
+    dateMap[tmpDate] = true;
+  }
+
+  var start_date = new Date(today);
+  start_date.setDate( today.getDate() - 7 );
   start_date  = start_date.toISOString().substring(0, 19);
 
-  var end_date = new Date();
-
   var end_date = new Date(today);
-  end_date.setHours(0);
-  end_date.setMinutes(0);
-  end_date.setSeconds(0);
-
   end_date  = end_date.toISOString().substring(0, 19);
 
   Activity.aggregate([
@@ -112,12 +112,29 @@ exports.weeklyCustomers = function(req, res){
             _id: 0
         }},
         {$sort: {"date": 1} } // and this will sort based on your date
-    ], function(err, activity){
+    ], function(err, activitys){
 
-      console.log( '111111' );
-      console.log( activity );
+      var result = [];
+      var resultMap = {};
+      for( var key in activitys ){
+        result.push( activitys[key] );
+        var date = activitys[key].date;
+        resultMap[date] = true;
+      }
 
-      return res.status(200).json(activity);
+      for( var key in dateMap ){
+        if( !resultMap[key] ){
+          result.push( {"count":0, "date": key } );
+        }
+      }
+
+      result.sort(function(a, b){
+        return a.date > b.date
+      });
+
+      console.log( result );
+
+      return res.status(200).json(result);
     });
 }
 
