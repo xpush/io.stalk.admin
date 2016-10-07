@@ -138,6 +138,62 @@ exports.weeklyCustomers = function(req, res){
     });
 }
 
+exports.weeklyCustomerLatency = function(req, res){
+
+  var today = new Date();
+  today.setHours(0); today.setMinutes(0);today.setSeconds(0);
+
+  var dateMap = {};
+  for( var inx  = 7 ; inx >= 1 ;  inx-- ){
+    var tmpDate = new Date(today);
+    tmpDate.setDate( today.getDate() - inx );
+    tmpDate = tmpDate.toISOString().substring(0, 10);
+    dateMap[tmpDate] = true;
+  }
+
+  var start_date = new Date(today);
+  start_date.setDate( today.getDate() - 7 );
+  start_date  = start_date.toISOString().substring(0, 19);
+
+  var end_date = new Date(today);
+  end_date  = end_date.toISOString().substring(0, 19);
+
+  Activity.aggregate([
+        {$match: {$and: [{'ENS' : {"$exists": true}}, {'CLT' : {"$exists": true}}, {'ENS': {$gte: start_date}}, {'ENS': {$lte: end_date}}]}},
+        {$group: {
+            _id: {$substr : ["$ENS",0, 10]},
+            average: {$avg:"$CLT" }
+        }},
+        {$project: {
+            date: "$_id",
+            average: 1,
+            _id: 0
+        }},
+        {$sort: {"date": 1} } // and this will sort based on your date
+    ], function(err, activitys){
+
+      var result = [];
+      var resultMap = {};
+      for( var key in activitys ){
+        result.push( activitys[key] );
+        var date = activitys[key].date;
+        resultMap[date] = true;
+      }
+
+      for( var key in dateMap ){
+        if( !resultMap[key] ){
+          result.push( {"average":0, "date": key } );
+        }
+      }
+
+      result.sort(function(a, b){
+        return a.date > b.date
+      });
+
+      return res.status(200).json(result);
+  });
+}
+
 exports.getReferSites = function(req, res){
   Activity.aggregate([ { $match: {} },{ $group : { _id : "$REF" ,count: { $sum: 1 }  } }]).match( {_id:{$nin:['undefined','null']}} ).sort({count:-1}).limit(10).exec( function(err, activity){
     if(err) { return handleError(res, err); }

@@ -8,6 +8,7 @@ var router = express.Router();
 router.post("/currentCustomers", controller.currentCustomers);
 router.post("/todayCustomers", controller.todayCustomers);
 router.post("/weeklyCustomers", controller.weeklyCustomers);
+router.post("/weeklyCustomerLatency", controller.weeklyCustomerLatency);
 router.post("/getReferSites", controller.getReferSites);
 router.post("/getBrowserInfos", controller.getBrowserInfos);
 router.post("/completeChattings", controller.completeChattings);
