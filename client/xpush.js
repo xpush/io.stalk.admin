@@ -56,8 +56,8 @@
       self.channelNameList = [];
       self.hostname = host;
       self.receiveMessageStack = [];
-      self.isExistUnread = true;
-      self.autoInitFlag = true;
+      self.isExistUnread = false;
+      self.autoInitFlag = false;
       self._userEventNames = [];
 
       if( autoInitFlag !=undefined ){
@@ -219,6 +219,7 @@
               if(cb) cb(result.message, result.result); // @ TODO from yohan.
             });
           });
+
         }else{
           if(cb) cb(result.message);
           alert('xpush : login error'+ result.message);
@@ -335,13 +336,17 @@
         cb = channel; channel = undefined; datas = {};
       }
 
-      var newChannel;
-      var channelNm = channel;
-
       //Add logined user if not in users
       if( users.indexOf(self.userId) < 0 ){
         users.push(self.userId);
       }
+
+      if( channel == undefined && users ){
+        channel = self.generateChannelId(users);        
+      }
+
+      var newChannel;
+      var channelNm = channel;
 
       self.sEmit('channel.create',{C: channel, U: users, DT:datas},function(err, result){
         //_id: "53b039e6a2f41316d7046732"
@@ -396,6 +401,12 @@
     XPush.prototype.createSimpleChannel = function(channel, userObj, cb){
       var self = this;
 
+      if(typeof(channel) == 'object' && typeof(userObj) == 'function' && !cb){
+        cb = userObj;
+        userObj = channel;
+        channel = self.generateChannelId(userObj);
+      }
+
       var ch = self._makeChannel(channel);
       self._getChannelInfo(channel,function(err,data){
         if(err){
@@ -407,12 +418,14 @@
             cb = userObj; userObj = undefined;
           }
 
-          if(userObj){
-            self.userId = userObj.U || 'someone';
-            self.deviceId = userObj.D || 'WEB';
-          }else {
-            self.userId = 'someone';
-            self.deviceId = 'WEB';
+          if( !self.userId ){
+            if(userObj){
+              self.userId = userObj.U || UTILS.getTempUser();
+              self.deviceId = userObj.D || 'WEB';
+            }else {
+              self.userId = UTILS.getTempUser();;
+              self.deviceId = 'WEB';
+            }
           }
 
           ch.info = data.result;
@@ -677,6 +690,57 @@
       });
     };
 
+    XPush.prototype.uploadFileInBrowser = function(channelId, fileInput, fnPrg, fnCallback){
+      var self = this;
+
+      var formData = new FormData();
+      var file = fileInput.files[0];
+      formData.append("file", fileInput.files[0]);
+      var hostname = self.hostname;
+
+      if(typeof(fnPrg) == 'function' && !fnCallback ){
+        fnCallback = fnPrg;
+        fnPrg = undefined;
+      }
+
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", hostname+ "/upload", true);
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+          fileInput.value = "";
+          var resData = JSON.parse(xhr.responseText);
+          if (resData.status == 'ok') {
+
+            var imageUploaded = decodeURIComponent(resData.result.url);
+            if( typeof(fnCallback) == 'function' ){
+              fnCallback( null, imageUploaded );
+            }
+          }
+        } else if (xhr.readyState == 4 && xhr.status != 200) {
+          fileInput.value = "";
+        }
+      }
+
+      xhr.upload.onprogress = function(e) {
+        var done = e.position || e.loaded,
+          total = e.totalSize || e.total
+        var present = Math.floor(done / total * 100);
+        if( typeof(fnPrg) == 'function' ){
+          fnPrg( present );
+        }
+      }
+
+      xhr.setRequestHeader("XP-A", self.appId);
+      xhr.setRequestHeader("XP-C", channelId);
+      xhr.setRequestHeader("XP-U", self.userId);
+      xhr.setRequestHeader("XP-FU-org", file.name);
+      xhr.setRequestHeader("XP-FU-nm", file.name.substring(0, file.name.lastIndexOf(".")));
+      xhr.setRequestHeader("XP-FU-tp", "image");
+
+      xhr.send(formData);
+      return false;
+    };
+
     /**
      * file dom 객체가 지원되지 않는 mobile에서는 REST API를 이용하여 파일을 업로드한다.
      * @name uploadFile
@@ -700,52 +764,47 @@
     XPush.prototype.uploadFile = function(channel, fileUri, inputObj, fnPrg, fnCallback){
       var self = this;
 
-      self.getChannelAsync(channel, function(err, ch){
+      if(window.FileTransfer && window.FileUploadOptions){
 
-        if(window.FileTransfer && window.FileUploadOptions){
+        var url = ch._server.serverUrl+'/upload';
 
-          var url = ch._server.serverUrl+'/upload';
+        var options = new FileUploadOptions();
+        options.fileKey="post";
+        options.chunkedMode = false;
+        options.params = {
+          'key1': 'VAL1',
+          'key2': 'VAL2'
+        };
+        options.headers = {
+          'XP-A': self.appId,
+          'XP-C': channel,
+          'XP-U': JSON.stringify({
+            U: self.userId,
+            D: self.deviceId
+          }) //[U]^[D]^[TK] @ TODO add user token
+        };
+        options.headers['XP-FU-org'] = inputObj.name;
+        if(inputObj.overwrite) options.headers['XP-FU-nm'] = inputObj.name;
+        if(inputObj.type)      options.headers['XP-FU-tp'] = inputObj.type;
 
-          var options = new FileUploadOptions();
-          options.fileKey="post";
-          options.chunkedMode = false;
-          options.params = {
-            'key1': 'VAL1',
-            'key2': 'VAL2'
+        var ft = new FileTransfer();
+        if( fnPrg != undefined ){
+          ft.onprogress = function(progressEvent) {
+            if (progressEvent.lengthComputable) {
+              var perc = Math.floor(progressEvent.loaded / progressEvent.total * 100);
+              fnPrg( perc);
+            }
           };
-          options.headers = {
-            'XP-A': self.appId,
-            'XP-C': channel,
-            'XP-U': JSON.stringify({
-              U: self.userId,
-              D: self.deviceId
-            }) //[U]^[D]^[TK] @ TODO add user token
-          };
-          options.headers['XP-FU-org'] = inputObj.name;
-          if(inputObj.overwrite) options.headers['XP-FU-nm'] = inputObj.name;
-          if(inputObj.type)      options.headers['XP-FU-tp'] = inputObj.type;
-
-          var ft = new FileTransfer();
-          if( fnPrg != undefined ){
-            ft.onprogress = function(progressEvent) {
-              if (progressEvent.lengthComputable) {
-                var perc = Math.floor(progressEvent.loaded / progressEvent.total * 100);
-                fnPrg( perc);
-              }
-            };
-          }
-
-          ft.upload(fileUri, encodeURI(url), function(data){
-            fnCallback(data);
-            //$scope.picData = FILE_URI;
-            //$scope.$apply();
-          }, function(e) {
-              debug("On fail " + e);
-          }, options);
-
         }
 
-      });
+        ft.upload(fileUri, encodeURI(url), function(data){
+          fnCallback(data);
+          //$scope.picData = FILE_URI;
+          //$scope.$apply();
+        }, function(e) {
+            debug("On fail " + e);
+        }, options);
+      }
     };
 
     /**
@@ -885,6 +944,32 @@
       debug("xpush : queryUser ",params);
 
       self.ajax( '/user/search' , 'POST', params, cb);
+    };
+
+      /**
+     * server에서 사용자 list를 조회한다. pageing 처리가 가능하다.
+     * @name queryUser
+     * @memberof Xpush
+     * @function
+     * @param {Object} _params - ( query, column )
+     * @param {callback} cb - 조회 후 수행할 callback function
+     * @example
+     * var param = {query : {'DT.NM':'james'}, column: { U: 1, DT: 1, _id: 0 } };
+     * xpush.queryUser( param, function( err, userArray, count ){
+     *   console.log( userArray );
+     * });
+     */
+    XPush.prototype.listActiveUser = function(cb){
+
+      var self = this;
+
+      var params = {
+        'A' : self.appId
+      };
+
+      debug("xpush : listActiveUser ",params);
+
+      self.ajax( '/user/list/active' , 'POST', params, cb);
     };
 
     /**
@@ -1042,6 +1127,7 @@
     XPush.prototype._initSessionSocket = function(socket,cb){
       var self = this;
 
+
       socket.on('_event',function(data){
         debug('xpush : global receive ', data.event, data.C,data.NM,data.DT, self.userId);
         // data.event = NOTIFICATION
@@ -1049,6 +1135,9 @@
         switch(data.event){
           case 'NOTIFICATION':
             var ch = self.getChannel(data.C);
+
+            console.log( '1111' );
+            console.log( self.autoInitFlag );
 
             // if `autoInitFlag` is true, make channel automatically
             if( self.autoInitFlag ){
@@ -1069,7 +1158,10 @@
                 }
               }
               ch.emit(data.NM , data.DT);
-            }          
+            }
+            if( data.DT.UO && data.DT.UO.U == self.userId ){
+              return;
+            }
             self.emit(data.NM, data.C, data.NM, data.DT);
           break;
 
@@ -1147,11 +1239,15 @@
       }
 
       var hostname = self.hostname.replace( "http://", "" );
-      if( hostname.indexOf( ":" ) > 0 ) hostname = hostname.split(":")[0];
+      var port = 8000;
+      if( hostname.indexOf( ":" ) > 0 ) {
+        hostname = hostname.split(":")[0];
+        port = hostname.split(":")[1]
+      }
 
       var options = {
         host: hostname,
-        port:8000,
+        port:port,
         path: context,
         method: method
       };
@@ -1284,6 +1380,7 @@
      */
     XPush.prototype.sEmit = function(key, params, cb){
       var self = this;
+
       var returnFunction = function(result){
 
         if(result.status == 'ok'){
@@ -1334,10 +1431,17 @@
 
       self._events = self._events || {};
       self._events[event] = self._events[event] || [];
-      self._events[event].push(fct);
 
-      if( self._globalConnection ){
-        self._globalConnection.attchOnEvent( event );
+      if( self._events[event].length < 1 ){
+        self._events[event].push(fct);
+
+        if( self._globalConnection ){
+          self._globalConnection.attchOnEvent( event );
+        }
+
+        for ( var key in self._channels ){
+          self._channels[key].attchOnEvent( event );
+        }
       }
     };
 
@@ -1401,6 +1505,17 @@
         }
       }
     };
+
+    XPush.prototype.generateChannelId = function(jsonObj){
+
+      // multi user channel = generate uuid
+      if( jsonObj.length > 2 ){
+        return UTILS.getUniqueKey()+"_"+this.appId;
+      } else {
+        // 1:1 channel = userId concat friendId
+        return jsonObj.sort().join( "$" )+"_"+this.appId;
+      }
+    }
 
     /**
      * Represents a Connection
@@ -1583,6 +1698,10 @@
      */
     Connection.prototype.send = function(name, data, cb){
       var self = this;
+      if( typeof(data) == 'object' && !data.UO ){
+        data.UO = { 'U': self._xpush.userId };
+      }
+
       if(self._connected){
         self._socket.emit('send', {NM: name , DT: data});
       }else{
@@ -1658,9 +1777,19 @@
      */
     Connection.prototype.attchOnEvent = function(eventNm){
       var self = this;
-      if(self._socket){
+      self._events = self._events || {};
+      if(self._socket && !self._events[eventNm] ){
         self._socket.on( eventNm ,function(data){
           debug("xpush : channel receive, " +eventNm, self.chNm, data, self._xpush.userId);
+
+          if( typeof(data) == 'object' && data.UO ) {
+            if( data.UO.U == self._xpush.userId ){
+              data.SR = "S";
+            } else {
+              data.SR = "R";
+            }
+          }
+
           self._xpush.emit(eventNm, self.chNm, eventNm , data);
         });    
       }
@@ -1736,6 +1865,29 @@
     UTILS.validateURL = function(textval) {
       var urlregex = /^(https?|ftp):\/\/([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&%$-]+)*@)*((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}|([a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(:[0-9]+)*(\/($|[a-zA-Z0-9.,?'\\+&%$#=~_-]+))*$/;
       return urlregex.test(textval) || urlregex.test( decodeURIComponent(textval) );
+    }
+
+    UTILS.getTempUser = function() {
+      var rd = Math.floor((Math.random() * 1000) + 1);
+      return 'guest' + UTILS.lpad(new String(rd), 4, 0);
+    }
+
+    UTILS.lpad = function(s, padLength, padString) {
+      while (s.length < padLength)
+        s = padString + s;
+      return s;
+    }
+
+    UTILS.getUniqueKey = function () {
+      var s = [], itoh = '0123456789ABCDEF';
+      for (var i = 0; i < 36; i++) s[i] = Math.floor(Math.random()*0x10);
+      s[14] = 4;
+      s[19] = (s[19] & 0x3) | 0x8;
+
+      for (var x = 0; x < 36; x++) s[x] = itoh[s[x]];
+      s[8] = s[13] = s[18] = s[23] = '-';
+
+      return s.join('');
     }
 
     return XPush;

@@ -61,6 +61,7 @@ angular.module('stalkApp')
 
           //init xpush
           $rootScope.xpush.on('message', function (channel, name, data) {
+
             if( !channelMessages[channel] ){
               channelMessages[channel] = [];
               unreadMessages[channel] = [];

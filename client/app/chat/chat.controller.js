@@ -31,6 +31,8 @@ angular.module('stalkApp')
     };
 
     $scope.uploadFile = function(){
+
+      fileObj = document.getElementById("file");
       var file = fileObj.files[0];
 
       // File Type check, image type 이 아닌 경우를 체크
@@ -44,9 +46,10 @@ angular.module('stalkApp')
         return;
       }
 
-      $rootScope.xpush.uploadFile( $scope.currentChannel.C, fileObj.value, fileObj, null, function(err, result){
+      $rootScope.xpush.uploadFileInBrowser( $scope.currentChannel.C, fileObj, null, function(err, result){
         if( !err ){
-          $scope.sendMessage( result.url, 'IM' );
+          fileObj.value = "";
+          $scope.sendMessage( result, 'IM' );
         }
       });
     };
@@ -157,7 +160,7 @@ angular.module('stalkApp')
         $scope.gotoChat( selectedChannel );  
       }
 
-      console.log( $scope.siteArray );
+      // console.log( $scope.siteArray );
     };
 
     $rootScope.$on("$onInfo", function (event, data) {
