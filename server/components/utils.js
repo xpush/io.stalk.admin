@@ -1,6 +1,5 @@
-var uuid = require('node-uuid');
+var uuid = require('uuid');
 var crypto = require('crypto');
-var restify = require('restify');
 var fs = require('fs');
 
 exports.createUniqueId = function () {
@@ -16,17 +15,6 @@ exports.encrypto = function (s, t) {
 
 exports.sendErr = function (response, err) {
   response.send({status: 'ERR-INTERNAL', message: err});
-};
-
-exports.validEmptyParams = function (req, paramArray) {
-
-  for (var i in paramArray) {
-    if (!req.params[paramArray[i]]) {
-      return new restify.InvalidArgumentError('[' + paramArray[i] + '] must be supplied');
-    }
-  }
-
-  return false;
 };
 
 exports.setHttpProtocal = function (_url) {

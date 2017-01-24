@@ -1,7 +1,7 @@
 'use strict';
 
 var _ = require('lodash');
-var uuid = require('node-uuid');
+var uuid = require('uuid');
 var Auth = require('./auth.model');
 var DICT = require('./../../config/dict');
 var UT = require('./../../components/utils');

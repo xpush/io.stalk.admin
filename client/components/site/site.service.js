@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('stalkApp')
-  .factory('Site', function Auth($location, $rootScope, $http, $cookieStore, $q) {
+  .factory('Site', function Auth($location, $rootScope, $http, $cookies, $q) {
     return {
 
       create: function (site, callback) {

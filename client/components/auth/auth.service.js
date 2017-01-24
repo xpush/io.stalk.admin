@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('stalkApp')
-  .factory('Auth', function Auth($location, $rootScope, $http, User, $cookieStore, $q) {
+  .factory('Auth', function Auth($location, $rootScope, $http, User, $cookies, $q) {
     var currentUser = {};
 
-    if ($cookieStore.get('token')) {
+    if ($cookies.get('token')) {
       currentUser = User.get();
     }
 
@@ -17,15 +17,13 @@ angular.module('stalkApp')
         $http.post('/api/auths/signup', {
           name: user.name,
           email: user.email
-        }).
-          success(function (data) {
-            deferred.resolve(data);
+        }).then(function successCallback(response) {
+            deferred.resolve(response);
             return cb();
-          }).
-          error(function (err) {
+        }, function errorCallback(response) {
             deferred.reject(err);
             return cb(err);
-          }.bind(this));
+        });
 
         return deferred.promise;
       },
@@ -37,16 +35,14 @@ angular.module('stalkApp')
         $http.post('/api/auths/activate', {
           uid: user.uid,
           email: user.email,
-          password: user.password,
-        }).
-          success(function (data) {
-            deferred.resolve(data);
+          password: user.password
+        }).then(function successCallback(response) {
+            deferred.resolve(response);
             return cb();
-          }).
-          error(function (err) {
+        }, function errorCallback(response) {
             deferred.reject(err);
             return cb(err);
-          }.bind(this));
+        });
 
         return deferred.promise;
       },
@@ -59,15 +55,13 @@ angular.module('stalkApp')
           name: user.name,
           email: user.email,
           password: user.password
-        }).
-        success(function (data) {
-          deferred.resolve(data);
-          return cb();
-        }).
-        error(function (err) {
-          deferred.reject(err);
-          return cb(err);
-        }.bind(this));
+        }).then(function successCallback(response) {
+            deferred.resolve(response);
+            return cb();
+        }, function errorCallback(response) {
+            deferred.reject(err);
+            return cb(err);
+        });
 
         return deferred.promise;
       },
@@ -89,25 +83,26 @@ angular.module('stalkApp')
         $http.post('/auth/local', {
           email: user.email,
           password: user.password
-        }).
-          success(function (data) {
-            $cookieStore.put('token', data.token);
+        }).then(function successCallback(response) {
 
-            currentUser = User.get();
-            if( currentUser.language ){
-              data.language = currentUser.language;   
-            } else {
-              data.language = 'ko';
-            }
+          var data = response.data;
 
-            deferred.resolve(data);
-            return cb();
-          }).
-          error(function (err) {
-            this.logout();
-            deferred.reject(err);
-            return cb(err);
-          }.bind(this));
+          $cookies.put('token', response.data.token);
+
+          currentUser = User.get();
+          if( currentUser.language ){
+            data.language = currentUser.language;   
+          } else {
+            data.language = 'ko';
+          }
+
+          deferred.resolve(data);
+          return cb();
+        }, function errorCallback(response) {
+          this.logout();
+          deferred.reject(err);
+          return cb(err);
+        });
 
         return deferred.promise;
       },
@@ -118,7 +113,7 @@ angular.module('stalkApp')
        * @param  {Function}
        */
       logout: function () {
-        $cookieStore.remove('token');
+        $cookies.remove('token');
         currentUser = {};
       },
       /**
@@ -190,7 +185,7 @@ angular.module('stalkApp')
        * Get auth token
        */
       getToken: function () {
-        return $cookieStore.get('token');
+        return $cookies.get('token');
       },
 
       /**
@@ -204,16 +199,15 @@ angular.module('stalkApp')
         var cb = callback || angular.noop;
         var deferred = $q.defer();
 
-        $http.put('/api/auths/'+user.uid, user ).
-          success(function (data) {
+        $http.put('/api/auths/'+user.uid, user )
+        .then(function successCallback(response) {
             currentUser = User.get();
-            deferred.resolve(data);
+            deferred.resolve(response.data);
             return cb();
-          }).
-          error(function (err) {
+        }, function errorCallback(response) {
             deferred.reject(err);
             return cb(err);
-          }.bind(this));
+        });
 
         return deferred.promise;
       },
@@ -228,15 +222,14 @@ angular.module('stalkApp')
         var cb = callback || angular.noop;
         var deferred = $q.defer();
         
-        $http.get('/api/auths/geo/'+ip).
-          success(function (data) {
-            deferred.resolve(data);
+        $http.get('/api/auths/geo/'+ip)
+        .then(function successCallback(response) {
+            deferred.resolve(response.data);
             return cb();
-          }).
-          error(function (err) {
+        }, function errorCallback(response) {
             deferred.reject(err);
             return cb(err);
-          }.bind(this));
+        });
 
         return deferred.promise;
       }

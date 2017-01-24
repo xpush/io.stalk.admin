@@ -1,7 +1,7 @@
 'use strict';
 
 var mongoose = require('mongoose'),
-  uuid = require('node-uuid'),
+  uuid = require('uuid'),
   Schema = mongoose.Schema;
 
 var AppSchema = new Schema({
