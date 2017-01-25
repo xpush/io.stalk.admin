@@ -11,15 +11,13 @@ angular.module('stalkApp')
         $http.post('/api/apps', {
           name: site.name,
           url: site.url
-        }).
-          success(function (data) {
-            deferred.resolve(data);
+        }).then(function successCallback(response) {
+            deferred.resolve(response);
             return cb();
-          }).
-          error(function (err) {
+        }, function errorCallback(response) {
             deferred.reject(err);
             return cb(err);
-          }.bind(this));
+        });
 
         return deferred.promise;
       },
@@ -28,15 +26,15 @@ angular.module('stalkApp')
         var cb = callback || angular.noop;
         var deferred = $q.defer();
 
-        $http.get('/api/apps', {}).
-          success(function (data) {
-            deferred.resolve(data);
+        $http.get('/api/apps', {
+
+        }).then(function successCallback(response) {
+            deferred.resolve(response);
             return cb();
-          }).
-          error(function (err) {
+        }, function errorCallback(response) {
             deferred.reject(err);
             return cb(err);
-          }.bind(this));
+        });
 
         return deferred.promise;
       },
@@ -44,15 +42,14 @@ angular.module('stalkApp')
         var cb = callback || angular.noop;
         var deferred = $q.defer();
 
-        $http.put('/api/apps/' + _site._id, _site).
-          success(function (data) {
-            deferred.resolve(data);
+        $http.put('/api/apps/' + _site._id, _site
+        ).then(function successCallback(response) {
+            deferred.resolve(response);
             return cb();
-          }).
-          error(function (err) {
+        }, function errorCallback(response) {
             deferred.reject(err);
             return cb(err);
-          }.bind(this));
+        });
 
         return deferred.promise;
       },
@@ -60,20 +57,17 @@ angular.module('stalkApp')
         var cb = callback || angular.noop;
         var deferred = $q.defer();
 
-        $http.delete('/api/apps/' + _site._id, _site).
-          success(function (data) {
-            deferred.resolve(data);
+        $http.delete('/api/apps/' + _site._id, _site
+        ).then(function successCallback(response) {
+            deferred.resolve(response);
             return cb();
-          }).
-          error(function (err) {
+        }, function errorCallback(response) {
             deferred.reject(err);
             return cb(err);
-          }.bind(this));
+        });
 
         return deferred.promise;
       }
     }
 
   });
-
-

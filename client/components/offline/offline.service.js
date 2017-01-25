@@ -10,15 +10,13 @@ angular.module('stalkApp')
         
         $http.post('/api/messages',
           {}
-          ).
-          success(function (data) {
-            deferred.resolve(data);
+        ).then(function successCallback(response) {
+            deferred.resolve(response);
             return cb();
-          }).
-          error(function (err) {
+        }, function errorCallback(response) {
             deferred.reject(err);
             return cb(err);
-          }.bind(this));
+        });
 
         return deferred.promise;
       },
@@ -28,15 +26,14 @@ angular.module('stalkApp')
         var deferred = $q.defer();
         
         $http.post('/api/messages/read',
-          {id:query.id}).
-          success(function (data) {
-            deferred.resolve(data);
+          {id:query.id}
+        ).then(function successCallback(response) {
+            deferred.resolve(response);
             return cb();
-          }).
-          error(function (err) {
+        }, function errorCallback(response) {
             deferred.reject(err);
             return cb(err);
-          }.bind(this));
+        });
 
         return deferred.promise;
       },
@@ -46,15 +43,14 @@ angular.module('stalkApp')
         var deferred = $q.defer();
 
         $http.post('/api/messages/readAll',
-          {}).
-          success(function (data) {
-            deferred.resolve(data);
+          {}
+        ).then(function successCallback(response) {
+            deferred.resolve(response);
             return cb();
-          }).
-          error(function (err) {
+        }, function errorCallback(response) {
             deferred.reject(err);
             return cb(err);
-          }.bind(this));
+        });
 
         return deferred.promise;
       }
