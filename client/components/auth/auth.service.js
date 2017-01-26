@@ -18,11 +18,11 @@ angular.module('stalkApp')
           name: user.name,
           email: user.email
         }).then(function successCallback(response) {
-            deferred.resolve(response);
+            deferred.resolve(response.data);
             return cb();
         }, function errorCallback(response) {
-            deferred.reject(err);
-            return cb(err);
+            deferred.reject(response);
+            return cb(response);
         });
 
         return deferred.promise;
@@ -37,11 +37,11 @@ angular.module('stalkApp')
           email: user.email,
           password: user.password
         }).then(function successCallback(response) {
-            deferred.resolve(response);
+            deferred.resolve(response.data);
             return cb();
         }, function errorCallback(response) {
-            deferred.reject(err);
-            return cb(err);
+            deferred.reject(response);
+            return cb(response);
         });
 
         return deferred.promise;
@@ -56,11 +56,11 @@ angular.module('stalkApp')
           email: user.email,
           password: user.password
         }).then(function successCallback(response) {
-            deferred.resolve(response);
+            deferred.resolve(response.data);
             return cb();
         }, function errorCallback(response) {
-            deferred.reject(err);
-            return cb(err);
+            deferred.reject(response);
+            return cb(response);
         });
 
         return deferred.promise;
@@ -100,8 +100,8 @@ angular.module('stalkApp')
           return cb();
         }, function errorCallback(response) {
           this.logout();
-          deferred.reject(err);
-          return cb(err);
+          deferred.reject(response);
+          return cb(response);
         });
 
         return deferred.promise;
@@ -205,8 +205,8 @@ angular.module('stalkApp')
             deferred.resolve(response.data);
             return cb();
         }, function errorCallback(response) {
-            deferred.reject(err);
-            return cb(err);
+            deferred.reject(response);
+            return cb(response);
         });
 
         return deferred.promise;
@@ -227,8 +227,8 @@ angular.module('stalkApp')
             deferred.resolve(response.data);
             return cb();
         }, function errorCallback(response) {
-            deferred.reject(err);
-            return cb(err);
+            deferred.reject(response);
+            return cb(response);
         });
 
         return deferred.promise;

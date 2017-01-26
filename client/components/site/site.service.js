@@ -12,11 +12,11 @@ angular.module('stalkApp')
           name: site.name,
           url: site.url
         }).then(function successCallback(response) {
-            deferred.resolve(response);
+            deferred.resolve(response.data);
             return cb();
         }, function errorCallback(response) {
-            deferred.reject(err);
-            return cb(err);
+            deferred.reject(response);
+            return cb(response);
         });
 
         return deferred.promise;
@@ -29,11 +29,12 @@ angular.module('stalkApp')
         $http.get('/api/apps', {
 
         }).then(function successCallback(response) {
-            deferred.resolve(response);
+          console.log( response );
+            deferred.resolve(response.data);
             return cb();
         }, function errorCallback(response) {
-            deferred.reject(err);
-            return cb(err);
+            deferred.reject(response);
+            return cb(response);
         });
 
         return deferred.promise;
@@ -44,11 +45,11 @@ angular.module('stalkApp')
 
         $http.put('/api/apps/' + _site._id, _site
         ).then(function successCallback(response) {
-            deferred.resolve(response);
+            deferred.resolve(response.data);
             return cb();
         }, function errorCallback(response) {
-            deferred.reject(err);
-            return cb(err);
+            deferred.reject(response);
+            return cb(response);
         });
 
         return deferred.promise;
@@ -59,11 +60,11 @@ angular.module('stalkApp')
 
         $http.delete('/api/apps/' + _site._id, _site
         ).then(function successCallback(response) {
-            deferred.resolve(response);
+            deferred.resolve(response.data);
             return cb();
         }, function errorCallback(response) {
-            deferred.reject(err);
-            return cb(err);
+            deferred.reject(response);
+            return cb(response);
         });
 
         return deferred.promise;

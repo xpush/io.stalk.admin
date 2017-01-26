@@ -11,7 +11,7 @@ angular.module('stalkApp')
         $http.post('/api/messages',
           {}
         ).then(function successCallback(response) {
-            deferred.resolve(response);
+            deferred.resolve(response.data);
             return cb();
         }, function errorCallback(response) {
             deferred.reject(err);
@@ -28,7 +28,7 @@ angular.module('stalkApp')
         $http.post('/api/messages/read',
           {id:query.id}
         ).then(function successCallback(response) {
-            deferred.resolve(response);
+            deferred.resolve(response.data);
             return cb();
         }, function errorCallback(response) {
             deferred.reject(err);
@@ -45,7 +45,7 @@ angular.module('stalkApp')
         $http.post('/api/messages/readAll',
           {}
         ).then(function successCallback(response) {
-            deferred.resolve(response);
+            deferred.resolve(response.data);
             return cb();
         }, function errorCallback(response) {
             deferred.reject(err);
