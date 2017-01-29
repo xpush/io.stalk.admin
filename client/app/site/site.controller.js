@@ -1,7 +1,11 @@
 'use strict';
 
 angular.module('stalkApp')
-  .controller('SiteCtrl', function ($rootScope, $scope, $stateParams, Site, toaster, Modal) {
+  .controller('SiteCtrl', function ($rootScope, $scope, $stateParams, Site, toaster, $uibModal, $document) {
+
+    var $ctrl = this;
+
+    $ctrl.animationsEnabled = true;
 
     $rootScope.isLogin = false;
     $scope.newSite = {};
@@ -10,41 +14,33 @@ angular.module('stalkApp')
 
     $('#siteDetail').hide();
 
-    $scope.addNewSite = function (form) {
-      //@TODO Save Site and retireve again
-      $scope.submitted = true;
-      if (form.$valid) {
-        Site.create({
-          name: $scope.newSite.site_name,
-          url: $scope.newSite.site_url
-        })
-          .then(function (data) {
-            // Account created, redirect to home
-            toaster.pop('success', "Info", "Saved Successfully");
+    var modalInstance;
 
-            $('#myModal').modal('hide');
-            $scope.successScript = generateScript(data);
-            $('#successModal').modal('show');
+    $scope.openModal = function (size, parentSelector) {
+    var parentElem = parentSelector ? 
+      
+      angular.element($document[0].querySelector('.content ' + parentSelector)) : undefined;
 
-            var status = data.status;
+      modalInstance = $uibModal.open({
+        animation: $ctrl.animationsEnabled,
+        ariaLabelledBy: 'modal-title',
+        ariaDescribedBy: 'modal-body',
+        templateUrl: 'myModalContent.html',
+        controller: 'ModalInstanceCtrl',
+        controllerAs: '$ctrl',
+        size: 'sm',
+        appendTo: parentElem,
+        resolve: {
+          items: function () {
+            return $ctrl.items;
+          }
+        }
+      });
 
-            $scope.getSites();
-            if (status == 'ERR-ACTIVE') {
-              $scope.result = data.message;
-            } else {
-              //$location.path('/login');
-            }
-          })
-          .catch(function (err) {
-            err = err.data;
-
-            console.error(err);
-
-            // Update validity of form fields that match the mongoose errors
-
-          });
-      }
-
+      modalInstance.result.then(function (selectedItem) {
+      }, function () {
+        console.log('Modal dismissed at: ' + new Date());
+      });
     };
 
     $scope.getSites = function () {
@@ -106,7 +102,6 @@ angular.module('stalkApp')
 
           var status = data.status;
           var message = data.message;
-          console.log(data);
           toaster.pop('success', "Info", "Saved Successfully");
           $scope.getSites();
           if (status == 'ERR-ACTIVE') {
@@ -126,6 +121,8 @@ angular.module('stalkApp')
         });
 
     };
+
+    /**
     $scope.removeSite = Modal.confirm.delete(function (site) {
       Site.remove($scope._site)
         .then(function (data) {
@@ -155,6 +152,7 @@ angular.module('stalkApp')
 
         });
     });
+    */
 
     $scope.getSites();
 
@@ -166,3 +164,58 @@ angular.module('stalkApp')
     };
 
   });
+
+angular.module('stalkApp')
+  .controller('ModalInstanceCtrl', function ($uibModalInstance, Site, toaster) {
+  var $ctrl = this;
+  var $scope = this;
+
+  $scope.newSite = {};
+
+  $ctrl.ok = function () {
+    $uibModalInstance.close();
+  };
+
+  $ctrl.cancel = function () {
+    $uibModalInstance.dismiss('cancel');
+  };
+
+  $ctrl.addNewSite = function (form) {
+    //@TODO Save Site and retireve again
+    $scope.submitted = true;
+    if (form.$valid) {
+      Site.create({
+        name: $scope.newSite.site_name,
+        url: $scope.newSite.site_url
+      })
+        .then(function (data) {
+
+          // Account created, redirect to home
+          toaster.pop('success', "Info", "Saved Successfully");
+
+          $uibModalInstance.dismiss('cancel');
+
+          $scope.successScript = generateScript(data);
+          $('#successModal').modal('show');
+
+          var status = data.status;
+
+          $scope.getSites();
+          if (status == 'ERR-ACTIVE') {
+            $scope.result = data.message;
+          } else {
+            //$location.path('/login');
+          }
+        })
+        .catch(function (err) {
+          err = err.data;
+
+          console.log(err);
+
+          // Update validity of form fields that match the mongoose errors
+
+        });
+    }
+
+  };
+});

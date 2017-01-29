@@ -37,7 +37,7 @@
                     <!-- /.box-body -->
 
                     <div class="box-footer">
-                        <button type="submit" id="newsite" class="btn btn-primary">{{'button.create' | translate}}</button>
+                        <button type="submit" id="newsite" ng-click="openModal()" class="btn btn-primary">{{'button.create' | translate}}</button>
                     </div>
                 </div>
                 <!-- /.box -->
@@ -96,7 +96,7 @@
         </div>
     </section>
     <!-- /.content -->
-    <div id="myModal" class="modal fade" role="dialog">
+    <script type="text/ng-template" id="myModalContent.html">
 
         <div class="modal-default">
             <div class="modal-dialog">
@@ -113,7 +113,7 @@
                                             'has-error': form.site_name.$invalid && submitted }">
                                     <label for="site_name">{{'text.sitename' | translate}}</label>
                                     <input type="text" class="form-control" id="site_name" name="site_name"
-                                           ng-model="newSite.site_name" placeholder="Enter Site Name" required>
+                                           ng-model="$ctrl.newSite.site_name" placeholder="Enter Site Name" required>
 
                                     <p class="help-block" ng-show="form.site_name.$error.required && submitted">
                                         {{'required.input.sitename' | translate}}
@@ -125,7 +125,7 @@
                                             'has-error': form.site_url.$invalid && submitted }">
                                     <label for="site_url">{{'text.siteurl' | translate}}</label>
                                     <input type="url" class="form-control" id="site_url" name="site_url"
-                                           ng-model="newSite.site_url" placeholder="http://yoursite" required>
+                                           ng-model="$ctrl.newSite.site_url" placeholder="http://yoursite" required>
 
                                     <p class="help-block" ng-show="form.site_name.$error.required && submitted">
                                         {{'required.input.siteurl' | translate}}
@@ -143,8 +143,8 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">{{'button.close' | translate}}</button>
-                        <button type="button" id="addNewSite" ng-click="addNewSite(form)" class="btn btn-info">{{'button.addsite' | translate}}
+                        <button type="button" class="btn btn-default pull-left" ng-click="$ctrl.cancel();">{{'button.close' | translate}}</button>
+                        <button type="button" id="addNewSite" ng-click="$ctrl.addNewSite(form)" class="btn btn-info">{{'button.addsite' | translate}}
                         </button>
                     </div>
                 </div>
@@ -154,7 +154,7 @@
         </div>
         <!-- /.modal -->
 
-    </div>
+    </script>
 
     <div id="successModal" class="modal fade" role="dialog">
 
@@ -182,63 +182,3 @@
 
     </div>
 </div>
-
-<script type="text/javascript">
-    $(function () {
-        "use strict";
-        $('#newsite').click(function () {
-            $('#myModal').modal('show');
-        });
-
-//		$('#addNewSite').click(function () {
-//			$.ajax({
-//				url: "/site",
-//				type: "POST",
-//				data: {'site_name': $('#site_name').val(), 'site_url': $('#site_url').val()},
-//				success: function (data, textStatus, jqXHR) {
-//					console.log(data);
-//
-//					if (data.result) {
-//						toastr.success("Save Success");
-//						getSiteList();
-//					} else {
-//						toastr.error("Save Failure");
-//					}
-//
-//
-//					//data - response from server
-//				},
-//				error: function (jqXHR, textStatus, errorThrown) {
-//
-//				}
-//			});
-//		});
-
-
-        function getSiteList() {
-            $.ajax({
-                url: "/sitelist",
-                type: "GET",
-                data: {},
-                success: function (data, textStatus, jqXHR) {
-                    console.log(data);
-                    var markup = "<tr><td>${site_name}</td><td>${site_url}</td><td>${site_code}</td><td>${date}</td></tr>";
-
-                    /* Compile the markup as a named template */
-                    $.template("siteTemplate", markup);
-
-                    /* Render the template with the movies data and insert
-                     the rendered HTML under the "movieList" element */
-                    $.tmpl("siteTemplate", data)
-                            .html("#siteTableBody");
-
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-
-                }
-            });
-        }
-    });
-
-
-</script>

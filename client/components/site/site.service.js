@@ -12,6 +12,9 @@ angular.module('stalkApp')
           name: site.name,
           url: site.url
         }).then(function successCallback(response) {
+
+            console.log( '--55555--' );
+            console.log( response );
             deferred.resolve(response.data);
             return cb();
         }, function errorCallback(response) {
@@ -29,7 +32,7 @@ angular.module('stalkApp')
         $http.get('/api/apps', {
 
         }).then(function successCallback(response) {
-          console.log( response );
+            console.log( response );
             deferred.resolve(response.data);
             return cb();
         }, function errorCallback(response) {
