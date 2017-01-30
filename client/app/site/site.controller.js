@@ -5,42 +5,57 @@ angular.module('stalkApp')
 
     var $ctrl = this;
 
-    $ctrl.animationsEnabled = true;
+    $scope.animationsEnabled = true;
 
     $rootScope.isLogin = false;
     $scope.newSite = {};
     $scope.isDisable = true;
     $scope.sites = [];
 
+    $scope.successScript = "1234";
+
     $('#siteDetail').hide();
 
     var modalInstance;
 
-    $scope.openModal = function (size, parentSelector) {
-    var parentElem = parentSelector ? 
-      
-      angular.element($document[0].querySelector('.content ' + parentSelector)) : undefined;
+    $scope.openModal = function () {
 
       modalInstance = $uibModal.open({
-        animation: $ctrl.animationsEnabled,
+        animation: $scope.animationsEnabled,
         ariaLabelledBy: 'modal-title',
         ariaDescribedBy: 'modal-body',
-        templateUrl: 'myModalContent.html',
+        templateUrl: 'modalContent.html',
         controller: 'ModalInstanceCtrl',
         controllerAs: '$ctrl',
         size: 'sm',
-        appendTo: parentElem,
+        scope: $scope,
         resolve: {
-          items: function () {
-            return $ctrl.items;
-          }
         }
       });
 
       modalInstance.result.then(function (selectedItem) {
       }, function () {
-        console.log('Modal dismissed at: ' + new Date());
+        
       });
+    };
+
+    $scope.openSuccessModal = function (successScript) {
+
+      $scope.successScript = successScript;
+
+      modalInstance = $uibModal.open({
+        animation: $scope.animationsEnabled,
+        ariaLabelledBy: 'modal-title',
+        ariaDescribedBy: 'modal-body',
+        templateUrl: 'successModalContent.html',
+        controller: 'ModalInstanceCtrl',
+        controllerAs: '$ctrl',
+        size: 'sm',
+        scope: $scope,
+        resolve: {
+        }
+      });
+
     };
 
     $scope.getSites = function () {
@@ -67,7 +82,8 @@ angular.module('stalkApp')
 
         });
     };
-    var generateScript = function (site) {
+
+    $scope.generateScript = function (site) {
       var script = "<script>\n" + "window.stalkConfig = ";
       var metaObj = {
         "server": 'http://' + $rootScope.GLOBAL_SERVER_STALK_URL, // TODO http 프로토콜을 하드코딩 하지 말고 어떻게하면 좋을까?
@@ -86,7 +102,7 @@ angular.module('stalkApp')
       if ($scope._site != null) {
         $scope.isDisable = false;
       }
-      $scope.script = generateScript(site);
+      $scope.script = $scope.generateScript(site);
 
       $('#siteDetail').show();
 
@@ -122,38 +138,6 @@ angular.module('stalkApp')
 
     };
 
-    /**
-    $scope.removeSite = Modal.confirm.delete(function (site) {
-      Site.remove($scope._site)
-        .then(function (data) {
-          // Account created, redirect to home
-          $scope._site = {};
-          $scope.script = "";
-          $scope.isDisable = true;
-          toaster.pop('success', "Info", "Deleted Successfully");
-          var status = data.status;
-          var message = data.message;
-
-
-          $scope.getSites();
-          if (status == 'ERR-ACTIVE') {
-            $scope.result = data.message;
-          } else {
-            //$location.path('/login');
-          }
-
-          $('#siteDetail').hide();
-
-        })
-        .catch(function (err) {
-          err = err.data;
-          console.error(err);
-          // Update validity of form fields that match the mongoose errors
-
-        });
-    });
-    */
-
     $scope.getSites();
 
     $scope.pop = function () {
@@ -166,11 +150,11 @@ angular.module('stalkApp')
   });
 
 angular.module('stalkApp')
-  .controller('ModalInstanceCtrl', function ($uibModalInstance, Site, toaster) {
+  .controller('ModalInstanceCtrl', function ($uibModalInstance, Site, toaster, $scope) {
   var $ctrl = this;
-  var $scope = this;
 
-  $scope.newSite = {};
+  $ctrl.newSite = {};
+  $ctrl.successScript= "";
 
   $ctrl.ok = function () {
     $uibModalInstance.close();
@@ -182,11 +166,11 @@ angular.module('stalkApp')
 
   $ctrl.addNewSite = function (form) {
     //@TODO Save Site and retireve again
-    $scope.submitted = true;
+    $ctrl.submitted = true;
     if (form.$valid) {
       Site.create({
-        name: $scope.newSite.site_name,
-        url: $scope.newSite.site_url
+        name: $ctrl.newSite.site_name,
+        url: $ctrl.newSite.site_url
       })
         .then(function (data) {
 
@@ -194,9 +178,9 @@ angular.module('stalkApp')
           toaster.pop('success', "Info", "Saved Successfully");
 
           $uibModalInstance.dismiss('cancel');
+          var successScript = $scope.generateScript(data);
 
-          $scope.successScript = generateScript(data);
-          $('#successModal').modal('show');
+          $scope.openSuccessModal(successScript);
 
           var status = data.status;
 
@@ -211,8 +195,6 @@ angular.module('stalkApp')
           err = err.data;
 
           console.log(err);
-
-          // Update validity of form fields that match the mongoose errors
 
         });
     }

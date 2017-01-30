@@ -96,14 +96,15 @@
         </div>
     </section>
     <!-- /.content -->
-    <script type="text/ng-template" id="myModalContent.html">
+    <script type="text/ng-template" id="modalContent.html">
 
         <div class="modal-default">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">&times;</span></button>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="$ctrl.cancel();">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                         <h4 class="modal-title">{{'text.getscript' | translate}}</h4>
                     </div>
                     <div class="modal-body">
@@ -156,13 +157,12 @@
 
     </script>
 
-    <div id="successModal" class="modal fade" role="dialog">
-
+    <script type="text/ng-template" id="successModalContent.html">
         <div class="modal-success">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        <button type="button" class="close" ng-click="$ctrl.cancel();" aria-label="Close"><span
                                 aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title">{{'text.getscript' | translate}}</h4>
                     </div>
@@ -171,7 +171,7 @@
                         <pre style="font-weight: 300;font-size:10px">{{successScript}}</pre>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">{{'button.close' | translate}}</button>
+                        <button type="button" class="btn btn-outline pull-left" ng-click="$ctrl.cancel();">{{'button.close' | translate}}</button>
                     </div>
                 </div>
                 <!-- /.modal-content -->
@@ -180,5 +180,5 @@
         </div>
         <!-- /.modal -->
 
-    </div>
+    </script>
 </div>
