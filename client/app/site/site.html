@@ -110,29 +110,29 @@
                     <div class="modal-body">
                         <form role="form" name="form" class="form-horizontal" novalidate>
                             <div class="box-body">
-                                <div class="form-group has-feedback" ng-class="{ 'has-success': form.site_name.$valid && submitted,
-                                            'has-error': form.site_name.$invalid && submitted }">
+                                <div class="form-group has-feedback" ng-class="{ 'has-success': form.site_name.$valid && $ctrl.submitted,
+                                            'has-error': form.site_name.$invalid && $ctrl.submitted }">
                                     <label for="site_name">{{'text.sitename' | translate}}</label>
                                     <input type="text" class="form-control" id="site_name" name="site_name"
                                            ng-model="$ctrl.newSite.site_name" placeholder="Enter Site Name" required>
 
-                                    <p class="help-block" ng-show="form.site_name.$error.required && submitted">
+                                    <p class="help-block" ng-show="form.site_name.$error.required && $ctrl.submitted">
                                         {{'required.input.sitename' | translate}}
                                     </p>
                                 </div>
 
 
-                                <div class="form-group has-feedback" ng-class="{ 'has-success': form.site_url.$valid && submitted,
-                                            'has-error': form.site_url.$invalid && submitted }">
+                                <div class="form-group has-feedback" ng-class="{ 'has-success': form.site_url.$valid && $ctrl.submitted,
+                                            'has-error': form.site_url.$invalid && $ctrl.submitted }">
                                     <label for="site_url">{{'text.siteurl' | translate}}</label>
                                     <input type="url" class="form-control" id="site_url" name="site_url"
                                            ng-model="$ctrl.newSite.site_url" placeholder="http://yoursite" required>
 
-                                    <p class="help-block" ng-show="form.site_name.$error.required && submitted">
+                                    <p class="help-block" ng-show="form.site_url.$error.required && $ctrl.submitted">
                                         {{'required.input.siteurl' | translate}}
                                     </p>
 
-                                    <p class="help-block" ng-show="form.site_url.$error.url && submitted">
+                                    <p class="help-block" ng-show="form.site_url.$error.url && $ctrl.submitted">
                                         {{'invalid.input.siteurl' | translate}}
                                     </p>
                                 </div>
